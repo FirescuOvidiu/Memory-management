@@ -1,0 +1,6 @@
+LIBRARY 
+EXPORTS
+  CustomAllocator_New
+  CustomAllocator_Delete
+  CustomAllocator_Malloc
+  CustomAllocator_Free

@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomAllocatorTest", "CustomAllocatorTest\CustomAllocatorTest.vcxproj", "{9707A525-0370-4971-8F7B-0B04F8FED5AE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{548D7A28-802A-4285-807D-6F6A6C781918} = {548D7A28-802A-4285-807D-6F6A6C781918}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomAllocator", "CustomAllocator\CustomAllocator.vcxproj", "{548D7A28-802A-4285-807D-6F6A6C781918}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Debug|x64.ActiveCfg = Debug|x64
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Debug|x64.Build.0 = Debug|x64
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Debug|x86.ActiveCfg = Debug|Win32
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Debug|x86.Build.0 = Debug|Win32
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Release|x64.ActiveCfg = Release|x64
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Release|x64.Build.0 = Release|x64
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Release|x86.ActiveCfg = Release|Win32
+		{9707A525-0370-4971-8F7B-0B04F8FED5AE}.Release|x86.Build.0 = Release|Win32
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Debug|x64.ActiveCfg = Debug|x64
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Debug|x64.Build.0 = Debug|x64
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Debug|x86.ActiveCfg = Debug|Win32
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Debug|x86.Build.0 = Debug|Win32
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Release|x64.ActiveCfg = Release|x64
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Release|x64.Build.0 = Release|x64
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Release|x86.ActiveCfg = Release|Win32
+		{548D7A28-802A-4285-807D-6F6A6C781918}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B3C1421-115A-4617-B632-F279F3DE0C55}
+	EndGlobalSection
+EndGlobal
