@@ -4,7 +4,9 @@
 
 void testB()
 {
+	// 3. void* __cdecl operator new(size_t aSize)
 	int* alfa = new int(10);
+	// 13. void __cdecl operator delete(void* aBlock, size_t /*aSize*/) noexcept
 	delete alfa;
 
 	B* b1 = new B(10, 'C');
@@ -12,10 +14,12 @@ void testB()
 	std::cout << b1->a << "\n\n";
 	delete b1;
 
+	// 5. void * __cdecl operator new[](size_t aSize)
 	B* b2 = new B[10];
 	b2[5].a = b2[5].a - 10;
 	std::cout << b2[5].a << "\n";
 	std::cout << b2[4].a << "\n\n";
+	// 14. void __cdecl operator delete[](void * aBlock, size_t /*aSize*/) noexcept
 	delete[]b2;
 
 	std::vector<B*> b3;
@@ -32,6 +36,7 @@ void testB()
 	}
 	for (int i = 0; i < 10; i++)
 	{
+		// 11 .void __cdecl operator delete[](void * aBlock) noexcept
 		delete[] b4[i];
 	}
 	delete[] b4;
@@ -40,4 +45,11 @@ void testB()
 	*(b5 + 1) = 99;
 	std::cout << *(b5 + 1) << "\n\n";
 	free(b5);
+
+	// 6. void * __cdecl operator new[](size_t aSize, std::nothrow_t const &) noexcept
+	int* b6 = new (std::nothrow) int[5];
+	// 4. void * __cdecl operator new(size_t aSize, std::nothrow_t const &) noexcept
+	int* b7 = new (std::nothrow) int(11);
+	delete[] b6;
+	delete b7;
 }
