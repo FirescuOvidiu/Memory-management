@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "CustomAllocator.h"
 
@@ -25,4 +24,3 @@ void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*a
   // default CRT implementation
   _free_dbg(aBlock, aBlockUse);
 }
-
