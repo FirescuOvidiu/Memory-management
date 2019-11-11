@@ -3,12 +3,12 @@
 
 MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 {
-
+	mAvailable.push_back(new char[poolSize]);
 }
 
 void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	return nullptr;
+	return static_cast<void*>(mAvailable.front());
 }
 
 void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
