@@ -52,4 +52,8 @@ void testB()
 	int* b7 = new (std::nothrow) int(11);
 	delete[] b6;
 	delete b7;
+
+	int* b8 = new int(10);
+	delete b8;
+	delete b8;
 }

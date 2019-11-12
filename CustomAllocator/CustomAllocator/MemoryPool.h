@@ -1,6 +1,21 @@
 #pragma once
 #include "stdafx.h"
 
+class PoolElement
+{
+public:
+	PoolElement(char* adress, size_t size) : adress(adress), size(size) {}
+	void updateElement(char* adress, size_t size)
+	{
+		this->adress = adress;
+		this->size = size;
+	}
+
+public:
+	char* adress;
+	size_t size;
+};
+
 
 class MemoryPool
 {
@@ -13,7 +28,8 @@ public:
 	~MemoryPool();
 
 public:
-	std::list<char*> mAvailable;
-	std::list<char*> mAllocated;
+	void* startAdress;
+	std::list<PoolElement> mAvailable;
+	std::list<PoolElement> mAllocated;
 	std::size_t poolSize;
 };
