@@ -66,6 +66,9 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 	std::list<PoolElement>::iterator left = mAvailable.end();
 	std::list<PoolElement>::iterator right = mAvailable.end();
 
+	// We parse the list with the available blocks and do 2 things
+	// - check if the deleted block can be merged with another block of memory from the available memory (we have 3 cases here)
+	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
 	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
 	{
 		if (compareSize->size > deletedMemory.size)
@@ -84,12 +87,16 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 		}
 	}
 
+	// If it doesn't merge with other blocks (to make a bigger contiguous memory block)
+	// we simply insert it so that the lists is mantained sorted
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{
 		mAvailable.insert(compareSize, deletedMemory);
 		return;
 	}
 
+	// Merge the deleted block with a left block and a right block making
+	// The right block is deleted and only the left block will remain with the size of all 3 blocks
 	if ((left != mAvailable.end()) && (right != mAvailable.end()))
 	{
 		left->size = left->size + right->size + deletedMemory.size;
@@ -99,6 +106,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 	}
 	else
 	{
+		// Merge the deleted block with the a left block
 		if (left != mAvailable.end())
 		{
 			left->size = left->size + deletedMemory.size;
@@ -106,6 +114,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 			MemoryPool::maintainSorted(left);
 		}
 
+		// Merge the deleted block with a right block
 		if (right != mAvailable.end())
 		{
 			right->adress = deletedMemory.adress;
@@ -117,6 +126,11 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 }
 
 
+/*
+	Function used to maintain the list sorted descending by size
+	Having the list sorted except one element that has the size bigger than the previous elements
+	we try to find its position so that the list is sorted descending by size
+*/
 void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
 {
 	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))

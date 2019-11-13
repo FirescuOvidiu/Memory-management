@@ -16,7 +16,7 @@ public:
 
 public:
 	char* startAdress;					// Start adress of the memory pool
-	std::list<PoolElement> mAvailable;	// Stores the memory unallocated stored by the size
+	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the adress
 	std::size_t poolSize;				// The size of the memory pool
 };
