@@ -37,5 +37,10 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 
 MemoryPool::~MemoryPool()
 {
+	if (!mAllocated.empty())
+	{
+		// Memory leaks
+	}
 
+	delete[] startAdress;
 }
