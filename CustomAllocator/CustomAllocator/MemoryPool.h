@@ -11,6 +11,10 @@ public:
 		this->size = size;
 	}
 
+	friend bool operator<(const PoolElement& a, const PoolElement& b)
+	{
+		return a.adress < b.adress;
+	}
 public:
 	char* adress;
 	size_t size;
@@ -28,8 +32,8 @@ public:
 	~MemoryPool();
 
 public:
-	void* startAdress;
+	char* startAdress;
 	std::list<PoolElement> mAvailable;
-	std::list<PoolElement> mAllocated;
+	std::set<PoolElement> mAllocated;
 	std::size_t poolSize;
 };

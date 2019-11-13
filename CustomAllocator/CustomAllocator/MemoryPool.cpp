@@ -4,7 +4,7 @@
 MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 {
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
-	startAdress = static_cast<void*>(mAvailable.front().adress);
+	startAdress = mAvailable.front().adress;
 }
 
 
@@ -15,11 +15,17 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* a
 		// Bad alloc
 	}
 
-	PoolElement curr = mAvailable.front();
-	void* block = static_cast<void*>(mAvailable.front().adress);
+	auto currBlock = mAvailable.begin();
+	void* block = static_cast<void*>(currBlock->adress);
 
-	mAllocated.push_back(PoolElement(curr.adress, aSize));
-	mAvailable.front().updateElement(curr.adress + aSize, curr.size - aSize);
+	mAllocated.insert(PoolElement(currBlock->adress, aSize));
+	mAvailable.front().updateElement(currBlock->adress + aSize, currBlock->size - aSize);
+	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->adress > std::next(currBlock)->adress))
+	{
+		std::swap(currBlock->adress, std::next(currBlock)->adress);
+		std::swap(currBlock->size, std::next(currBlock)->size);
+		currBlock++;
+	}
 
 	return block;
 }
