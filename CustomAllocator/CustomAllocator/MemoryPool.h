@@ -10,20 +10,13 @@ public:
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);
 
-	void maintainSorted(std::list<PoolElement>::iterator& element)
-	{
-		while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
-		{
-			std::swap(element->adress, std::prev(element)->adress);
-			std::swap(element->size, std::prev(element)->size);
-			element--;
-		}
-	}
+	void maintainSorted(std::list<PoolElement>::iterator& element);
+
 	~MemoryPool();
 
 public:
-	char* startAdress;
-	std::list<PoolElement> mAvailable;
-	std::set<PoolElement> mAllocated;
-	std::size_t poolSize;
+	char* startAdress;					// Start adress of the memory pool
+	std::list<PoolElement> mAvailable;	// Stores the memory unallocated stored by the size
+	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the adress
+	std::size_t poolSize;				// The size of the memory pool
 };

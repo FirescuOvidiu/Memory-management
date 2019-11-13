@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
-
+/*
+	Constructor used to allocate the memory pool and 
+	save the first adress for deallocation after the TU is finished in case of memory leaks
+ */
 MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 {
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
@@ -8,17 +11,27 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 }
 
 
+/*
+	Function used to allocate memory for the user
+	Returns an adress to an open block in our memory pool
+*/
 void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
+	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory request 
+	// Then we will throw an exception
 	if ((mAvailable.empty()) || (aSize > mAvailable.front().size))
 	{
 		// Bad alloc
 	}
 
+	// We will save in block the adress of the memory that will be given for the user to use
 	auto currBlock = mAvailable.begin();
 	void* block = static_cast<void*>(currBlock->adress);
 
+	// Insert the adress and the size of the block in the memory allocated
 	mAllocated.insert(PoolElement(currBlock->adress, aSize));
+
+	// Update the block with the new adress and size and mantain the list sorted 
 	mAvailable.front().updateElement(currBlock->adress + aSize, currBlock->size - aSize);
 	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->adress > std::next(currBlock)->adress))
 	{
@@ -27,21 +40,14 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* a
 		currBlock++;
 	}
 
-	std::cout << "\n\n";
-
-	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
-	{
-		std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
-	}
-	std::cout << "\n";
-	for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
-	{
-		std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
-	}
-
 	return block;
 }
 
+/*
+	Function used to deallocate memory
+	- deletes the adress from the allocated block (mAllocated)
+	- inserts the adress into the unallocated list (mAvailable)
+*/
 void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 {
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
@@ -81,17 +87,6 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{
 		mAvailable.insert(compareSize, deletedMemory);
-		std::cout << "\n\n";
-
-		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
-		{
-			std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
-		}
-		std::cout << "\n";
-		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
-		{
-			std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
-		}
 		return;
 	}
 
@@ -119,22 +114,26 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 			MemoryPool::maintainSorted(right);
 		}
 	}
+}
 
-	std::cout << "\n\n";
 
-	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
+{
+	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
 	{
-		std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
-	}
-	std::cout << "\n";
-	for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
-	{
-		std::cout << static_cast<void*> (it->adress) << " " << it->size << "\t";
+		std::swap(element->adress, std::prev(element)->adress);
+		std::swap(element->size, std::prev(element)->size);
+		element--;
 	}
 }
 
+
+/*
+	Destructor used to deallocated the memory pool, allocated at the start of the program
+*/
 MemoryPool::~MemoryPool()
 {
+	// If we still have elements allocated that means the program has memory leaks
 	if (!mAllocated.empty())
 	{
 		// Memory leaks
