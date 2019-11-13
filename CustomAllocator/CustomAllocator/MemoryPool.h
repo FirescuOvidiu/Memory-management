@@ -1,25 +1,6 @@
 #pragma once
 #include "stdafx.h"
 
-class PoolElement
-{
-public:
-	PoolElement(char* adress, size_t size) : adress(adress), size(size) {}
-	void updateElement(char* adress, size_t size)
-	{
-		this->adress = adress;
-		this->size = size;
-	}
-
-	friend bool operator<(const PoolElement& a, const PoolElement& b)
-	{
-		return a.adress < b.adress;
-	}
-public:
-	char* adress;
-	size_t size;
-};
-
 
 class MemoryPool
 {
