@@ -3,10 +3,10 @@
 /*
 	Function used to update an element
 */
-void PoolElement::updateElement(char* adress, size_t size)
+void PoolElement::updateElement(char* _adress, size_t _size)
 {
-	this->adress = adress;
-	this->size = size;
+	this->adress = _adress;
+	this->size = _size;
 }
 
 /*

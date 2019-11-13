@@ -15,8 +15,15 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	Function used to allocate memory for the user
 	Returns an adress to an open block in our memory pool
 */
-void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
+void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
+	std::cout << "\n\nMemory needed: " << aSize;
+	std::cout << "\nMemory available:";
+	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+	{
+		std::cout << static_cast<void*>(it->adress) << " " << it->size << "\t";
+	}
+
 	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory request 
 	// Then we will throw an exception
 	if ((mAvailable.empty()) || (aSize > mAvailable.front().size))
@@ -33,13 +40,18 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* a
 
 	// Update the block with the new adress and size and mantain the list sorted 
 	mAvailable.front().updateElement(currBlock->adress + aSize, currBlock->size - aSize);
-	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->adress > std::next(currBlock)->adress))
+	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->adress < std::next(currBlock)->adress))
 	{
 		std::swap(currBlock->adress, std::next(currBlock)->adress);
 		std::swap(currBlock->size, std::next(currBlock)->size);
 		currBlock++;
 	}
 
+	std::cout << "\nMemory available:";
+	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+	{
+		std::cout << static_cast<void*>(it->adress) << " " << it->size << "\t";
+	}
 	return block;
 }
 
@@ -48,14 +60,22 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int aBlockUse, char const* a
 	- deletes the adress from the allocated block (mAllocated)
 	- inserts the adress into the unallocated list (mAvailable)
 */
-void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
+void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
+
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
 	if (it == mAllocated.end())
 	{
 		// Invalid adress
 		return;
+	}
+
+	std::cout << "\n\n Deallocate memory: " << aBlock;
+	std::cout << "\nMemory available:";
+	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
+	{
+		std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
 	}
 
 	PoolElement deletedMemory = *it;
@@ -92,6 +112,11 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{
 		mAvailable.insert(compareSize, deletedMemory);
+		std::cout << "\nMemory available:";
+		for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
+		{
+			std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
+		}
 		return;
 	}
 
@@ -122,6 +147,11 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int aBlockUse)
 
 			MemoryPool::maintainSorted(right);
 		}
+	}
+	std::cout << "\nMemory available:";
+	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
+	{
+		std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
 	}
 }
 
