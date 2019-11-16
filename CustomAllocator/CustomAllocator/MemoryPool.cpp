@@ -8,8 +8,8 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 {
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
 	startAdress = mAvailable.front().adress;
-	log.updateLog("Size of the memory pool: " + std::to_string(poolSize));
 
+	log.updateLog("Size of the memory pool: " + std::to_string(poolSize));
 	std::stringstream ss;
 	ss << static_cast<void*>(startAdress);
 	log.updateLog("Start adress: " + ss.str());
@@ -24,16 +24,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 {
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before allocation: " + std::to_string(mAvailable.front().size) + ". Memory need to allocate: " + std::to_string(aSize));
-	
-
-	std::string memoryAndSize;
-	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
-	{
-		std::stringstream ss;
-		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
-		memoryAndSize += ss.str();
-	}
-	log.updateLog(memoryAndSize);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
 
 	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory request 
@@ -72,14 +63,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 
 
 	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size));
-	memoryAndSize.erase();
-	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
-	{
-		std::stringstream ss;
-		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
-		memoryAndSize += ss.str();
-	}
-	log.updateLog(memoryAndSize + "\n");
+	log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	return block;
 }
@@ -100,14 +84,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before deallocation: " + std::to_string(mAvailable.front().size) + ". Memory to deallocate: " + std::to_string((*it).size));
-	std::string memoryAndSize;
-	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
-	{
-		std::stringstream ss;
-		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
-		memoryAndSize += ss.str();
-	}
-	log.updateLog(memoryAndSize);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
 	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
 	std::list<PoolElement>::iterator left = mAvailable.end();
@@ -141,55 +118,41 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{
 		mAvailable.insert(compareSize, deletedMemory);
-
-		log.updateLog("Memory Available after deallocation: " + std::to_string(mAvailable.front().size));
-		for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
-		{
-			std::stringstream ss;
-			ss << static_cast<void*>(it2->adress);
-			log.updateLog("(" + ss.str() + "," + std::to_string(it2->size) + ")\t");
-		}
-		log.updateLog("\n");
-		return;
-	}
-
-	// Merge the deleted block with a left block and a right block making
-	// The right block is deleted and only the left block will remain with the size of all 3 blocks
-	if ((left != mAvailable.end()) && (right != mAvailable.end()))
-	{
-		left->size = left->size + right->size + deletedMemory.size;
-		mAvailable.erase(right);
-
-		MemoryPool::maintainSorted(left);
 	}
 	else
 	{
-		// Merge the deleted block with the a left block
-		if (left != mAvailable.end())
+		// Merge the deleted block with a left block and a right block making
+		// The right block is deleted and only the left block will remain with the size of all 3 blocks
+		if ((left != mAvailable.end()) && (right != mAvailable.end()))
 		{
-			left->size = left->size + deletedMemory.size;
+			left->size = left->size + right->size + deletedMemory.size;
+			mAvailable.erase(right);
 
 			MemoryPool::maintainSorted(left);
 		}
-
-		// Merge the deleted block with a right block
-		if (right != mAvailable.end())
+		else
 		{
-			right->adress = deletedMemory.adress;
-			right->size = right->size + deletedMemory.size;
+			// Merge the deleted block with the a left block
+			if (left != mAvailable.end())
+			{
+				left->size = left->size + deletedMemory.size;
 
-			MemoryPool::maintainSorted(right);
+				MemoryPool::maintainSorted(left);
+			}
+
+			// Merge the deleted block with a right block
+			if (right != mAvailable.end())
+			{
+				right->adress = deletedMemory.adress;
+				right->size = right->size + deletedMemory.size;
+
+				MemoryPool::maintainSorted(right);
+			}
 		}
 	}
 
 	log.updateLog("Memory Available after deaallocation: " + std::to_string(mAvailable.front().size));
-	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
-	{
-		std::stringstream ss;
-		ss << static_cast<void*>(it2->adress);
-		log.updateLog("(" + ss.str() + "," + std::to_string(it2->size) + ")\t");
-	}
-	log.updateLog("\n");
+	log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 }
 
 

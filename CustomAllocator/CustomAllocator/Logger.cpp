@@ -67,6 +67,21 @@ void Logger::updateLogLevel(LogLevel newLogLevel)
 }
 
 
+std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable)
+{
+	std::string memoryAndSize;
+
+	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+	{
+		std::stringstream ss;
+		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
+		memoryAndSize += ss.str();
+	}
+
+	return memoryAndSize;
+}
+
+
 std::string Logger::getCurrentTime()
 {
 	auto now = std::chrono::system_clock::now();
