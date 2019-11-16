@@ -25,7 +25,8 @@ class Logger
 public:
 	Logger();
 	~Logger();
-
+private:
+	std::string getCurrentTime();
 private:
 	std::ofstream m_loggerFile;
 	LogLevel m_logLevel;
