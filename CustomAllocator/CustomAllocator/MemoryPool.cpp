@@ -9,6 +9,10 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
 	startAdress = mAvailable.front().adress;
 	log.updateLog("Size of the memory pool: " + std::to_string(poolSize));
+
+	std::stringstream ss;
+	ss << static_cast<void*>(startAdress);
+	log.updateLog("Start adress: " + ss.str());
 }
 
 
@@ -20,10 +24,16 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 {
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before allocation: " + std::to_string(mAvailable.front().size) + ". Memory need to allocate: " + std::to_string(aSize));
+	
+
+	std::string memoryAndSize;
 	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 	{
-		//log.updateLog(std::string(it->adress) + "\t" + std::to_string(it->size));
+		std::stringstream ss;
+		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
+		memoryAndSize += ss.str();
 	}
+	log.updateLog(memoryAndSize);
 
 
 	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory request 
@@ -60,11 +70,16 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 		currBlock++;
 	}
 
-	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n");
+
+	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size));
+	memoryAndSize.erase();
 	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 	{
-		//log.updateLog(std::string(it->adress) + "\t" + std::to_string(it->size));
+		std::stringstream ss;
+		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
+		memoryAndSize += ss.str();
 	}
+	log.updateLog(memoryAndSize + "\n");
 
 	return block;
 }
@@ -76,7 +91,6 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 */
 void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
-
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
 	if (it == mAllocated.end())
@@ -84,20 +98,23 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 		// Invalid adress
 		return;
 	}
+	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before deallocation: " + std::to_string(mAvailable.front().size) + ". Memory to deallocate: " + std::to_string((*it).size));
+	std::string memoryAndSize;
 	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
 	{
-		// std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
+		std::stringstream ss;
+		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
+		memoryAndSize += ss.str();
 	}
-
-	PoolElement deletedMemory = *it;
-
-	mAllocated.erase(it);
+	log.updateLog(memoryAndSize);
 
 	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
 	std::list<PoolElement>::iterator left = mAvailable.end();
 	std::list<PoolElement>::iterator right = mAvailable.end();
+	PoolElement deletedMemory = *it;
 
+	mAllocated.erase(it);
 	// We parse the list with the available blocks and do 2 things
 	// - check if the deleted block can be merged with another block of memory from the available memory (we have 3 cases here)
 	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
@@ -124,11 +141,15 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{
 		mAvailable.insert(compareSize, deletedMemory);
-		log.updateLog("Memory Available after deallocation: " + std::to_string(mAvailable.front().size) + "\n");
+
+		log.updateLog("Memory Available after deallocation: " + std::to_string(mAvailable.front().size));
 		for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
 		{
-			//std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
+			std::stringstream ss;
+			ss << static_cast<void*>(it2->adress);
+			log.updateLog("(" + ss.str() + "," + std::to_string(it2->size) + ")\t");
 		}
+		log.updateLog("\n");
 		return;
 	}
 
@@ -160,11 +181,15 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 			MemoryPool::maintainSorted(right);
 		}
 	}
-	log.updateLog("Memory Available after deaallocation: " + std::to_string(mAvailable.front().size) + "\n");
+
+	log.updateLog("Memory Available after deaallocation: " + std::to_string(mAvailable.front().size));
 	for (auto it2 = mAvailable.begin(); it2 != mAvailable.end(); it2++)
 	{
-		//std::cout << static_cast<void*>(it2->adress) << " " << it2->size << "\t";
+		std::stringstream ss;
+		ss << static_cast<void*>(it2->adress);
+		log.updateLog("(" + ss.str() + "," + std::to_string(it2->size) + ")\t");
 	}
+	log.updateLog("\n");
 }
 
 

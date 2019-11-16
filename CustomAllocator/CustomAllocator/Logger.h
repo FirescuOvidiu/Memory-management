@@ -27,10 +27,16 @@ public:
 	void updateLog(std::string message);
 	void updateLogLevel(LogLevel newLogLevel);
 
+	void updateLogStart(const std::list<PoolElement>& mAvailable);
+	void updateLogEnd();
+
 	~Logger();
 private:
 	std::string getCurrentTime();
 
+public:
+	int numberAllocations;
+	int numberDeallocations;
 private:
 	std::ofstream m_loggerFile;
 	LogLevel m_logLevel;
