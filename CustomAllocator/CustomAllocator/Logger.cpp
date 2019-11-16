@@ -24,18 +24,20 @@ Logger::Logger()
 	default:
 		break;
 	}
+
+	outputMessages.resize(4);
 }
 
 
 void Logger::updateLog(std::string message)
 {
-	if (m_logType != LogType::No_Log)
+	if (m_logType == LogType::No_Log)
 	{
 		return;
 	}
 
-	outputMessages[(int)m_logType] += Logger::getCurrentTime();
-	outputMessages[(int)m_logType] += "\t";
+	outputMessages[(int)m_logLevel] += Logger::getCurrentTime();
+	outputMessages[(int)m_logLevel] += "\t";
 	switch (m_logLevel)
 	{
 	case LogLevel::Log_Level_Info:
@@ -53,9 +55,9 @@ void Logger::updateLog(std::string message)
 	default:
 		break;
 	}
-	outputMessages[(int)m_logType] += "\t";
-	outputMessages[(int)m_logType] += message;
-	outputMessages[(int)m_logType] += "\n";
+	outputMessages[(int)m_logLevel] += "\t";
+	outputMessages[(int)m_logLevel] += message;
+	outputMessages[(int)m_logLevel] += "\n";
 }
 
 
@@ -80,6 +82,11 @@ Logger::~Logger()
 {
 	if (m_logType != LogType::No_Log)
 	{
+		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+		{
+			m_loggerFile << *it << "\n\n";
+		}
+
 		switch (m_logType)
 		{
 		case LogType::File_Log:
