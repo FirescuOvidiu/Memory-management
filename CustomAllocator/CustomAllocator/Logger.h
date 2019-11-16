@@ -4,11 +4,10 @@
 
 typedef enum class Log_Levels
 {
-	Disable_Log = 1,
-	Log_Level_Info = 2,
-	Log_Level_Warning = 3,
-	Log_Level_Error = 4,
-	Log_Level_Debug = 5
+	Log_Level_Info = 0,
+	Log_Level_Warning = 1,
+	Log_Level_Debug = 2,
+	Log_Level_Error = 3
 }LogLevel;
 
 
@@ -24,11 +23,18 @@ class Logger
 {
 public:
 	Logger();
+
+	void updateLog(std::string message);
+	void updateLogLevel(LogLevel newLogLevel);
+
 	~Logger();
 private:
 	std::string getCurrentTime();
+
 private:
 	std::ofstream m_loggerFile;
 	LogLevel m_logLevel;
 	LogType m_logType;
+
+	std::vector<std::string> outputMessages;
 };
