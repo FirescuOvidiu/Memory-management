@@ -2,7 +2,7 @@
 #pragma warning (disable : 4996)
 
 
-Logger::Logger()
+Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
 	m_logLevel = LogLevel::Log_Level_Info;
@@ -97,6 +97,10 @@ Logger::~Logger()
 {
 	if (m_logType != LogType::No_Log)
 	{
+		Logger::updateLogLevel(LogLevel::Log_Level_Info);
+		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations));
+		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations));
+
 		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
 		{
 			m_loggerFile << *it << "\n\n";

@@ -9,7 +9,8 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
 	startAdress = mAvailable.front().adress;
 
-	log.updateLog("Size of the memory pool: " + std::to_string(poolSize));
+	log.updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.");
+	log.totalMemoryAvailable = (int)poolSize;
 	std::stringstream ss;
 	ss << static_cast<void*>(startAdress);
 	log.updateLog("Start adress: " + ss.str());
@@ -22,9 +23,11 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 */
 void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
+	log.numberAllocations++;
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
-	log.updateLog("Memory available before allocation: " + std::to_string(mAvailable.front().size) + ". Memory need to allocate: " + std::to_string(aSize));
-	log.updateLog(log.tupletsAdressAndSize(mAvailable));
+	log.updateLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize));
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
+	log.totalMemoryAvailable -= (int)aSize;
 
 
 	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory request 
@@ -62,8 +65,8 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	}
 
 
-	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size));
-	log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n");
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	return block;
 }
@@ -79,12 +82,20 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	if (it == mAllocated.end())
 	{
-		// Invalid adress
+		std::stringstream ss;
+		ss << aBlock;
+
+		log.updateLogLevel(LogLevel::Log_Level_Warning);
+		log.updateLog("The application tries to deallocate an adress that's not allocated. Adress: " + ss.str() + "\n");
+
 		return;
 	}
+
+	log.numberDeallocations++;
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
-	log.updateLog("Memory available before deallocation: " + std::to_string(mAvailable.front().size) + ". Memory to deallocate: " + std::to_string((*it).size));
-	log.updateLog(log.tupletsAdressAndSize(mAvailable));
+	log.updateLog("Memory available before deallocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory to deallocate: " + std::to_string((*it).size));
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
+	log.totalMemoryAvailable += (int)it->size;
 
 	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
 	std::list<PoolElement>::iterator left = mAvailable.end();
@@ -151,8 +162,8 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 		}
 	}
 
-	log.updateLog("Memory Available after deaallocation: " + std::to_string(mAvailable.front().size));
-	log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+	log.updateLog("Memory Available after deaallocation: " + std::to_string(log.totalMemoryAvailable) + "\n");
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 }
 
 
@@ -180,6 +191,9 @@ MemoryPool::~MemoryPool()
 	// If we still have elements allocated that means the program has memory leaks
 	if (!mAllocated.empty())
 	{
+		log.updateLogLevel(LogLevel::Log_Level_Warning);
+		log.updateLog("The application has memory leaks !!");
+		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.");
 		// Memory leaks
 	}
 

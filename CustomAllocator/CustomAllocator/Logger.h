@@ -36,6 +36,7 @@ private:
 public:
 	int numberAllocations;
 	int numberDeallocations;
+	int totalMemoryAvailable;
 
 private:
 	std::ofstream m_loggerFile;
