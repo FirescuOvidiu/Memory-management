@@ -6,8 +6,8 @@ typedef enum class Log_Levels
 {
 	Log_Level_Info = 0,
 	Log_Level_Warning = 1,
-	Log_Level_Debug = 2,
-	Log_Level_Error = 3
+	Log_Level_Error = 2,
+	Log_Level_Debug = 3
 }LogLevel;
 
 
@@ -27,6 +27,9 @@ public:
 	void updateLog(std::string message);
 	void updateLogLevel(LogLevel newLogLevel);
 
+	void increaseAllocations();
+	void increaseDeallocations();
+
 	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable);
 
 	~Logger();
@@ -34,8 +37,6 @@ private:
 	std::string getCurrentTime();
 
 public:
-	int numberAllocations;
-	int numberDeallocations;
 	int totalMemoryAvailable;
 
 private:
@@ -44,4 +45,7 @@ private:
 	LogType m_logType;
 
 	std::vector<std::string> outputMessages;
+
+	int numberAllocations;
+	int numberDeallocations;
 };

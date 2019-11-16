@@ -23,7 +23,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 */
 void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	log.numberAllocations++;
+	log.increaseAllocations();
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize));
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
@@ -36,7 +36,9 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	{
 		log.updateLogLevel(LogLevel::Log_Level_Error);
 		log.updateLog("Bad alloc because we don't have enough memory available");
-		// Bad alloc throw exception need to implement
+		log.~Logger();
+		std::bad_alloc exception;
+		throw exception;
 	}
 
 	if (aSize > mAvailable.front().size)
@@ -45,7 +47,9 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 		log.updateLog("Bad alloc because the biggest contiguous memory is smaller than the memory request.");
 		log.updateLog("Biggest contiguous memory: " + std::to_string(mAvailable.front().size));
 		log.updateLog("Memory needed : " + std::to_string(aSize));
-		// Bad alloc throw exception need to implement
+		log.~Logger();
+		std::bad_alloc exception;
+		throw exception;
 	}
 
 	// We will save in block the adress of the memory that will be given for the user to use
@@ -91,11 +95,11 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 		return;
 	}
 
-	log.numberDeallocations++;
+	log.increaseDeallocations();
 	log.updateLogLevel(LogLevel::Log_Level_Debug);
 	log.updateLog("Memory available before deallocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory to deallocate: " + std::to_string((*it).size));
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 	log.totalMemoryAvailable += (int)it->size;
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
 	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
 	std::list<PoolElement>::iterator left = mAvailable.end();

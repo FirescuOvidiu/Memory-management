@@ -4,6 +4,8 @@
 
 void testB()
 {
+	//int* tt = new int[2000];
+	//*tt = 1;
 	// 3. void* __cdecl operator new(size_t aSize)
 	int* alfa = new int(10);
 	// 13. void __cdecl operator delete(void* aBlock, size_t /*aSize*/) noexcept

@@ -16,10 +16,10 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	switch (m_logType)
 	{
 	case LogType::File_Log:
-		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
+		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n\n";
 		break;
 	case LogType::Console_Log:
-		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
+		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n\n";
 		break;
 	default:
 		break;
@@ -38,23 +38,29 @@ void Logger::updateLog(std::string message)
 
 	outputMessages[(int)m_logLevel] += Logger::getCurrentTime();
 	outputMessages[(int)m_logLevel] += "\t";
+
 	switch (m_logLevel)
 	{
 	case LogLevel::Log_Level_Info:
 		outputMessages[(int)LogLevel::Log_Level_Info] += "[INFO]";
 		break;
+
 	case LogLevel::Log_Level_Warning:
 		outputMessages[(int)LogLevel::Log_Level_Warning] += "[WARNINIG]";
 		break;
+
+	case LogLevel::Log_Level_Error:
+		outputMessages[(int)LogLevel::Log_Level_Error] += "[ERROR]";
+		break;
+
 	case LogLevel::Log_Level_Debug:
 		outputMessages[(int)LogLevel::Log_Level_Debug] += "[DEBUG]";
 		break;
-	case LogLevel::Log_Level_Error:
-		outputMessages[(int)LogLevel::Log_Level_Error] += "[DEBUG]";
-		break;
+
 	default:
 		break;
 	}
+
 	outputMessages[(int)m_logLevel] += "\t";
 	outputMessages[(int)m_logLevel] += message;
 	outputMessages[(int)m_logLevel] += "\n";
@@ -64,6 +70,18 @@ void Logger::updateLog(std::string message)
 void Logger::updateLogLevel(LogLevel newLogLevel)
 {
 	this->m_logLevel = newLogLevel;
+}
+
+
+void Logger::increaseAllocations()
+{
+	numberAllocations++;
+}
+
+
+void Logger::increaseDeallocations()
+{
+	numberDeallocations++;
 }
 
 
@@ -101,19 +119,31 @@ Logger::~Logger()
 		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations));
 		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations));
 
-		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
-		{
-			m_loggerFile << *it << "\n\n";
-		}
 
 		switch (m_logType)
 		{
 		case LogType::File_Log:
-			m_loggerFile << "\n\n" << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+			for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+			{
+				if (!(*it).empty())
+				{
+					m_loggerFile << *it << "\n\n\n";
+				}
+			}
+			m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 			break;
+
 		case LogType::Console_Log:
-			std::cout << "\n\n" << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+			for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+			{
+				if (!(*it).empty())
+				{
+					std::cout << *it << "\n\n";
+				}
+			}
+			std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 			break;
+
 		default:
 			break;
 		}
