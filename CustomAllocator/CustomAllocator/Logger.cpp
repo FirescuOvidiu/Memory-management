@@ -2,6 +2,9 @@
 #pragma warning (disable : 4996)
 
 
+/*
+	Constructor used to open the file log, and initializate the data members
+ */
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
@@ -29,6 +32,9 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 }
 
 
+/*
+	Method used to update the log depending on the log level
+*/
 void Logger::updateLog(std::string message)
 {
 	if (m_logType == LogType::No_Log)
@@ -67,24 +73,40 @@ void Logger::updateLog(std::string message)
 }
 
 
+/*
+	Method used to update(change) the log level
+*/
 void Logger::updateLogLevel(LogLevel newLogLevel)
 {
 	this->m_logLevel = newLogLevel;
 }
 
 
+/*
+	Method used to increase the number of allocations that occur during the application
+*/
 void Logger::increaseAllocations()
 {
 	numberAllocations++;
 }
 
 
+
+/*
+	Method used to increase the number of deallocations that occur during the application
+*/
 void Logger::increaseDeallocations()
 {
 	numberDeallocations++;
 }
 
 
+
+/*
+	Method returns a string that is composed of tuplets (adress,size) that represent all the 
+	adress and the size of them that are available to be allocated
+	Method used for Debugging
+*/
 std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable)
 {
 	std::string memoryAndSize;
@@ -100,6 +122,9 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 }
 
 
+/*
+	Returns the current time based on the format YYYY-MM-DD HH:MM:SS
+*/
 std::string Logger::getCurrentTime()
 {
 	auto now = std::chrono::system_clock::now();
@@ -111,6 +136,9 @@ std::string Logger::getCurrentTime()
 }
 
 
+/*
+	Destructor used to write the information gathered during the program into the log and closing the file log
+*/
 Logger::~Logger()
 {
 	if (m_logType != LogType::No_Log)
