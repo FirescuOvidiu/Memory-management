@@ -28,4 +28,16 @@ void testC()
 	delete c1;
 	delete c2;
 	delete c3;
+
+
+	auto p1 = (int*)malloc(sizeof(int));
+	void* placement1 = p1;
+	new(placement1) int(10);
+	std::cout << *p1;
+	delete p1;
+
+	char memory[sizeof(int)];
+	void* p = memory;
+	int* f = new(p) int();
+	delete f;
 }
