@@ -41,6 +41,6 @@ void testC()
 	int* f = new(p) int();
 	delete f;
 
-	int* big = new int[1001];
-	delete[] big;
+	// int* big = new int[1001];
+	// delete[] big;
 }

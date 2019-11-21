@@ -91,7 +91,6 @@ void Logger::increaseAllocations()
 }
 
 
-
 /*
 	Method used to increase the number of deallocations that occur during the application
 */
@@ -101,10 +100,9 @@ void Logger::increaseDeallocations()
 }
 
 
-
 /*
-	Method returns a string that is composed of tuplets (adress,size) that represent all the 
-	adress and the size of them that are available to be allocated
+	Method returns a string that is composed of tuplets (address, size) that represent all the 
+	address and the size of them that are available to be allocated
 	Method used for Debugging
 */
 std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable)
@@ -114,7 +112,7 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 	{
 		std::stringstream ss;
-		ss << "(" << static_cast<void*>(it->adress) << "," << it->size << ") \t";
+		ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
 		memoryAndSize += ss.str();
 	}
 

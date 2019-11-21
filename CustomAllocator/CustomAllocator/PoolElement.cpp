@@ -1,18 +1,20 @@
 #include "stdafx.h"
 
+
 /*
 	Function used to update an element
 */
-void PoolElement::updateElement(char* _adress, size_t _size)
+void PoolElement::updateElement(char* _address, size_t _size)
 {
-	this->adress = _adress;
+	this->address = _address;
 	this->size = _size;
 }
 
+
 /*
-	Overload operator< to compare the elements by the adress
+	Overload operator< to compare the elements by the address
 */
-bool operator<(const PoolElement& a, const PoolElement& b)
+bool operator<(const PoolElement& firstPoolEl, const PoolElement& secondPoolEl)
 {
-	return a.adress < b.adress;
+	return firstPoolEl.address < secondPoolEl.address;
 }

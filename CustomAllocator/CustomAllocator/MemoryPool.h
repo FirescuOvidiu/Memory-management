@@ -2,6 +2,9 @@
 #include "stdafx.h"
 
 
+/* 
+	Represents a memory pool
+*/
 class MemoryPool
 {
 public:
@@ -14,10 +17,10 @@ public:
 
 	~MemoryPool();
 
-public:
-	char* startAdress;					// Start adress of the memory pool
+private:
+	char* startAddress;					// Start address of the memory pool
 	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
-	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the adress
+	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
 	std::size_t poolSize;				// The size of the memory pool
-	Logger log;
+	Logger log;							// The log of the memory pool
 };
