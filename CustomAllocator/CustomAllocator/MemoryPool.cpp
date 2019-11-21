@@ -31,38 +31,13 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 	log.totalMemoryAvailable -= (int)aSize;
 
-
-	// If we don't have enough memory available
-	// Then we will throw an exception
-	if (mAvailable.empty())
+	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
+	if (checkBadAlloc(aSize))
 	{
-		// Updating the log
-		log.updateLogLevel(LogLevel::Log_Level_Error);
-		log.updateLog("Bad alloc because we don't have enough memory available");
-		log.~Logger();
-
-		// Throwing the exception bad::alloc
 		std::bad_alloc exception;
 		throw exception;
 	}
 
-	//  If the biggest contiguous memory is smaller than the memory request 
-	// The we will throw an exception
-	if (aSize > mAvailable.front().size)
-	{
-		// Updating the log
-		log.updateLogLevel(LogLevel::Log_Level_Error);
-		log.updateLog("Bad alloc because the biggest contiguous memory is smaller than the memory request.");
-		log.updateLog("Biggest contiguous memory: " + std::to_string(mAvailable.front().size));
-		log.updateLog("Memory needed : " + std::to_string(aSize));
-		log.~Logger();
-
-		// Throwing the exception bad::alloc
-		std::bad_alloc exception;
-		throw exception;
-	}
-
-	// We will save in the variable block the address of the memory that will be given for the user to use
 	auto currBlock = mAvailable.begin();
 	void* block = static_cast<void*>(currBlock->address);
 
@@ -85,9 +60,10 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	return block;
 }
 
+
 /*
 	Function used to deallocate memory. Does two things:
-	- deletes the address from the allocated block (mAllocated)
+	- removes the address from the allocated block (mAllocated)
 	- inserts the address into the unallocated list (mAvailable)
 */
 void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
@@ -116,12 +92,93 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	log.totalMemoryAvailable += (int)it->size;
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
-	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
-	std::list<PoolElement>::iterator left = mAvailable.end();
-	std::list<PoolElement>::iterator right = mAvailable.end();
 	PoolElement deletedMemory = *it;
 
+	// Remove the adress from the allocated block
 	mAllocated.erase(it);
+
+	// Insert the address into the unallocated list (mAvailable)
+	insertIntoAvailableMemory(deletedMemory);
+
+	// Updating the log with informations about the memory available after deallocation
+	log.updateLog("Memory Available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n");
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+}
+
+
+/*
+	Checking if we can't allocate memory for the user because different reasons
+*/
+bool MemoryPool::checkBadAlloc(size_t aSize)
+{
+	// If we don't have enough memory available
+	if (mAvailable.empty())
+	{
+		// Updating the log
+		log.updateLogLevel(LogLevel::Log_Level_Error);
+		log.updateLog("Bad alloc because we don't have enough memory available");
+		log.~Logger();
+
+		return true;
+	}
+
+	//  If the biggest contiguous memory is smaller than the memory request 
+	if (aSize > mAvailable.front().size)
+	{
+		// Updating the log
+		log.updateLogLevel(LogLevel::Log_Level_Error);
+		log.updateLog("Bad alloc because the biggest contiguous memory is smaller than the memory request.");
+		log.updateLog("Biggest contiguous memory: " + std::to_string(mAvailable.front().size));
+		log.updateLog("Memory needed : " + std::to_string(aSize));
+		log.~Logger();
+
+		return true;
+	}
+
+	return false;
+}
+
+
+/*
+	Function used to check if the program has memory leaks
+*/
+void MemoryPool::checkMemoryLeaks()
+{
+	if (!mAllocated.empty())
+	{
+		// Updating the log if the program has memory leaks
+		log.updateLogLevel(LogLevel::Log_Level_Warning);
+		log.updateLog("The application has memory leaks !!");
+		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.");
+	}
+}
+
+
+/*
+	Function used to maintain the list sorted descending by size
+	We have the list sorted except one element that has the size bigger than the previous elements
+	we try to find its position so that the list is sorted descending by size
+*/
+void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
+{
+	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
+	{
+		std::swap(element->address, std::prev(element)->address);
+		std::swap(element->size, std::prev(element)->size);
+		element--;
+	}
+}
+
+
+/*
+	Insert the address that was removed from the allocated block into the unallocated list (mAvailable)
+*/
+void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
+{
+
+	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
+	std::list<PoolElement>::iterator left = mAvailable.end(), right = mAvailable.end();
+
 	// We parse the list with the available blocks and do 2 things
 	// - check if the deleted block can be merged with another block of memory from the available memory (we have 3 cases here)
 	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
@@ -180,26 +237,6 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 			}
 		}
 	}
-
-	// Updating the log with informations about the memory available after deallocation
-	log.updateLog("Memory Available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n");
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
-}
-
-
-/*
-	Function used to maintain the list sorted descending by size
-	We have the list sorted except one element that has the size bigger than the previous elements
-	we try to find its position so that the list is sorted descending by size
-*/
-void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
-{
-	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
-	{
-		std::swap(element->address, std::prev(element)->address);
-		std::swap(element->size, std::prev(element)->size);
-		element--;
-	}
 }
 
 
@@ -208,15 +245,7 @@ void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
 */
 MemoryPool::~MemoryPool()
 {
-	// If we still have elements allocated that means the program has memory leaks
-	if (!mAllocated.empty())
-	{
-		// Updating the log if the program has memory leaks
-		log.updateLogLevel(LogLevel::Log_Level_Warning);
-		log.updateLog("The application has memory leaks !!");
-		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.");
-		// Memory leaks
-	}
+	checkMemoryLeaks();
 
 	delete[] startAddress;
 }

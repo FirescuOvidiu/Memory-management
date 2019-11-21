@@ -13,9 +13,13 @@ public:
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* /*aFileName*/, int /*aLineNumber*/);
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/);
 
-	void maintainSorted(std::list<PoolElement>::iterator& element);
-
 	~MemoryPool();
+
+private:
+	bool checkBadAlloc(size_t aSize);
+	void checkMemoryLeaks();
+	void maintainSorted(std::list<PoolElement>::iterator& element);
+	void insertIntoAvailableMemory(const PoolElement& deletedMemory);
 
 private:
 	char* startAddress;					// Start address of the memory pool
