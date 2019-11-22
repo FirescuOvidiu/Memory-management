@@ -9,14 +9,14 @@
 class Diagnostics
 {
 public:
-	Diagnostics();
+	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContiniousMemory(0), avgMemoryUtilization(0), avgMaxContinousMemory(0) {}
 
-	void updateDiagOnAlloc(const int memoryUtilization, const int maxContinuousMemory);
-	void updateDiagOnDealloc(const int memoryUtilization, const int maxContinuousMemory);
+	void updateDiagnostics(const int memoryUtilization, const int maxContinuousMemory);
+	void setTotalMemory(int _totalMemory);
 
 	~Diagnostics();
 
-public:
+private:
 	std::ofstream diagFile;
 	int totalMemory;
 	int maxMemoryUtilization;

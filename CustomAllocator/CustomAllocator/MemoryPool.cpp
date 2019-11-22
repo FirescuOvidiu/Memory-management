@@ -17,7 +17,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	log.updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 
 	// Updating the diagnostics
-	diag.avgMaxContinousMemory = diag.totalMemory = (int) poolSize;
+	diag.setTotalMemory((int)poolSize);
 }
 
 
@@ -59,6 +59,9 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n", LogLevel::Log_Level_Debug);
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
+	// Updating the diagnostics
+	// diag.updateDiagnostics(poolSize - log.totalMemoryAvailable, mAvailable.front().size);
+
 	return block;
 }
 
@@ -95,6 +98,9 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Updating the log with informations about the memory available after deallocation
 	log.updateLog("Memory Available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n", LogLevel::Log_Level_Debug);
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+
+	// Updating the diagnostics
+	// diag.updateDiagnostics(poolSize - log.totalMemoryAvailable, mAvailable.front().size);
 }
 
 
