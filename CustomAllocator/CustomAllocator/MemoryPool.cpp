@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 /*
-	Constructor used to allocate the memory pool and 
+	Constructor used to allocate the memory pool and
 	save the first address for deallocation after the TU is finished in case of memory leaks
  */
 MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
@@ -60,7 +60,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	// Updating the diagnostics
-	// diag.updateDiagnostics(poolSize - log.totalMemoryAvailable, mAvailable.front().size);
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 
 	return block;
 }
@@ -100,7 +100,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	// Updating the diagnostics
-	// diag.updateDiagnostics(poolSize - log.totalMemoryAvailable, mAvailable.front().size);
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 }
 
 

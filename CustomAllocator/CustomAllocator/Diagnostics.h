@@ -11,8 +11,9 @@ class Diagnostics
 public:
 	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContiniousMemory(0), avgMemoryUtilization(0), avgMaxContinousMemory(0) {}
 
-	void updateDiagnostics(const int memoryUtilization, const int maxContinuousMemory);
+	void updateDiagnostics(int memoryUtilization, int maxContinuousMemory);
 	void setTotalMemory(int _totalMemory);
+	int getTotalMemory();
 
 	~Diagnostics();
 
