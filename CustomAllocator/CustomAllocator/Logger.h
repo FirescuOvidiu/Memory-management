@@ -24,8 +24,7 @@ class Logger
 public:
 	Logger();
 
-	void updateLog(std::string message);
-	void updateLogLevel(LogLevel newLogLevel);
+	void updateLog(const std::string& message, LogLevel LogLevel);
 
 	void increaseAllocations();
 	void increaseDeallocations();
@@ -34,7 +33,7 @@ public:
 
 	~Logger();
 private:
-	std::string getCurrentTime();
+	static std::string getCurrentTime();
 
 public:
 	int totalMemoryAvailable;

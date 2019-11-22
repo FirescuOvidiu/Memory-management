@@ -17,6 +17,7 @@ public:
 
 private:
 	bool checkBadAlloc(size_t aSize);
+	bool checkInvalidAddress(void* aBlock, std::set<PoolElement>::iterator it);
 	void checkMemoryLeaks();
 	void maintainSorted(std::list<PoolElement>::iterator& element);
 	void insertIntoAvailableMemory(const PoolElement& deletedMemory);

@@ -35,17 +35,17 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 /*
 	Method used to update the log depending on the log level
 */
-void Logger::updateLog(std::string message)
+void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 {
 	if (m_logType == LogType::No_Log)
 	{
 		return;
 	}
 
-	outputMessages[(int)m_logLevel] += Logger::getCurrentTime();
-	outputMessages[(int)m_logLevel] += "\t";
+	outputMessages[(int)LogLevel] += Logger::getCurrentTime();
+	outputMessages[(int)LogLevel] += "\t";
 
-	switch (m_logLevel)
+	switch (LogLevel)
 	{
 	case LogLevel::Log_Level_Info:
 		outputMessages[(int)LogLevel::Log_Level_Info] += "[INFO]";
@@ -67,18 +67,9 @@ void Logger::updateLog(std::string message)
 		break;
 	}
 
-	outputMessages[(int)m_logLevel] += "\t";
-	outputMessages[(int)m_logLevel] += message;
-	outputMessages[(int)m_logLevel] += "\n";
-}
-
-
-/*
-	Method used to update(change) the log level
-*/
-void Logger::updateLogLevel(LogLevel newLogLevel)
-{
-	this->m_logLevel = newLogLevel;
+	outputMessages[(int)LogLevel] += "\t";
+	outputMessages[(int)LogLevel] += message;
+	outputMessages[(int)LogLevel] += "\n";
 }
 
 
@@ -141,9 +132,8 @@ Logger::~Logger()
 {
 	if (m_logType != LogType::No_Log)
 	{
-		Logger::updateLogLevel(LogLevel::Log_Level_Info);
-		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations));
-		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations));
+		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations), LogLevel::Log_Level_Info);
+		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations), LogLevel::Log_Level_Info);
 
 
 		switch (m_logType)
