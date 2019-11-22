@@ -7,7 +7,8 @@ typedef enum class Log_Levels
 	Log_Level_Info = 0,
 	Log_Level_Warning = 1,
 	Log_Level_Error = 2,
-	Log_Level_Debug = 3
+	Log_Level_Debug = 3,
+	Log_Level_All = 4
 }LogLevel;
 
 
@@ -34,6 +35,8 @@ public:
 	~Logger();
 private:
 	static std::string getCurrentTime();
+	void writingToFile();
+	void writingToConsole();
 
 public:
 	int totalMemoryAvailable;

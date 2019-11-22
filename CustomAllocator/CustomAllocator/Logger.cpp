@@ -8,7 +8,7 @@
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
-	m_logLevel = LogLevel::Log_Level_Info;
+	m_logLevel = LogLevel::Log_Level_All;
 	m_logType = LogType::File_Log;
 
 	if (m_logType == LogType::No_Log)
@@ -126,6 +126,52 @@ std::string Logger::getCurrentTime()
 
 
 /*
+	Function used to write the informations into the log file
+*/
+void Logger::writingToFile()
+{
+	if (m_logLevel == LogLevel::Log_Level_All)
+	{
+		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+		{
+			if (!(*it).empty())
+			{
+				m_loggerFile << *it << "\n\n\n";
+			}
+		}
+	}
+	else
+	{
+		m_loggerFile << outputMessages[(int)m_logLevel] << "\n\n\n";
+	}
+	m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+}
+
+
+/*
+	Function used to write the informations into the console
+*/
+void Logger::writingToConsole()
+{
+	if (m_logLevel == LogLevel::Log_Level_All)
+	{
+		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+		{
+			if (!(*it).empty())
+			{
+				std::cout << *it << "\n\n\n";
+			}
+		}
+	}
+	else
+	{
+		std::cout << outputMessages[(int)m_logLevel] << "\n\n\n";
+	}
+	std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+}
+
+
+/*
 	Destructor used to write the information gathered during the program into the log and closing the file log
 */
 Logger::~Logger()
@@ -139,25 +185,11 @@ Logger::~Logger()
 		switch (m_logType)
 		{
 		case LogType::File_Log:
-			for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
-			{
-				if (!(*it).empty())
-				{
-					m_loggerFile << *it << "\n\n\n";
-				}
-			}
-			m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+			writingToFile();
 			break;
 
 		case LogType::Console_Log:
-			for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
-			{
-				if (!(*it).empty())
-				{
-					std::cout << *it << "\n\n";
-				}
-			}
-			std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+			writingToConsole();
 			break;
 
 		default:
