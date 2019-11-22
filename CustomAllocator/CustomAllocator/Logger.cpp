@@ -4,7 +4,7 @@
 
 /*
 	Constructor used to open the file log, and initializate the data members
- */
+*/
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);

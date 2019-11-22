@@ -15,6 +15,9 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	std::stringstream ss;
 	ss << static_cast<void*>(startAddress);
 	log.updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
+
+	// Updating the diagnostics
+	diag.avgMaxContinousMemory = diag.totalMemory = (int) poolSize;
 }
 
 
