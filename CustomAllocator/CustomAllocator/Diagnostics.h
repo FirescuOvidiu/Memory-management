@@ -27,5 +27,22 @@ private:
 	double avgMaxContinuousMemory;
 
 	// need to invent a metric to evaluate the fragmentation state of the memory pool
+	
+	// A segment represent a continuous block of memory which is too small to be used in allocations
+	int segmentLength;			// Represents the lenght of a segment that will be considered too small to be used
+	int numberSegments;			// Represents the total number of segments that will have during the application
+	int countMaxNumberSegments;	// Represents the maximum number of segments that will have during the application
+	double countAvgSegments;	// Represents average number of segments that will have during the program 
 
+	/*
+		Example: If during a application we have 0 segments, than 1 segment(after allocation), than 2 segments(after allocation), than 0 segments(after deallocation)
+		Than numberSegments			= 0 + 1 + 2 + 0 = 3
+			 countMaxNumberSegments = 2
+			 countAvgSegments		= (0 + 1 + 2 + 0) / 4 = 3/4 = 0.75
+		
+		Conclusion:
+		That means that we had in total 3 segments of memory that weren't used during the application.
+		The maximum number of segments at a time was 2.
+		On every allocation around 0.75 of the segmentLength of memory was wasted because couldn't be used.
+	*/
 };
