@@ -12,11 +12,11 @@ public:
 	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContinuousMemory(0), avgMemoryUtilization(0), avgMaxContinuousMemory(0),
 		segmentLength(0), numberSegments(0), countMaxNumberSegments(0), countAvgSegments(0) {}
 
-	void initializeDiagnostics(int _totalMemory);
-	void updateMemoryInf(int memoryUtilization, int maxContinuousMemory);
-	void updateSegmentInf();
+	void initializeDiagnostics(const int _totalMemory);
+	void updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory);
+	void updateSegmentInf(const std::list<PoolElement>& mAvailable);
 
-	int getTotalMemory();
+	int getTotalMemory() const;
 
 	~Diagnostics();
 

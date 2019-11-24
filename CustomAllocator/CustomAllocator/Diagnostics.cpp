@@ -2,9 +2,9 @@
 
 
 /*
-	Updating the data members
+	Method used to update the data members used for storing informations about memory
 */
-void Diagnostics::updateMemoryInf(int memoryUtilization, int maxContinuousMemory)
+void Diagnostics::updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory)
 {
 	nrMemoryUtilization++;
 	nrMaxContinuousMemory++;
@@ -16,13 +16,11 @@ void Diagnostics::updateMemoryInf(int memoryUtilization, int maxContinuousMemory
 	}
 }
 
-void Diagnostics::updateSegmentInf()
-{
 
-}
-
-
-void Diagnostics::initializeDiagnostics(int _totalMemory)
+/*
+	Method used to initialize members totalMemory and segmentLength
+*/
+void Diagnostics::initializeDiagnostics(const int _totalMemory)
 {
 	this->totalMemory = _totalMemory;
 	this->segmentLength = _totalMemory / 20;
@@ -30,9 +28,18 @@ void Diagnostics::initializeDiagnostics(int _totalMemory)
 
 
 /*
+	Method used to update the data members used for storing informations about segments
+*/
+void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
+{
+
+}
+
+
+/*
 	Returns the total size of the memory pool allocated at the start of the program
 */
-int Diagnostics::getTotalMemory()
+int Diagnostics::getTotalMemory() const
 {
 	return totalMemory;
 }

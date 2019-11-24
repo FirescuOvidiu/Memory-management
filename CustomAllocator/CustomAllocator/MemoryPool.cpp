@@ -60,7 +60,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
+	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 
 	return block;
 }
@@ -100,7 +100,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
+	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 }
 
 
