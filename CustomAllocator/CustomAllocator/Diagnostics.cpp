@@ -4,7 +4,7 @@
 /*
 	Updating the data members
 */
-void Diagnostics::updateDiagnostics(int memoryUtilization, int maxContinuousMemory)
+void Diagnostics::updateMemoryInf(int memoryUtilization, int maxContinuousMemory)
 {
 	nrMemoryUtilization++;
 	nrMaxContinuousMemory++;
@@ -16,13 +16,16 @@ void Diagnostics::updateDiagnostics(int memoryUtilization, int maxContinuousMemo
 	}
 }
 
+void Diagnostics::updateSegmentInf()
+{
 
-/*
-	Sets the total amount of memory allocated of the memory pool
-*/
-void Diagnostics::setTotalMemory(int _totalMemory)
+}
+
+
+void Diagnostics::initializeDiagnostics(int _totalMemory)
 {
 	this->totalMemory = _totalMemory;
+	this->segmentLength = _totalMemory / 20;
 }
 
 

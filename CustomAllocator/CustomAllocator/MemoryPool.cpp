@@ -17,7 +17,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	log.updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 
 	// Updating the diagnostics
-	diag.setTotalMemory((int)poolSize);
+	diag.initializeDiagnostics((int)poolSize);
 }
 
 
