@@ -2,7 +2,7 @@
 
 	<----------------------- START OF APPLICATION ----------------------->
 
-	Total memory allocated by the memory pool: 4000
+	Total memory allocated by the memory pool: 4000 bytes.
 
 	The maximum memory utilization during the application was: 628 bytes out of 4000 bytes (15.70%).
 	The average memory utilization (allocated) during the application was: 320.76 bytes (8.02%).
@@ -11,4 +11,8 @@
 
 	A segment represent a continuous block of memory which is too small to be used in allocations.
 	The length of the segment for this application was: 200 bytes. (5.00%)
+	The number of segments during the application was: 47 segments.
+	The average number of segments during the application was: 0.67 segments (134.29 bytes).
+	The maximum number of segments during the application was: 2 segments (400 bytes). 
+
 	<----------------------- END OF APPLICATION ----------------------->

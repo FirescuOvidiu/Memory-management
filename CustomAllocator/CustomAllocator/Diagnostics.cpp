@@ -41,6 +41,7 @@ void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 		}
 	}
 
+	nrSegments++;
 	numberSegments += currNumberSegments;
 	if (currNumberSegments > maxNumberSegments)
 	{
@@ -68,17 +69,18 @@ Diagnostics::~Diagnostics()
 
 	avgMemoryUtilization /= nrMemoryUtilization;
 	avgMaxContinuousMemory /= nrMaxContinuousMemory;
-	//avgSegments /= 
+	avgSegments /= nrSegments;
 
 	diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
-	diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << "\n\n";
+	diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
 	diagFile << "\tThe maximum memory utilization during the application was: " << maxMemoryUtilization << " bytes out of " << totalMemory << " bytes (" << (double)maxMemoryUtilization * 100 / totalMemory << "%).\n";
 	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtilization << " bytes (" << (double)avgMemoryUtilization * 100 / totalMemory << "%).\n\n";
 	diagFile << "\tThe average of the maximum continuous memory during the application was: " << avgMaxContinuousMemory << " bytes.\n\n";
 	diagFile << "\tA segment represent a continuous block of memory which is too small to be used in allocations.\n";
 	diagFile << "\tThe length of the segment for this application was: " << segmentLength << " bytes. (5.00%)\n";
-	diagFile << "The number of segments generated during the application was: " << numberSegments << "\n\n";
-	
+	diagFile << "\tThe number of segments during the application was: " << numberSegments << " segments.\n";
+	diagFile << "\tThe average number of segments during the application was: " << avgSegments << " segments (" << (double)avgSegments * segmentLength << " bytes).\n";
+	diagFile << "\tThe maximum number of segments during the application was: " << maxNumberSegments << " segments ("<<maxNumberSegments*segmentLength<<" bytes). \n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();

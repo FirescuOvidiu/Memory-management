@@ -35,6 +35,7 @@ private:
 	int segmentLength;			// Represents the lenght of a segment that will be considered too small to be used
 	int numberSegments;			// Represents the total number of segments that will have during the application
 	int maxNumberSegments;		// Represents the maximum number of segments that will have during the application
+	int nrSegments;				// Used to calculate the average number of segments
 	double avgSegments;			// Represents average number of segments that will have during the program 
 
 	/*
