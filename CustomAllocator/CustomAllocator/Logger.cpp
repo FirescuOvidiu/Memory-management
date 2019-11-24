@@ -47,6 +47,11 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 
 	switch (LogLevel)
 	{
+		
+	case LogLevel::Log_Level_Debug:
+		outputMessages[(int)LogLevel::Log_Level_Debug] += "[DEBUG]";
+		break;
+
 	case LogLevel::Log_Level_Info:
 		outputMessages[(int)LogLevel::Log_Level_Info] += "[INFO]";
 		break;
@@ -57,10 +62,6 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 
 	case LogLevel::Log_Level_Error:
 		outputMessages[(int)LogLevel::Log_Level_Error] += "[ERROR]";
-		break;
-
-	case LogLevel::Log_Level_Debug:
-		outputMessages[(int)LogLevel::Log_Level_Debug] += "[DEBUG]";
 		break;
 
 	default:

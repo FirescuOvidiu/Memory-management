@@ -9,7 +9,7 @@
 class Diagnostics
 {
 public:
-	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContiniousMemory(0), avgMemoryUtilization(0), avgMaxContinousMemory(0) {}
+	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContinuousMemory(0), avgMemoryUtilization(0), avgMaxContinuousMemory(0) {}
 
 	void updateDiagnostics(int memoryUtilization, int maxContinuousMemory);
 	void setTotalMemory(int _totalMemory);
@@ -22,9 +22,10 @@ private:
 	int totalMemory;
 	int maxMemoryUtilization;
 	int nrMemoryUtilization;			// Used to calculate the average memory utilization
-	int nrMaxContiniousMemory;		   // Used to calculate the average of the maximum continuous memory
+	int nrMaxContinuousMemory;		   // Used to calculate the average of the maximum continuous memory
 	double avgMemoryUtilization;
-	double avgMaxContinousMemory;
+	double avgMaxContinuousMemory;
 
 	// need to invent a metric to evaluate the fragmentation state of the memory pool
+
 };

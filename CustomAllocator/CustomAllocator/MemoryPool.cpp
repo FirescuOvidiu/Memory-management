@@ -30,8 +30,8 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	// Updating the log with informations about memory available before allocation, size of the memory need to be allocated
 	log.increaseAllocations();
 	log.updateLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize), LogLevel::Log_Level_Debug);
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 	log.totalMemoryAvailable -= (int)aSize;
+	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
 	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
@@ -123,8 +123,8 @@ bool MemoryPool::checkBadAlloc(size_t aSize)
 	if (aSize > mAvailable.front().size)
 	{
 		// Updating the log
-		log.updateLog("Bad alloc because the biggest contiguous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
-		log.updateLog("Biggest contiguous memory: " + std::to_string(mAvailable.front().size), LogLevel::Log_Level_Error);
+		log.updateLog("Bad alloc because the biggest continuous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
+		log.updateLog("Biggest continuous memory: " + std::to_string(mAvailable.front().size), LogLevel::Log_Level_Error);
 		log.updateLog("Memory needed : " + std::to_string(aSize), LogLevel::Log_Level_Error);
 		log.~Logger();
 
@@ -215,7 +215,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 		}
 	}
 
-	// If it doesn't merge with other blocks (to make a bigger contiguous memory block)
+	// If it doesn't merge with other blocks (to make a bigger continuous memory block)
 	// we simply insert it so that the lists is mantained sorted
 	if ((left == mAvailable.end()) && (right == mAvailable.end()))
 	{

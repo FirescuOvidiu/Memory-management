@@ -4,7 +4,7 @@
 
 	Total memory allocated by the memory pool: 4000
 
-	The maximum memory utilization during the application was: 628 bytes out of 4000 bytes.
+	The maximum memory utilization during the application was: 628 bytes out of 4000 bytes (15.7%).
 	The average memory utilization (allocated) during the application was: 320.756 bytes.
 
 	The average of the maximum continuous memory during the application was: 3663.81 bytes.
