@@ -32,7 +32,21 @@ void Diagnostics::initializeDiagnostics(const int _totalMemory)
 */
 void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 {
+	int currNumberSegments = 0;
+	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+	{
+		if ((*it).size <= segmentLength)
+		{
+			currNumberSegments++;
+		}
+	}
 
+	numberSegments += currNumberSegments;
+	if (currNumberSegments > maxNumberSegments)
+	{
+		maxNumberSegments = currNumberSegments;
+	}
+	countAvgSegments += currNumberSegments;
 }
 
 

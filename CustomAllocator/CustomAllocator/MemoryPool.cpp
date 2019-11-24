@@ -16,7 +16,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	ss << static_cast<void*>(startAddress);
 	log.updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 
-	// Updating the diagnostics
+	// Initialize data members of the diagnostics
 	diag.initializeDiagnostics((int)poolSize);
 }
 
@@ -61,6 +61,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
+	diag.updateSegmentInf(mAvailable);
 
 	return block;
 }
