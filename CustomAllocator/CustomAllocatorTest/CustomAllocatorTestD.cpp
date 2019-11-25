@@ -5,7 +5,7 @@
 void testD()
 {
 	std::random_device rd;
-	std::uniform_int_distribution<int> dist(1, 85);
+	std::uniform_int_distribution<int> dist(1, 80);
 
 	int** test;
 	test = new int* [10];
@@ -18,7 +18,7 @@ void testD()
 	std::uniform_int_distribution<int> distPos(0, 9);
 	int nr = 0;
 	int pos = 0;
-	int iterations = 1000;
+	int iterations = 10000;
 	
 	for (int it = 0; it < iterations; it++)
 	{
@@ -31,4 +31,10 @@ void testD()
 			test[pos] = new int[dist(rd)];
 		}
 	}
+
+	for (int i = 0; i < 10; i++)
+	{
+		delete[] test[i];
+	}
+	delete[] test;
 }
