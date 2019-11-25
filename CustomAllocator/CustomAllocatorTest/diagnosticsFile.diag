@@ -10,9 +10,9 @@
 	The average of the maximum continuous memory during the application was: 3663.81 bytes.
 
 	A segment represent a continuous block of memory which is too small to be used in allocations.
-	The length of the segment for this application was: 200 bytes. (5.00%)
+	The length of the segment for this application was: 80 bytes. (2.00%)
 	The number of segments during the application was: 47 segments.
-	The average number of segments during the application was: 0.67 segments (134.29 bytes).
-	The maximum number of segments during the application was: 2 segments (400 bytes). 
+	The average number of segments during the application was: 0.67 segments (53.71 bytes).
+	The maximum number of segments during the application was: 2 segments (160 bytes). 
 
 	<----------------------- END OF APPLICATION ----------------------->
