@@ -48,7 +48,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 
 	// Update the block with the new address and size and mantain the list sorted 
 	mAvailable.front().updateElement(currBlock->address + aSize, currBlock->size - aSize);
-	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->address < std::next(currBlock)->address))
+	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->size < std::next(currBlock)->size))
 	{
 		std::swap(currBlock->address, std::next(currBlock)->address);
 		std::swap(currBlock->size, std::next(currBlock)->size);
