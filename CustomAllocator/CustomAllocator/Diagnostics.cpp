@@ -23,7 +23,7 @@ void Diagnostics::updateMemoryInf(const int memoryUtilization, const int maxCont
 void Diagnostics::initializeDiagnostics(const int _totalMemory)
 {
 	this->totalMemory = _totalMemory;
-	this->segmentLength = _totalMemory / 50;
+	this->segmentLength = _totalMemory / 20;
 }
 
 
@@ -77,10 +77,10 @@ Diagnostics::~Diagnostics()
 	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtilization << " bytes (" << (double)avgMemoryUtilization * 100 / totalMemory << "%).\n\n";
 	diagFile << "\tThe average of the maximum continuous memory during the application was: " << avgMaxContinuousMemory << " bytes.\n\n";
 	diagFile << "\tA segment represent a continuous block of memory which is too small to be used in allocations.\n";
-	diagFile << "\tThe length of the segment for this application was: " << segmentLength << " bytes. (2.00%)\n";
+	diagFile << "\tThe length of the segment for this application was: " << segmentLength << " bytes. (5.00%)\n";
 	diagFile << "\tThe number of segments during the application was: " << numberSegments << " segments.\n";
 	diagFile << "\tThe average number of segments during the application was: " << avgSegments << " segments (" << (double)avgSegments * segmentLength << " bytes).\n";
-	diagFile << "\tThe maximum number of segments during the application was: " << maxNumberSegments << " segments ("<<maxNumberSegments*segmentLength<<" bytes). \n\n";
+	diagFile << "\tThe maximum number of segments during the application was: " << maxNumberSegments << " segments ("<<maxNumberSegments*segmentLength<<" bytes).\n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();
