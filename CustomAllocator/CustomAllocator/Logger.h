@@ -23,7 +23,8 @@ typedef enum class Log_Types
 
 
 /*
-	Class used to store informations about the T.U. and allocator (a logger)
+	Class used to store informations about the T.U. and allocator (a logger). 
+	The logger stores information based on the level of the log:
 	For Log_Level_Info stores information about: the size of the memory pool, start address, numar of allocation/deallocations
 	For Log_Level_warning stores informations about: deallocating invalid addresses, memory leaks
 	For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc

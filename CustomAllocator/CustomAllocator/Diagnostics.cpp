@@ -33,6 +33,7 @@ void Diagnostics::initializeDiagnostics(const int _totalMemory)
 void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 {
 	int currNumberSegments = 0;
+
 	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 	{
 		if ((*it).size <= segmentLength)
@@ -61,7 +62,7 @@ int Diagnostics::getTotalMemory() const
 
 
 /*
-	Destructor used to write the informations gathered during the program into a file
+	Destructor used to write the informations gathered during the program into the file diagnosticsFile.diag
 */
 Diagnostics::~Diagnostics()
 {

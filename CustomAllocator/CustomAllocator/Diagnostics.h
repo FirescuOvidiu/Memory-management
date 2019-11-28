@@ -9,8 +9,8 @@
 class Diagnostics
 {
 public:
-	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContinuousMemory(0), avgMemoryUtilization(0), avgMaxContinuousMemory(0),
-		segmentLength(0), numberSegments(0), maxNumberSegments(0), avgSegments(0), nrSegments(0) {}
+	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), avgMemoryUtilization(0), nrMaxContinuousMemory(0), avgMaxContinuousMemory(0),
+		segmentLength(0), numberSegments(0), maxNumberSegments(0), nrSegments(0), avgSegments(0) {}
 
 	void initializeDiagnostics(const int _totalMemory);
 	void updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory);
@@ -21,6 +21,7 @@ public:
 	~Diagnostics();
 
 private:
+	// Evaluates the state of the memory, contains informations about memory 
 	std::ofstream diagFile;
 	int totalMemory;
 	int maxMemoryUtilization;
@@ -28,9 +29,9 @@ private:
 	int nrMaxContinuousMemory;		   // Used to calculate the average of the maximum continuous memory
 	double avgMemoryUtilization;
 	double avgMaxContinuousMemory;
-
-	// need to invent a metric to evaluate the fragmentation state of the memory pool
 	
+
+	// Evaluates the state of the segments, contains informations about segments
 	// A segment represent a continuous block of memory which is too small to be used in allocations
 	int segmentLength;			// Represents the lenght of a segment that will be considered too small to be used
 	int numberSegments;			// Represents the total number of segments that will have during the application
@@ -39,13 +40,13 @@ private:
 	double avgSegments;			// Represents average number of segments that will have during the program 
 
 	/*
-		Example: If during a application we have 0 segments, than 1 segment(after allocation), than 2 segments(after allocation), than 0 segments(after deallocation)
+		Example: If during a application we have 0 segments, than 1 segment(after allocation), than 2 segments(after allocation), than 0 segments(after deallocation).
 		Than numberSegments			= 0 + 1 + 2 + 0 = 3
 			 maxNumberSegments		= 2
 			 avgSegments			= (0 + 1 + 2 + 0) / 4 = 3/4 = 0.75
 		
 		Conclusion:
-		That means that we had in total 3 segments of memory that weren't used during the application.
+		That means we had in total 3 segments of memory that weren't used during the application.
 		The maximum number of segments at a time was 2.
 		On every allocation around 0.75 of the segmentLength of memory was wasted because couldn't be used.
 	*/
