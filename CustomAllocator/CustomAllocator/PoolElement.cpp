@@ -12,7 +12,7 @@ void PoolElement::updateElement(char* _address, size_t _size)
 
 
 /*
-	Overload operator< to compare the elements by the address
+	Overload operator "<" to compare the two elements by their address
 */
 bool operator<(const PoolElement& firstPoolEl, const PoolElement& secondPoolEl)
 {

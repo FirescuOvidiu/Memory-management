@@ -2,7 +2,7 @@
 
 /*
 	Constructor used to allocate the memory pool and
-	save the first address for deallocation after the TU is finished in case of memory leaks
+	save the first address for deallocation after the T.U. is finished in case of memory leaks
  */
 MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 {
@@ -55,7 +55,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 		currBlock++;
 	}
 
-	// Updating hte log with information about memory available after allocation
+	// Updating the log with information about memory available after allocation
 	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n", LogLevel::Log_Level_Debug);
 	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
 
@@ -69,8 +69,8 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 
 /*
 	Function used to deallocate memory. Does two things:
-	- removes the address from the allocated block (mAllocated)
-	- inserts the address into the unallocated list (mAvailable)
+	- removes the address from the mAllocated (mAllocated contains the blocks allocated)
+	- inserts the address into the mAvailable (mAvailable contains the blocks unallocated)
 */
 void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
@@ -173,7 +173,7 @@ void MemoryPool::checkMemoryLeaks()
 /*
 	Function used to maintain the list sorted descending by size
 	We have the list sorted except one element that has the size bigger than the previous elements
-	we try to find its position so that the list is sorted descending by size
+	we try to find its position so that the list is maintained sorted descending by size
 */
 void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
 {
@@ -192,64 +192,64 @@ void MemoryPool::maintainSorted(std::list<PoolElement>::iterator& element)
 void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 {
 
-	std::list<PoolElement>::iterator compareSize = mAvailable.begin();
-	std::list<PoolElement>::iterator left = mAvailable.end(), right = mAvailable.end();
+	std::list<PoolElement>::iterator newPosition = mAvailable.begin();
+	std::list<PoolElement>::iterator leftBlock = mAvailable.end(), rightBlock = mAvailable.end();
 
-	// We parse the list with the available blocks and do 2 things
+	// We parse the list with the available blocks and do two things
 	// - check if the deleted block can be merged with another block of memory from the available memory (we have 3 cases here)
 	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
 	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
 	{
-		if (compareSize->size > deletedMemory.size)
+		if (newPosition->size > deletedMemory.size)
 		{
-			compareSize++;
+			newPosition++;
 		}
 
 		if (currElement->address + currElement->size == deletedMemory.address)
 		{
-			left = currElement;
+			leftBlock = currElement;
 		}
 
 		if (deletedMemory.address + deletedMemory.size == currElement->address)
 		{
-			right = currElement;
+			rightBlock = currElement;
 		}
 	}
 
 	// If it doesn't merge with other blocks (to make a bigger continuous memory block)
 	// we simply insert it so that the lists is mantained sorted
-	if ((left == mAvailable.end()) && (right == mAvailable.end()))
+	if ((leftBlock == mAvailable.end()) && (rightBlock == mAvailable.end()))
 	{
-		mAvailable.insert(compareSize, deletedMemory);
+		mAvailable.insert(newPosition, deletedMemory);
 	}
 	else
 	{
 		// Merge the deleted block with a left block and a right block
 		// The right block is deleted and only the left block will remain with the size of all 3 blocks
-		if ((left != mAvailable.end()) && (right != mAvailable.end()))
+		if ((leftBlock != mAvailable.end()) && (rightBlock != mAvailable.end()))
 		{
-			left->size = left->size + right->size + deletedMemory.size;
-			mAvailable.erase(right);
+			leftBlock->size = leftBlock->size + rightBlock->size + deletedMemory.size;
+			mAvailable.erase(rightBlock);
 
-			MemoryPool::maintainSorted(left);
+			MemoryPool::maintainSorted(leftBlock);
 		}
 		else
 		{
 			// Merge the deleted block with the a left block
-			if (left != mAvailable.end())
+			if (leftBlock != mAvailable.end())
 			{
-				left->size = left->size + deletedMemory.size;
+				leftBlock->size = leftBlock->size + deletedMemory.size;
 
-				MemoryPool::maintainSorted(left);
+				MemoryPool::maintainSorted(leftBlock);
 			}
 
 			// Merge the deleted block with a right block
-			if (right != mAvailable.end())
+			if (rightBlock != mAvailable.end())
 			{
-				right->address = deletedMemory.address;
-				right->size = right->size + deletedMemory.size;
+				rightBlock->address = deletedMemory.address;
+				rightBlock->size = rightBlock->size + deletedMemory.size;
 
-				MemoryPool::maintainSorted(right);
+				MemoryPool::maintainSorted(rightBlock);
 			}
 		}
 	}
@@ -258,6 +258,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 
 /*
 	Destructor used to deallocated the memory pool, allocated at the start of the program
+	Also we check if the program has memory leaks
 */
 MemoryPool::~MemoryPool()
 {

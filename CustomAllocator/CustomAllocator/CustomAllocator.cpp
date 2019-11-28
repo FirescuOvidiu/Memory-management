@@ -26,7 +26,7 @@ void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * 
 void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*aFileName*/, int /*aLineNumber*/)
 {
 	// default CRT implementation
-	 // _free_dbg(aBlock, aBlockUse);
+	// _free_dbg(aBlock, aBlockUse);
 
 	p.freeMemory(aBlock, aBlockUse);
 }

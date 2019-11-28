@@ -3,19 +3,19 @@
 
 /*
 	Represents an element from the memory pool
-	An element from the memory pool is composed by two things: 
-	- a start address of allocated/unallocated memory
-	- the size of the block of allocated/unallocated memory
+	An element from the memory pool is composed of: 
+	- the start address of an allocated/unallocated memory block
+	- the size of the allocated/unallocated memory block
 */
 class PoolElement
 {
 public:
 	PoolElement(char* address, size_t size) : address(address), size(size) {}
-	void updateElement(char* address, size_t size);
+	void updateElement(char* _address, size_t _size);
 
-	friend bool operator<(const PoolElement& a, const PoolElement& b);
+	friend bool operator<(const PoolElement& firstPoolEl, const PoolElement& secondPoolEl);
 
 public:
-	char* address;	// start address of the block of memory (allocated/unallocated)
-	size_t size;	// size of the block of memory (allocated/unallocated)
+	char* address;	// Start address of the block of memory (allocated/unallocated)
+	size_t size;	// Size of the block of memory (allocated/unallocated)
 };

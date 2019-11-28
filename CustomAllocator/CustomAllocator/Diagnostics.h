@@ -10,7 +10,7 @@ class Diagnostics
 {
 public:
 	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), nrMaxContinuousMemory(0), avgMemoryUtilization(0), avgMaxContinuousMemory(0),
-		segmentLength(0), numberSegments(0), maxNumberSegments(0), avgSegments(0) {}
+		segmentLength(0), numberSegments(0), maxNumberSegments(0), avgSegments(0), nrSegments(0) {}
 
 	void initializeDiagnostics(const int _totalMemory);
 	void updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory);
