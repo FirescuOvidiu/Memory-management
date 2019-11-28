@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 
+// Represents the log levels
 typedef enum class Log_Levels
 {
 	Log_Level_Info = 0,
@@ -12,6 +13,7 @@ typedef enum class Log_Levels
 }LogLevel;
 
 
+// Represents the log type
 typedef enum class Log_Types
 {
 	No_Log = 1,
@@ -20,6 +22,17 @@ typedef enum class Log_Types
 }LogType;
 
 
+/*
+	Class used to store informations about the T.U. and allocator (a logger)
+	For Log_Level_Info stores information about: the size of the memory pool, start address, numar of allocation/deallocations
+	For Log_Level_warning stores informations about: deallocating invalid addresses, memory leaks
+	For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc
+	For Log_Level_Debug stores informations about: memory available, memory needed to allocate, 
+												   memory available after allocation, the list of memory available
+	For Log_Level_All stores information for all the log levels
+
+	At the end of the program all the informations will be written into a file LogFile.log
+*/
 class Logger
 {
 public:
