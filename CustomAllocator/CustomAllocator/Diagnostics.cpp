@@ -22,6 +22,8 @@ void Diagnostics::updateMemoryInf(const int memoryUtilization, const int maxCont
 */
 void Diagnostics::initializeDiagnostics(const int _totalMemory)
 {
+	this->nrMaxContinuousMemory++;
+	this->avgMaxContinuousMemory += _totalMemory;
 	this->totalMemory = _totalMemory;
 	this->segmentLength = _totalMemory / 16;
 }
