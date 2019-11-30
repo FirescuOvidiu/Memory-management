@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win">
+      <UniqueIdentifier>{79ae277e-e443-4653-ab06-51e438b04db4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{5bd3d425-05ec-493f-87bf-812ce52f0545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomAllocatorTests">
+      <UniqueIdentifier>{b72ec421-a728-4d73-b279-4d11798fc177}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>win</Filter>
+    </ClInclude>
+    <ClInclude Include="..\CustomAllocator\UseCustomAllocator.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAllocatorTestA.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAllocatorTestB.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAllocatorTestC.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomAllocatorTestD.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>win</Filter>
+    </ClCompile>
+    <ClCompile Include="..\CustomAllocator\UseCustomAllocator.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocatorTestA.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocatorTestB.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocatorTestC.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocatorTest.cpp" />
+    <ClCompile Include="CustomAllocatorTestD.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
