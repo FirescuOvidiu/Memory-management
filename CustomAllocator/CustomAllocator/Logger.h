@@ -9,7 +9,6 @@ typedef enum class Log_Levels
 	Log_Level_Warning = 1,
 	Log_Level_Error = 2,
 	Log_Level_Debug = 3,
-	Log_Level_All = 4
 }LogLevel;
 
 
@@ -57,7 +56,7 @@ public:
 
 private:
 	std::ofstream m_loggerFile;
-	LogLevel m_logLevel;
+	std::vector<LogLevel> m_logLevels;
 	LogType m_logType;
 
 	std::vector<std::string> outputMessages;

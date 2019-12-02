@@ -8,7 +8,10 @@
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
-	m_logLevel = LogLevel::Log_Level_All;
+	m_logLevels.push_back(Log_Levels::Log_Level_Info);
+	m_logLevels.push_back(Log_Levels::Log_Level_Warning);
+	m_logLevels.push_back(Log_Levels::Log_Level_Error);
+	m_logLevels.push_back(Log_Levels::Log_Level_Debug);
 	m_logType = LogType::File_Log;
 
 	if (m_logType == LogType::No_Log)
@@ -131,20 +134,14 @@ std::string Logger::getCurrentTime()
 */
 void Logger::writingToFile()
 {
-	if (m_logLevel == LogLevel::Log_Level_All)
+	for (std::vector<Log_Levels>::iterator currLevel = m_logLevels.begin(); currLevel != m_logLevels.end(); currLevel++)
 	{
-		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+		if (outputMessages[(int)(*currLevel)] != "")
 		{
-			if (!(*it).empty())
-			{
-				m_loggerFile << *it << "\n\n\n";
-			}
+			m_loggerFile << outputMessages[(int)(*currLevel)] << "\n\n\n";
 		}
 	}
-	else
-	{
-		m_loggerFile << outputMessages[(int)m_logLevel] << "\n\n\n";
-	}
+
 	m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 }
 
@@ -154,20 +151,14 @@ void Logger::writingToFile()
 */
 void Logger::writingToConsole()
 {
-	if (m_logLevel == LogLevel::Log_Level_All)
+	for (std::vector<Log_Levels>::iterator currLevel = m_logLevels.begin(); currLevel != m_logLevels.end(); currLevel++)
 	{
-		for (std::vector<std::string>::const_iterator it = outputMessages.cbegin(); it != outputMessages.cend(); it++)
+		if (outputMessages[(int)(*currLevel)] != "")
 		{
-			if (!(*it).empty())
-			{
-				std::cout << *it << "\n\n\n";
-			}
+			std::cout << outputMessages[(int)(*currLevel)] << "\n\n\n";
 		}
 	}
-	else
-	{
-		std::cout << outputMessages[(int)m_logLevel] << "\n\n\n";
-	}
+
 	std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 }
 
