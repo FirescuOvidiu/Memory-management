@@ -13,7 +13,8 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug] = true;
+    m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
+	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -34,18 +35,22 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 		break;
 	}
 
-	outputMessages.resize(4);
+	outputMessages.resize(5);
 }
 
 
 /*
 	Method used to update the log depending on the log level
 */
-void Logger::updateLog(const std::string& message,const LogLevel& LogLevel)
+void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 {
 	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]))
 	{
 		return;
+	}
+	if (LogLevel == LogLevel::Log_Level_Debug2)
+	{
+		LogLevel = LogLevel::Log_Level_Debug1;
 	}
 
 	outputMessages[(int)LogLevel] += Logger::getCurrentTime();
@@ -54,8 +59,9 @@ void Logger::updateLog(const std::string& message,const LogLevel& LogLevel)
 	switch (LogLevel)
 	{
 		
-	case LogLevel::Log_Level_Debug:
-		outputMessages[(int)LogLevel::Log_Level_Debug] += "[DEBUG]";
+	case LogLevel::Log_Level_Debug1:
+	case LogLevel::Log_Level_Debug2:
+		outputMessages[(int)LogLevel::Log_Level_Debug1] += "[DEBUG]";
 		break;
 
 	case LogLevel::Log_Level_Info:
@@ -103,8 +109,13 @@ void Logger::increaseDeallocations()
 	address and the size of them that are available to be allocated
 	Method used for Debugging
 */
-std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable)
+std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const LogLevel& LogLevel)
 {
+	if (!m_logLevels[(int)LogLevel])
+	{
+		return "";
+	}
+
 	std::string memoryAndSize;
 
 	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)

@@ -28,10 +28,10 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
 	// Updating the log with informations about memory available before allocation, size of the memory need to be allocated
-	log.increaseAllocations();
-	log.updateLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize), LogLevel::Log_Level_Debug);
+	log.updateLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize), LogLevel::Log_Level_Debug1);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
 	log.totalMemoryAvailable -= (int)aSize;
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
+	log.increaseAllocations();
 
 	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
@@ -56,8 +56,8 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	}
 
 	// Updating the log with information about memory available after allocation
-	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n", LogLevel::Log_Level_Debug);
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+	log.updateLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n", LogLevel::Log_Level_Debug1);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable,LogLevel::Log_Level_Debug2) + "\n", LogLevel::Log_Level_Debug2);
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
@@ -83,10 +83,10 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 
 	// Updating the log with informations about memory available before deallocation and the size of memory that needs to be deallocate
+	log.updateLog("Memory available before deallocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory to deallocate: " + std::to_string((*it).size), LogLevel::Log_Level_Debug1);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
 	log.increaseDeallocations();
-	log.updateLog("Memory available before deallocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory to deallocate: " + std::to_string((*it).size), LogLevel::Log_Level_Debug);
 	log.totalMemoryAvailable += (int)it->size;
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable));
 
 	PoolElement deletedMemory = *it;
 
@@ -97,8 +97,8 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	insertIntoAvailableMemory(deletedMemory);
 
 	// Updating the log with informations about the memory available after deallocation
-	log.updateLog("Memory Available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n", LogLevel::Log_Level_Debug);
-	//log.updateLog(log.tupletsAdressAndSize(mAvailable) + "\n");
+	log.updateLog("Memory Available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n", LogLevel::Log_Level_Debug1);
+	log.updateLog(log.tupletsAdressAndSize(mAvailable, LogLevel::Log_Level_Debug2) + "\n", LogLevel::Log_Level_Debug2);
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
