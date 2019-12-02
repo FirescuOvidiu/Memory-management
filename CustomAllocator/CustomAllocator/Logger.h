@@ -38,7 +38,7 @@ class Logger
 public:
 	Logger();
 
-	void updateLog(const std::string& message, LogLevel LogLevel);
+	void updateLog(const std::string& message,const LogLevel& LogLevel);
 
 	void increaseAllocations();
 	void increaseDeallocations();
@@ -56,7 +56,7 @@ public:
 
 private:
 	std::ofstream m_loggerFile;
-	std::vector<LogLevel> m_logLevels;
+	std::vector<bool> m_logLevels;
 	LogType m_logType;
 
 	std::vector<std::string> outputMessages;

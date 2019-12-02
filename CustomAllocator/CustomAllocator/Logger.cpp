@@ -8,10 +8,13 @@
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
-	m_logLevels.push_back(Log_Levels::Log_Level_Info);
-	m_logLevels.push_back(Log_Levels::Log_Level_Warning);
-	m_logLevels.push_back(Log_Levels::Log_Level_Error);
-	m_logLevels.push_back(Log_Levels::Log_Level_Debug);
+
+	m_logLevels.resize(5);
+	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug] = true;
+
 	m_logType = LogType::File_Log;
 
 	if (m_logType == LogType::No_Log)
@@ -38,9 +41,9 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 /*
 	Method used to update the log depending on the log level
 */
-void Logger::updateLog(const std::string& message, LogLevel LogLevel)
+void Logger::updateLog(const std::string& message,const LogLevel& LogLevel)
 {
-	if (m_logType == LogType::No_Log)
+	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]))
 	{
 		return;
 	}
@@ -134,11 +137,11 @@ std::string Logger::getCurrentTime()
 */
 void Logger::writingToFile()
 {
-	for (std::vector<Log_Levels>::iterator currLevel = m_logLevels.begin(); currLevel != m_logLevels.end(); currLevel++)
+	for (int currLevel = 0; currLevel < 5; currLevel++)
 	{
-		if (outputMessages[(int)(*currLevel)] != "")
+		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
-			m_loggerFile << outputMessages[(int)(*currLevel)] << "\n\n\n";
+			m_loggerFile << outputMessages[currLevel] << "\n\n\n";
 		}
 	}
 
@@ -151,11 +154,11 @@ void Logger::writingToFile()
 */
 void Logger::writingToConsole()
 {
-	for (std::vector<Log_Levels>::iterator currLevel = m_logLevels.begin(); currLevel != m_logLevels.end(); currLevel++)
+	for (int currLevel = 0; currLevel < 5; currLevel++)
 	{
-		if (outputMessages[(int)(*currLevel)] != "")
+		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
-			std::cout << outputMessages[(int)(*currLevel)] << "\n\n\n";
+			std::cout << outputMessages[currLevel] << "\n\n\n";
 		}
 	}
 
