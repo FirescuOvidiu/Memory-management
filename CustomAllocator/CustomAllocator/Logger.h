@@ -44,8 +44,8 @@ public:
 	void updateLog(const std::string& message, LogLevel LogLevel);
 	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated);
 
-	void updateAllocAndTotalMemory(int size);
-	void updateDeallocAndTotalMemory(int size);
+	void increaseAllocations(int size);
+	void increaseDeallocations(int size);
 
 	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
 

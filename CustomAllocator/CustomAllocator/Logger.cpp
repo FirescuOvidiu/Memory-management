@@ -98,6 +98,7 @@ void Logger::updateDebugLog(const std::string& message, const std::list<PoolElem
 
 /*
 	Method used to increase the number of allocations that occur during the application
+	and to update the total memory available
 */
 void Logger::increaseAllocations(int size)
 {
@@ -108,6 +109,7 @@ void Logger::increaseAllocations(int size)
 
 /*
 	Method used to increase the number of deallocations that occur during the application
+	and to update the total memory available
 */
 void Logger::increaseDeallocations(int size)
 {
@@ -133,6 +135,7 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 
 	if (LogLevel == LogLevel::Log_Level_Debug2)
 	{
+		memoryAndSize += "Memory Available: ";
 		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 		{
 			std::stringstream ss;
@@ -143,6 +146,7 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 
 	if (LogLevel == LogLevel::Log_Level_Debug3)
 	{
+		memoryAndSize += "Memory Allocated: ";
 		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
 		{
 			std::stringstream ss;

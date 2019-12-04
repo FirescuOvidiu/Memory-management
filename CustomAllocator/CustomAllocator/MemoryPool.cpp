@@ -54,7 +54,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	}
 
 	// Updating the log with information about memory available after allocation
-	log.updateDebugLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size) + "\n", mAvailable, mAllocated);
+	log.updateDebugLog("Memory Available after allocation: " + std::to_string(mAvailable.front().size), mAvailable, mAllocated);
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
@@ -92,7 +92,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 	insertIntoAvailableMemory(deletedMemory);
 
 	// Updating the log with informations about the memory available after deallocation
-	log.updateDebugLog("Memory available after deallocation: " + std::to_string(log.totalMemoryAvailable) + "\n", mAvailable, mAllocated);
+	log.updateDebugLog("Memory available after deallocation: " + std::to_string(log.totalMemoryAvailable), mAvailable, mAllocated);
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
