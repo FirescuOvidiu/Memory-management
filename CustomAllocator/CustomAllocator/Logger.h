@@ -9,7 +9,8 @@ typedef enum class Log_Levels
 	Log_Level_Warning = 1,
 	Log_Level_Error = 2,
 	Log_Level_Debug1 = 3,
-	Log_Level_Debug2 = 4
+	Log_Level_Debug2 = 4,
+	Log_Level_Debug3 = 5
 }LogLevel;
 
 
@@ -30,7 +31,8 @@ typedef enum class Log_Types
 	For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc
 	For Log_Level_Debug1 stores informations about: memory available, memory needed to allocate, 
 												   memory available after allocation
-	For Log_Level_Debug2 stored informations about: adds the list of memory available to the Debug1
+	Log_Level_Debug2 adds the list of memory available to the Debug1
+	Log_Level_Debug3 adds the list of memory allocated to the Debug2
 
 	At the end of the program all the informations will be written into a file LogFile.log
 */
@@ -44,7 +46,7 @@ public:
 	void increaseAllocations();
 	void increaseDeallocations();
 
-	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const LogLevel& LogLevel);
+	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
 
 	~Logger();
 private:

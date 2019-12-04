@@ -4,17 +4,19 @@
 
 /*
 	Constructor used to open the file log, and initializate the data members
+	When setting the log level debug to a higher log level debug make all the previous debug levels true
 */
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
 
-	m_logLevels.resize(5);
+	m_logLevels.resize(6);
 	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -35,7 +37,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 		break;
 	}
 
-	outputMessages.resize(5);
+	outputMessages.resize(6);
 }
 
 
@@ -48,7 +50,7 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 	{
 		return;
 	}
-	if (LogLevel == LogLevel::Log_Level_Debug2)
+	if ((LogLevel == LogLevel::Log_Level_Debug2) || (LogLevel == LogLevel::Log_Level_Debug3))
 	{
 		LogLevel = LogLevel::Log_Level_Debug1;
 	}
@@ -105,11 +107,12 @@ void Logger::increaseDeallocations()
 
 
 /*
-	Method returns a string that is composed of tuplets (address, size) that represent all the 
-	address and the size of them that are available to be allocated
+	Method returns a string that is composed of tuplets (address, size) that represent 
+	- all the address and the size which are available to be allocated
+	- or all the adress and the size which are allocated depending on the LogLevel
 	Method used for Debugging
 */
-std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const LogLevel& LogLevel)
+std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel)
 {
 	if (!m_logLevels[(int)LogLevel])
 	{
@@ -118,11 +121,24 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 
 	std::string memoryAndSize;
 
-	for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+	if (LogLevel == LogLevel::Log_Level_Debug2)
 	{
-		std::stringstream ss;
-		ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-		memoryAndSize += ss.str();
+		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
+		{
+			std::stringstream ss;
+			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
+			memoryAndSize += ss.str();
+		}
+	}
+
+	if (LogLevel == LogLevel::Log_Level_Debug3)
+	{
+		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
+		{
+			std::stringstream ss;
+			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
+			memoryAndSize += ss.str();
+		}
 	}
 
 	return memoryAndSize;
