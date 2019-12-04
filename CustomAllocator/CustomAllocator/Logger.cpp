@@ -15,8 +15,8 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
+	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	//m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -90,9 +90,19 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 
 void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated)
 {
-	updateLog(message, LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+	if (!m_logLevels[(int)LogLevel::Log_Level_Debug2] && !m_logLevels[(int)LogLevel::Log_Level_Debug3])
+	{
+		std::string newMessage = message;
+
+		newMessage += "\n";
+		updateLog(newMessage, LogLevel::Log_Level_Debug1);
+	}
+	else
+	{
+		updateLog(message, LogLevel::Log_Level_Debug1);
+		updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
+		updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+	}
 }
 
 
@@ -142,6 +152,10 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
 			memoryAndSize += ss.str();
 		}
+		if (!m_logLevels[(int)LogLevel::Log_Level_Debug3])
+		{
+			memoryAndSize += "\n";
+		}
 	}
 
 	if (LogLevel == LogLevel::Log_Level_Debug3)
@@ -153,6 +167,8 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
 			memoryAndSize += ss.str();
 		}
+
+		memoryAndSize += "\n";
 	}
 
 	return memoryAndSize;

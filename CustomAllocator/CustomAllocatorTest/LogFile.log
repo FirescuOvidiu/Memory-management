@@ -1,177 +1,125 @@
-2019-12-04 20:47:21	[INFO]	<----------------------- START OF APPLICATION ----------------------->
+2019-12-04 20:56:58	[INFO]	<----------------------- START OF APPLICATION ----------------------->
 
 
 
 
-2019-12-04 20:47:21	[INFO]	Size of the memory pool: 4000 bytes.
-2019-12-04 20:47:21	[INFO]	Start address: 000001BD17D22850
-2019-12-04 20:47:21	[INFO]	Number of allocations during application: 13
-2019-12-04 20:47:21	[INFO]	Number of deallocations during application: 13
+2019-12-04 20:56:58	[INFO]	Size of the memory pool: 4000 bytes.
+2019-12-04 20:56:58	[INFO]	Start address: 0000023750A72850
+2019-12-04 20:56:58	[INFO]	Number of allocations during application: 13
+2019-12-04 20:56:58	[INFO]	Number of deallocations during application: 13
 
 
 
-2019-12-04 20:47:21	[WARNINIG]	The application tries to deallocate an address that's not allocated. Adress: 0000008B3F4FFAF4
+2019-12-04 20:56:58	[WARNINIG]	The application tries to deallocate an address that's not allocated. Adress: 0000007BDBAFF884
 
 
 
 
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3988
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3988. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3984
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3984. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3988
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D22858,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D22858,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	(000001BD17D22858,4) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22860,3984) 	(000001BD17D22858,4) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D2285C,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 4000
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3988
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,8) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,8) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 4000
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22858,3992) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3988
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3992
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22854,4) 	(000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,8) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D2285C,3988) 	(000001BD17D22850,8) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22858,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 4000
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 16
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3980
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22864,3980) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before allocation: 3980. Memory need to allocate: 16
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22864,3980) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Available after allocation: 3964
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22874,3964) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	(000001BD17D22864,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3964. Memory to deallocate: 16
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22874,3964) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	(000001BD17D22864,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3980
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22864,3980) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3980. Memory to deallocate: 16
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22864,3980) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	(000001BD17D22854,16) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 3996
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22854,3996) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: (000001BD17D22850,4) 	
-2019-12-04 20:47:21	[DEBUG]	Memory available after deallocation: 4000
-2019-12-04 20:47:21	[DEBUG]	Memory Available: (000001BD17D22850,4000) 	
-2019-12-04 20:47:21	[DEBUG]	Memory Allocated: 
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3988
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3988. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3984
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3984. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3988
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 4000
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3988
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 4000
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3992. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3988
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3988. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3992
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3992. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 4000
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 4000. Memory need to allocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3996. Memory need to allocate: 16
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3980
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before allocation: 3980. Memory need to allocate: 16
+
+2019-12-04 20:56:58	[DEBUG]	Memory Available after allocation: 3964
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3964. Memory to deallocate: 16
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3980
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3980. Memory to deallocate: 16
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 3996
+
+2019-12-04 20:56:58	[DEBUG]	Memory available before deallocation: 3996. Memory to deallocate: 4
+
+2019-12-04 20:56:58	[DEBUG]	Memory available after deallocation: 4000
 
 
 
-2019-12-04 20:47:21	[INFO]	<----------------------- END OF APPLICATION ----------------------->
+
+2019-12-04 20:56:58	[INFO]	<----------------------- END OF APPLICATION ----------------------->
