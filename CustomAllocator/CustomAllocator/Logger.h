@@ -42,10 +42,10 @@ public:
 	Logger();
 
 	void updateLog(const std::string& message, LogLevel LogLevel);
-	void updateLogDebug(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated);
+	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated);
 
-	void increaseAllocations();
-	void increaseDeallocations();
+	void updateAllocAndTotalMemory(int size);
+	void updateDeallocAndTotalMemory(int size);
 
 	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
 
