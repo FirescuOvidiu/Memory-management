@@ -88,6 +88,14 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 }
 
 
+void Logger::updateLogDebug(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated)
+{
+	updateLog(message, LogLevel::Log_Level_Debug1);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+}
+
+
 /*
 	Method used to increase the number of allocations that occur during the application
 */
