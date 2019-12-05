@@ -10,11 +10,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	startAddress = mAvailable.front().address;
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
-	log.updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
-	log.totalMemoryAvailable = (int)poolSize;
-	std::stringstream ss;
-	ss << static_cast<void*>(startAddress);
-	log.updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
+	log.updateInfoLog((int)poolSize, startAddress);
 
 	// Initialize data members of the diagnostics
 	diag.initializeDiagnostics((int)poolSize);

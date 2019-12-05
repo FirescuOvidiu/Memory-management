@@ -20,12 +20,12 @@ void Diagnostics::updateMemoryInf(const int memoryUtilization, const int maxCont
 /*
 	Method used to initialize members totalMemory and segmentLength
 */
-void Diagnostics::initializeDiagnostics(const int _totalMemory)
+void Diagnostics::initializeDiagnostics(const int poolSize)
 {
 	this->nrMaxContinuousMemory++;
-	this->avgMaxContinuousMemory += _totalMemory;
-	this->totalMemory = _totalMemory;
-	this->segmentLength = _totalMemory / 16;
+	this->avgMaxContinuousMemory += poolSize;
+	this->totalMemory = poolSize;
+	this->segmentLength = poolSize / 16;
 }
 
 

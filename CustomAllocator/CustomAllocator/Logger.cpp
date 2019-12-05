@@ -15,8 +15,8 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
-	//m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -44,15 +44,11 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 /*
 	Method used to update the log depending on the log level
 */
-void Logger::updateLog(const std::string& message, LogLevel LogLevel)
+void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 {
 	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]))
 	{
 		return;
-	}
-	if ((LogLevel == LogLevel::Log_Level_Debug2) || (LogLevel == LogLevel::Log_Level_Debug3))
-	{
-		LogLevel = LogLevel::Log_Level_Debug1;
 	}
 
 	outputMessages[(int)LogLevel] += Logger::getCurrentTime();
@@ -62,7 +58,6 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 	{
 		
 	case LogLevel::Log_Level_Debug1:
-	case LogLevel::Log_Level_Debug2:
 		outputMessages[(int)LogLevel::Log_Level_Debug1] += "[DEBUG]";
 		break;
 
@@ -92,13 +87,24 @@ void Logger::updateDebugLog(const std::string& message, const std::list<PoolElem
 {
 
 	updateLog(message, LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug1);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug1);
 
 	if (end)
 	{
 		outputMessages[(int)LogLevel::Log_Level_Debug1] += "\n";
 	}
+}
+
+void Logger::updateInfoLog(const int poolSize, char* startAddress)
+{
+
+	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
+	totalMemoryAvailable = (int)poolSize;
+
+	std::stringstream ss;
+	ss << static_cast<void*>(startAddress);
+	updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 }
 
 
