@@ -15,8 +15,8 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
+	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	//m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -46,7 +46,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 */
 void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 {
-	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]))
+	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]) || (message == ""))
 	{
 		return;
 	}
@@ -83,6 +83,9 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 }
 
 
+/*
+	Method used to update the log for the following levels: Log_Level_Debug1, Log_Level_Debug2, Log_Level_Debug3
+*/
 void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end)
 {
 
@@ -96,6 +99,10 @@ void Logger::updateDebugLog(const std::string& message, const std::list<PoolElem
 	}
 }
 
+
+/*
+	Method used to update the log for the following level: Log_Level_Info
+*/
 void Logger::updateInfoLog(const int poolSize, char* startAddress)
 {
 
@@ -207,7 +214,7 @@ void Logger::writingToFile()
 */
 void Logger::writingToConsole()
 {
-	for (int currLevel = 0; currLevel < 5; currLevel++)
+	for (int currLevel = 0; currLevel < outputMessages.size(); currLevel++)
 	{
 		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
