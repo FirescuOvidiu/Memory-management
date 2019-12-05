@@ -88,20 +88,16 @@ void Logger::updateLog(const std::string& message, LogLevel LogLevel)
 }
 
 
-void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated)
+void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end)
 {
-	if (!m_logLevels[(int)LogLevel::Log_Level_Debug2] && !m_logLevels[(int)LogLevel::Log_Level_Debug3])
-	{
-		std::string newMessage = message;
 
-		newMessage += "\n";
-		updateLog(newMessage, LogLevel::Log_Level_Debug1);
-	}
-	else
+	updateLog(message, LogLevel::Log_Level_Debug1);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+
+	if (end)
 	{
-		updateLog(message, LogLevel::Log_Level_Debug1);
-		updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug2);
-		updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug3);
+		outputMessages[(int)LogLevel::Log_Level_Debug1] += "\n";
 	}
 }
 
@@ -152,10 +148,6 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
 			memoryAndSize += ss.str();
 		}
-		if (!m_logLevels[(int)LogLevel::Log_Level_Debug3])
-		{
-			memoryAndSize += "\n";
-		}
 	}
 
 	if (LogLevel == LogLevel::Log_Level_Debug3)
@@ -167,8 +159,6 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
 			memoryAndSize += ss.str();
 		}
-
-		memoryAndSize += "\n";
 	}
 
 	return memoryAndSize;

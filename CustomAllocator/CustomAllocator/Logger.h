@@ -42,7 +42,7 @@ public:
 	Logger();
 
 	void updateLog(const std::string& message, LogLevel LogLevel);
-	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated);
+	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end);
 
 	void increaseAllocations(int size);
 	void increaseDeallocations(int size);
