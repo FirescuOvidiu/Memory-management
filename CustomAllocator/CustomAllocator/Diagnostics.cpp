@@ -6,8 +6,8 @@
 */
 void Diagnostics::initializeDiagnostics(const int poolSize)
 {
-	this->nrMaxContinuousMemory++;
-	this->avgMaxContinuousMemory += poolSize;
+	this->nrMaxContMemory++;
+	this->avgMaxContMemory += poolSize;
 	this->totalMemory = poolSize;
 	this->segmentLength = poolSize / 16;
 }
@@ -16,15 +16,15 @@ void Diagnostics::initializeDiagnostics(const int poolSize)
 /*
 	Method used to update the data members used for storing informations about memory
 */
-void Diagnostics::updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory)
+void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory)
 {
-	nrMemoryUtilization++;
-	nrMaxContinuousMemory++;
-	avgMemoryUtilization += memoryUtilization;
-	avgMaxContinuousMemory += maxContinuousMemory;
-	if (maxMemoryUtilization < memoryUtilization)
+	nrMemoryUtil++;
+	nrMaxContMemory++;
+	avgMemoryUtil += memoryUtil;
+	avgMaxContMemory += maxContMemory;
+	if (maxMemoryUtil < memoryUtil)
 	{
-		maxMemoryUtilization = memoryUtilization;
+		maxMemoryUtil = memoryUtil;
 	}
 }
 
@@ -51,10 +51,10 @@ void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 	if (currNumberSegments > maxNumberSegments)
 	{
 		maxNumberSegments = currNumberSegments;
-		maxMemoryLost = memoryLost;
+		maxMemoryWasted = memoryLost;
 	}
 	avgSegments += currNumberSegments;
-	avgMemoryLost += memoryLost;
+	avgMemoryWasted += memoryLost;
 }
 
 
@@ -74,25 +74,25 @@ Diagnostics::~Diagnostics()
 {
 	diagFile.open("diagnosticsFile.diag", std::ofstream::out);
 
-	double calculatProc = totalMemory / 100;
+	double calculatProcents = totalMemory / 100;
 
-	avgMemoryUtilization /= nrMemoryUtilization;
-	avgMaxContinuousMemory /= nrMaxContinuousMemory;
+	avgMemoryUtil /= nrMemoryUtil;
+	avgMaxContMemory /= nrMaxContMemory;
 	avgSegments /= nrSegments;
-	avgMemoryLost /= nrSegments;
+	avgMemoryWasted /= nrSegments;
 
 	diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
 	diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
-	diagFile << "\tThe maximum memory utilization during the application was: " << maxMemoryUtilization << " bytes out of " << totalMemory << " bytes (" << (double)maxMemoryUtilization / calculatProc << "%).\n";
-	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtilization << " bytes (" << avgMemoryUtilization / calculatProc << "%).\n";
-	diagFile << "\tThe average of the maximum continuous memory during the application was: " << avgMaxContinuousMemory << " bytes (" << avgMaxContinuousMemory / calculatProc << "%).\n\n";
+	diagFile << "\tThe maximum memory utilization during the application was: " << maxMemoryUtil << " bytes out of " << totalMemory << " bytes (" << (double)maxMemoryUtil / calculatProcents << "%).\n";
+	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtil << " bytes (" << avgMemoryUtil / calculatProcents << "%).\n";
+	diagFile << "\tThe average of the maximum continuous memory during the application was: " << avgMaxContMemory << " bytes (" << avgMaxContMemory / calculatProcents << "%).\n\n";
 	diagFile << "\tA segment represent a continuous block of memory which is too small to be used in allocations.\n";
 	diagFile << "\tThe length of the segment for this application was: " << segmentLength << " bytes (6.25%).\n";
 	diagFile << "\tThe number of segments during the application was: " << numberSegments << " segments.\n";
 	diagFile << "\tThe average number of segments during the application was: " << avgSegments << " segments (" << avgSegments * segmentLength << " bytes).\n";
-	diagFile << "\tThe average number of bytes wasted during the application was: " << avgMemoryLost << " bytes.\n";
+	diagFile << "\tThe average number of bytes wasted during the application was: " << avgMemoryWasted << " bytes.\n";
 	diagFile << "\tThe maximum number of segments during the application was: " << maxNumberSegments << " segments ("<<maxNumberSegments*segmentLength<<" bytes).\n";
-	diagFile << "\tThe maximum number of bytes wasted during the application was: " << maxMemoryLost << " bytes.\n\n";
+	diagFile << "\tThe maximum number of bytes wasted during the application was: " << maxMemoryWasted << " bytes.\n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();

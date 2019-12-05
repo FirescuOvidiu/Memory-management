@@ -9,11 +9,11 @@
 class Diagnostics
 {
 public:
-	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), avgMemoryUtilization(0), nrMaxContinuousMemory(0), avgMaxContinuousMemory(0),
+	Diagnostics() : totalMemory(0), maxMemoryUtil(0), nrMemoryUtil(0), avgMemoryUtil(0), nrMaxContMemory(0), avgMaxContMemory(0),
 		segmentLength(0), numberSegments(0), maxNumberSegments(0), nrSegments(0), avgSegments(0), avgMemoryWasted(0), maxMemoryWasted(0) {}
 
 	void initializeDiagnostics(const int _totalMemory);
-	void updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory);
+	void updateMemoryInf(const int memoryUtil, const int maxContMemory);
 	void updateSegmentInf(const std::list<PoolElement>& mAvailable);
 
 	int getTotalMemory() const;
@@ -24,12 +24,12 @@ private:
 	// Evaluates the state of the memory, contains informations about memory 
 	std::ofstream diagFile;
 	int totalMemory;
-	int maxMemoryUtilization;
+	int maxMemoryUtil;			// Max memory utilization
 
-	int nrMemoryUtilization;			// Used to calculate the average memory utilization
-	int nrMaxContinuousMemory;		   // Used to calculate the average of the maximum continuous memory
-	double avgMemoryUtilization;
-	double avgMaxContinuousMemory;
+	int nrMemoryUtil;			// Used to calculate the average memory utilization
+	int nrMaxContMemory;		// Used to calculate the average of the maximum continuous memory
+	double avgMemoryUtil;		// Average memory utilization
+	double avgMaxContMemory;    // Average maximum continuous memory
 	
 
 	// Evaluates the state of the segments, contains informations about segments
