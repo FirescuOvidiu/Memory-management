@@ -10,7 +10,7 @@ class Diagnostics
 {
 public:
 	Diagnostics() : totalMemory(0), maxMemoryUtilization(0), nrMemoryUtilization(0), avgMemoryUtilization(0), nrMaxContinuousMemory(0), avgMaxContinuousMemory(0),
-		segmentLength(0), numberSegments(0), maxNumberSegments(0), nrSegments(0), avgSegments(0) {}
+		segmentLength(0), numberSegments(0), maxNumberSegments(0), nrSegments(0), avgSegments(0), avgMemoryLost(0), maxMemoryLost(0) {}
 
 	void initializeDiagnostics(const int _totalMemory);
 	void updateMemoryInf(const int memoryUtilization, const int maxContinuousMemory);
@@ -36,8 +36,10 @@ private:
 	int segmentLength;			// Represents the lenght of a segment that will be considered too small to be used
 	int numberSegments;			// Represents the total number of segments that will have during the application
 	int maxNumberSegments;		// Represents the maximum number of segments that will have during the application
+	int maxMemoryLost;
 	int nrSegments;				// Used to calculate the average number of segments
 	double avgSegments;			// Represents average number of segments that will have during the program 
+	double avgMemoryLost;
 
 	/*
 		Example: If during a application we have 0 segments, than 1 segment(after allocation), than 2 segments(after allocation), than 0 segments(after deallocation).

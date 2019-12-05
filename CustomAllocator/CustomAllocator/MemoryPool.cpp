@@ -92,6 +92,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
+	diag.updateSegmentInf(mAvailable);
 }
 
 
@@ -106,7 +107,7 @@ bool MemoryPool::checkBadAlloc(size_t aSize)
 		// Updating the log
 		log.updateLog("Bad alloc because we don't have enough memory available", LogLevel::Log_Level_Error);
 		log.~Logger();
-
+		diag.~Diagnostics();
 		return true;
 	}
 
@@ -118,7 +119,7 @@ bool MemoryPool::checkBadAlloc(size_t aSize)
 		log.updateLog("Biggest continuous memory: " + std::to_string(mAvailable.front().size), LogLevel::Log_Level_Error);
 		log.updateLog("Memory needed : " + std::to_string(aSize), LogLevel::Log_Level_Error);
 		log.~Logger();
-
+		diag.~Diagnostics();
 		return true;
 	}
 
