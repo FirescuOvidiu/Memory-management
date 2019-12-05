@@ -90,9 +90,9 @@ Diagnostics::~Diagnostics()
 	diagFile << "\tThe length of the segment for this application was: " << segmentLength << " bytes (6.25%).\n";
 	diagFile << "\tThe number of segments during the application was: " << numberSegments << " segments.\n";
 	diagFile << "\tThe average number of segments during the application was: " << avgSegments << " segments (" << avgSegments * segmentLength << " bytes).\n";
-	diagFile << "\tThe average number of bytes lost during the application was: " << avgMemoryLost << " bytes.\n";
+	diagFile << "\tThe average number of bytes wasted during the application was: " << avgMemoryLost << " bytes.\n";
 	diagFile << "\tThe maximum number of segments during the application was: " << maxNumberSegments << " segments ("<<maxNumberSegments*segmentLength<<" bytes).\n";
-	diagFile << "\tThe maximum number of segments during the application was: " << maxMemoryLost << " bytes.\n\n";
+	diagFile << "\tThe maximum number of bytes wasted during the application was: " << maxMemoryLost << " bytes.\n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();
