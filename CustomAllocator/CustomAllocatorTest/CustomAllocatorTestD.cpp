@@ -5,7 +5,7 @@
 void testD()
 {
 	std::random_device rd;
-	std::uniform_int_distribution<int> dist(1, 90);
+	std::uniform_int_distribution<int> dist(1, 80);
 
 	int** test;
 	test = new int* [10];
