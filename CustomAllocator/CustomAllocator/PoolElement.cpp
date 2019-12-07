@@ -14,7 +14,7 @@ void PoolElement::updateElement(char* _address, size_t _size)
 /*
 	Overload operator "<" to compare the two elements by their address
 */
-bool PoolElement::operator<(const PoolElement& secondPoolEl) const
+bool PoolElement::operator<(const PoolElement& poolElement) const
 {
-	return this->address < secondPoolEl.address;
+	return this->address < poolElement.address;
 }

@@ -13,7 +13,7 @@ public:
 	PoolElement(char* address, size_t size) : address(address), size(size) {}
 	void updateElement(char* _address, size_t _size);
 
-	bool operator<(const PoolElement& secondPoolEl) const;
+	bool operator<(const PoolElement& poolElement) const;
 
 public:
 	char* address;	// Start address of the block of memory (allocated/unallocated)
