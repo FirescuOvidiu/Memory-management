@@ -15,7 +15,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	//m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
 	//m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
@@ -37,7 +37,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 		break;
 	}
 
-	outputMessages.resize(6);
+	outputMessages.resize(4);
 }
 
 
@@ -150,6 +150,7 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 		return "";
 	}
 
+	std::stringstream ss_currTuplet;
 	std::string memoryAndSize;
 
 	if (LogLevel == LogLevel::Log_Level_Debug2)
@@ -157,9 +158,8 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 		memoryAndSize += "Memory Available: ";
 		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 		{
-			std::stringstream ss;
-			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-			memoryAndSize += ss.str();
+			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
+			memoryAndSize += ss_currTuplet.str();
 		}
 	}
 
@@ -168,9 +168,8 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 		memoryAndSize += "Memory Allocated: ";
 		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
 		{
-			std::stringstream ss;
-			ss << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-			memoryAndSize += ss.str();
+			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
+			memoryAndSize += ss_currTuplet.str();
 		}
 	}
 
@@ -197,7 +196,7 @@ std::string Logger::getCurrentTime()
 */
 void Logger::writingToFile()
 {
-	for (int currLevel = 0; currLevel < 5; currLevel++)
+	for (int currLevel = 0; currLevel < outputMessages.size(); currLevel++)
 	{
 		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
