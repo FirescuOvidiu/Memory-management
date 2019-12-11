@@ -16,7 +16,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
     m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
-	//m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -159,7 +159,6 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
 		{
 			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-			memoryAndSize += ss_currTuplet.str();
 		}
 	}
 
@@ -169,10 +168,10 @@ std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailabl
 		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
 		{
 			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-			memoryAndSize += ss_currTuplet.str();
 		}
 	}
 
+	memoryAndSize += ss_currTuplet.str();
 	return memoryAndSize;
 }
 
