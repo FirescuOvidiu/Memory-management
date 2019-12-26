@@ -5,7 +5,7 @@
 /* 
 	Represents a memory pool
 */
-class MemoryPool
+class MemoryPool : public Strategy
 {
 public:
 	MemoryPool(size_t poolSize);
