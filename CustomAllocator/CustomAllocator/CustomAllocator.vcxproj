@@ -185,6 +185,7 @@
   <ItemGroup>
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="Diagnostics.h" />
+    <ClInclude Include="DiagnosticTools.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MemoryManagement.h" />
     <ClInclude Include="MemoryPool.h" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="Diagnostics.cpp" />
+    <ClCompile Include="DiagnosticTools.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />
     <ClCompile Include="MemoryPool.cpp" />

@@ -39,6 +39,9 @@
     <ClInclude Include="MemoryManagement.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
+    <ClInclude Include="DiagnosticTools.h">
+      <Filter>Diagnostic Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="MemoryManagement.cpp">
       <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagnosticTools.cpp">
+      <Filter>Diagnostic Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

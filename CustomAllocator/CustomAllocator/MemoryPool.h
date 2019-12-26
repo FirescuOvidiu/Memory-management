@@ -5,7 +5,7 @@
 /* 
 	Represents a memory pool
 */
-class MemoryPool : public Strategy
+class MemoryPool : public Strategy, public DiagnosticTools
 {
 public:
 	MemoryPool(size_t poolSize);
@@ -28,6 +28,4 @@ private:
 	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
 	std::size_t poolSize;				// The size of the memory pool
-	Diagnostics diag;					// The diagnostics of the memory pool
-	Logger log;							// The log of the memory pool
 };
