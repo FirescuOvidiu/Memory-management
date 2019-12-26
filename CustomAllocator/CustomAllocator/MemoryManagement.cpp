@@ -11,3 +11,8 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 		customAllocator = new Strategy;
 	}
 }
+
+MemoryManagement::~MemoryManagement()
+{
+	delete customAllocator;
+}
