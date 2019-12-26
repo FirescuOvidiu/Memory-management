@@ -1,6 +1,10 @@
 #pragma once
 #include "stdafx.h"
 
+
+/*
+	Represents the base class for all the custom allocators
+*/
 class Strategy
 {
 

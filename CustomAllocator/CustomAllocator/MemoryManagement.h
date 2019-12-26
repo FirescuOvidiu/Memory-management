@@ -1,4 +1,9 @@
 #pragma once
+
+
+/*
+	Used for choosing a custom allocator based on a context
+*/
 class MemoryManagement
 {
 public:
@@ -7,6 +12,4 @@ public:
 
 public:
 	Strategy* customAllocator;
-
 };
-

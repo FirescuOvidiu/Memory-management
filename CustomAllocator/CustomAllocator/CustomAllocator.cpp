@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement CA(1, 4000);
+MemoryManagement memoryManagement(1, 4000);
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
@@ -20,7 +20,7 @@ void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * 
 	// default CRT implementation
 	// return _malloc_dbg(aSize, aBlockUse, aFileName, aLineNumber);
 
-	return CA.customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	return memoryManagement.customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*aFileName*/, int /*aLineNumber*/)
@@ -28,5 +28,5 @@ void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*a
 	// default CRT implementation
 	// _free_dbg(aBlock, aBlockUse);
 
-	CA.customAllocator->freeMemory(aBlock, aBlockUse);
+	memoryManagement.customAllocator->freeMemory(aBlock, aBlockUse);
 }

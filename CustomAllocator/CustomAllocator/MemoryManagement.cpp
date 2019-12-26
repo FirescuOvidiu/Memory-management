@@ -1,5 +1,9 @@
 #include "stdafx.h"
 
+
+/*
+	Constructor used to choose a custom allocator based on a context
+*/
 MemoryManagement::MemoryManagement(const int context, const int poolSize)
 {
 	switch (context)
@@ -13,6 +17,10 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 	}
 }
 
+
+/*
+	Destructor used to destroy the custom allocator after the application ends
+*/
 MemoryManagement::~MemoryManagement()
 {
 	delete customAllocator;
