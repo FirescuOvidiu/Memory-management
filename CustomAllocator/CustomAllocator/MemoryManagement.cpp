@@ -6,6 +6,7 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 	{
 	case 1:
 		customAllocator = new MemoryPool(poolSize);
+		break;
 
 	default:
 		customAllocator = new Strategy;
