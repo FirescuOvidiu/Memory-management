@@ -4,7 +4,7 @@
 	Constructor used to allocate the memory pool and
 	save the first address for deallocation after the T.U. is finished in case of memory leaks
  */
-MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
+WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 {
 	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
 	startAddress = mAvailable.front().address;
@@ -21,7 +21,7 @@ MemoryPool::MemoryPool(size_t poolSize) : poolSize(poolSize)
 	Function used to allocate memory for the user
 	Returns an address to an open block of memory of size aSize in our memory pool
 */
-void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
+void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
 	// Updating the log with informations about memory available before allocation, size of the memory need to be allocated
 	// log.updateDebugLog("Memory available before allocation: " + std::to_string(log.totalMemoryAvailable) + ". Memory need to allocate: " + std::to_string(aSize), mAvailable, mAllocated, false);
@@ -65,7 +65,7 @@ void* __cdecl MemoryPool::allocMemory(size_t aSize, int /*aBlockUse*/, char cons
 	- removes the address from the mAllocated (mAllocated contains the blocks allocated)
 	- inserts the address into the mAvailable (mAvailable contains the blocks unallocated)
 */
-void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
+void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
 	// Searching the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
@@ -99,7 +99,7 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 /*
 	Checking if we can't allocate memory for the user because different reasons
 */
-bool MemoryPool::checkBadAlloc(size_t aSize)
+bool WorstFit::checkBadAlloc(size_t aSize)
 {
 	// If we don't have enough memory available or 
 	// The biggest contiguous memory is smaller than the memory requested
@@ -119,7 +119,7 @@ bool MemoryPool::checkBadAlloc(size_t aSize)
 /*
 	This function is used to check if the user tried to deallocate a block of memory which is not allocated
 */
-bool MemoryPool::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator& it)
+bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator& it)
 {
 	if (it == mAllocated.end())
 	{
@@ -139,7 +139,7 @@ bool MemoryPool::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::i
 /*
 	Function used to check if the program has memory leaks
 */
-void MemoryPool::checkMemoryLeaks()
+void WorstFit::checkMemoryLeaks()
 {
 	if (!mAllocated.empty())
 	{
@@ -155,7 +155,7 @@ void MemoryPool::checkMemoryLeaks()
 	We have the list sorted except one element that has the size bigger than the previous elements
 	we try to find its position so that the list is maintained sorted descending by size
 */
-void MemoryPool::maintainListSorted(std::list<PoolElement>::iterator& element)
+void WorstFit::maintainListSorted(std::list<PoolElement>::iterator& element)
 {
 	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
 	{
@@ -169,7 +169,7 @@ void MemoryPool::maintainListSorted(std::list<PoolElement>::iterator& element)
 /*
 	Insert the address that was removed from the allocated block into the unallocated list (mAvailable)
 */
-void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
+void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 {
 
 	std::list<PoolElement>::iterator newPosition = mAvailable.begin();
@@ -211,7 +211,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 			leftBlock->size = leftBlock->size + rightBlock->size + deletedMemory.size;
 			mAvailable.erase(rightBlock);
 
-			MemoryPool::maintainListSorted(leftBlock);
+			WorstFit::maintainListSorted(leftBlock);
 		}
 		else
 		{
@@ -220,7 +220,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 			{
 				leftBlock->size = leftBlock->size + deletedMemory.size;
 
-				MemoryPool::maintainListSorted(leftBlock);
+				WorstFit::maintainListSorted(leftBlock);
 			}
 
 			// Merge the deleted block with a right block
@@ -229,7 +229,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 				rightBlock->address = deletedMemory.address;
 				rightBlock->size = rightBlock->size + deletedMemory.size;
 
-				MemoryPool::maintainListSorted(rightBlock);
+				WorstFit::maintainListSorted(rightBlock);
 			}
 		}
 	}
@@ -240,7 +240,7 @@ void MemoryPool::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 	Destructor used to deallocated the memory pool, allocated at the start of the program
 	Also we check if the program has memory leaks
 */
-MemoryPool::~MemoryPool()
+WorstFit::~WorstFit()
 {
 	checkMemoryLeaks();
 

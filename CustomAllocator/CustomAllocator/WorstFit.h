@@ -5,15 +5,15 @@
 /* 
 	Represents a memory pool
 */
-class MemoryPool : public Strategy, public DiagnosticTools
+class WorstFit : public Strategy, public DiagnosticTools
 {
 public:
-	MemoryPool(size_t poolSize);
+	WorstFit(size_t poolSize);
 
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* /*aFileName*/, int /*aLineNumber*/) override;
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
 
-	~MemoryPool();
+	~WorstFit();
 
 private:
 	bool checkBadAlloc(size_t aSize);

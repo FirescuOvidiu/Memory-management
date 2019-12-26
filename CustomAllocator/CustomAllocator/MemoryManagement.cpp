@@ -9,7 +9,7 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 	switch (context)
 	{
 	case 1:
-		customAllocator = new MemoryPool(poolSize);
+		customAllocator = new WorstFit(poolSize);
 		break;
 
 	default:

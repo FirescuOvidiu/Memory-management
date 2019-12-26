@@ -21,9 +21,6 @@
     <ClInclude Include="CustomAllocator.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
-    <ClInclude Include="MemoryPool.h">
-      <Filter>Memory Management</Filter>
-    </ClInclude>
     <ClInclude Include="PoolElement.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
@@ -42,15 +39,15 @@
     <ClInclude Include="DiagnosticTools.h">
       <Filter>Diagnostic Tools</Filter>
     </ClInclude>
+    <ClInclude Include="WorstFit.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>win</Filter>
     </ClCompile>
     <ClCompile Include="CustomAllocator.cpp">
-      <Filter>Memory Management</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryPool.cpp">
       <Filter>Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="PoolElement.cpp">
@@ -70,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="DiagnosticTools.cpp">
       <Filter>Diagnostic Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="WorstFit.cpp">
+      <Filter>Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
