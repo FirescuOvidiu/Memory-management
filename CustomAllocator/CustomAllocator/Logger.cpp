@@ -114,6 +114,7 @@ void Logger::updateInfoLog(size_t poolSize, char* startAddress)
 	updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 }
 
+
 /*
 	Method used to update the log for the following level: Log_Level_Error
 */
