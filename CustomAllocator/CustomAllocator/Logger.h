@@ -43,7 +43,8 @@ public:
 
 	void updateLog(const std::string& message, const LogLevel LogLevel);
 	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end);
-	void updateInfoLog(const int poolSize, char* startAddress);
+	void updateInfoLog(const int poolSize, char* startAddresss);
+	void updateErrorLog(size_t memoryToAllocate, size_t biggestContMemory);
 
 	void increaseAllocations(int size);
 	void increaseDeallocations(int size);

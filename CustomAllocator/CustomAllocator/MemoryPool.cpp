@@ -101,23 +101,12 @@ void __cdecl MemoryPool::freeMemory(void* aBlock, int /*aBlockUse*/)
 */
 bool MemoryPool::checkBadAlloc(size_t aSize)
 {
-	// If we don't have enough memory available
-	if (mAvailable.empty())
+	// If we don't have enough memory available or 
+	// The biggest contiguous memory is smaller than the memory requested
+	if (mAvailable.empty()|| (aSize > mAvailable.front().size))
 	{
 		// Updating the log
-		log.updateLog("Bad alloc because we don't have enough memory available", LogLevel::Log_Level_Error);
-		log.~Logger();
-		diag.~Diagnostics();
-		return true;
-	}
-
-	//  If the biggest contiguous memory is smaller than the memory request 
-	if (aSize > mAvailable.front().size)
-	{
-		// Updating the log
-		log.updateLog("Bad alloc because the biggest continuous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
-		log.updateLog("Biggest continuous memory: " + std::to_string(mAvailable.front().size), LogLevel::Log_Level_Error);
-		log.updateLog("Memory needed : " + std::to_string(aSize), LogLevel::Log_Level_Error);
+		log.updateErrorLog(aSize, mAvailable.front().size);
 		log.~Logger();
 		diag.~Diagnostics();
 		return true;
