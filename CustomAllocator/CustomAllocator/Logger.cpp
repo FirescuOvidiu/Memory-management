@@ -103,7 +103,7 @@ void Logger::updateDebugLog(const std::string& message, const std::list<PoolElem
 /*
 	Method used to update the log for the following level: Log_Level_Info
 */
-void Logger::updateInfoLog(const int poolSize, char* startAddress)
+void Logger::updateInfoLog(size_t poolSize, char* startAddress)
 {
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
