@@ -6,6 +6,7 @@
 */
 void* __cdecl Strategy::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
+	// default CRT implementation
 	return _malloc_dbg(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
@@ -15,5 +16,6 @@ void* __cdecl Strategy::allocMemory(size_t aSize, int aBlockUse, char const* aFi
 */
 void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
 {
+	// default CRT implementation
 	_free_dbg(aBlock, aBlockUse);
 }

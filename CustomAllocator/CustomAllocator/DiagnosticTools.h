@@ -4,6 +4,6 @@
 class DiagnosticTools
 {
 protected:
-	Logger log;
-	Diagnostics diag;
+	Logger log;			// Logger of the custom allocator
+	Diagnostics diag;	// Diagnostics of the custom allocator
 };
