@@ -125,7 +125,7 @@ bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::ite
 	if (it == mAllocated.end())
 	{
 		// Update log
-		log.updateErrorLog(aBlock, 0, mAvailable.front().size, "Invalid Address");
+		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 
 		log.~Logger();
 		diag.~Diagnostics();
