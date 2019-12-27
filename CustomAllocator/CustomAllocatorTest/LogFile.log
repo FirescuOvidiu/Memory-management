@@ -1,13 +1,13 @@
-2019-12-26 16:55:27	[INFO]	<----------------------- START OF APPLICATION ----------------------->
+2019-12-27 12:08:15	[INFO]	<----------------------- START OF APPLICATION ----------------------->
 
 
 
 
-2019-12-26 16:55:27	[INFO]	Size of the memory pool: 4000 bytes.
-2019-12-26 16:55:27	[INFO]	Start address: 000002AAC0CD13B0
-2019-12-26 16:55:28	[INFO]	Number of allocations during application: 5507
-2019-12-26 16:55:28	[INFO]	Number of deallocations during application: 5507
+2019-12-27 12:08:15	[INFO]	Size of the memory pool: 4000 bytes.
+2019-12-27 12:08:15	[INFO]	Start address: 000001D022442CD0
+2019-12-27 12:08:15	[INFO]	Number of allocations during application: 5737
+2019-12-27 12:08:15	[INFO]	Number of deallocations during application: 5737
 
 
 
-2019-12-26 16:55:28	[INFO]	<----------------------- END OF APPLICATION ----------------------->
+2019-12-27 12:08:15	[INFO]	<----------------------- END OF APPLICATION ----------------------->

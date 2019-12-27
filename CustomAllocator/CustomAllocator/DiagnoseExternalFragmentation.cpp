@@ -34,7 +34,7 @@ DiagnoseExternalFragmentation::~DiagnoseExternalFragmentation()
 	diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
 	diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
 	diagFile << "\tThe average number of bytes wasted during the application was: " << avgFragmentation * totalMemory / 100 << " bytes.\n";
-	diagFile << "\tFragmentation during the application was:" << avgFragmentation << "%.";
+	diagFile << "\tFragmentation during the application was:" << avgFragmentation << "%.\n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();

@@ -14,6 +14,9 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 
 	// Initialize data members of the diagnostics
 	diag.initializeDiagnostics((int)poolSize);
+
+	// Initialize data members of the external diagnostics
+	diagExternal.initExternalFrag((int)poolSize);
 }
 
 
@@ -51,6 +54,9 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 	diag.updateSegmentInf(mAvailable);
 
+	// Update the external disagnostics
+	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)(mAvailable.front().size));
+
 	return block;
 }
 
@@ -83,6 +89,9 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Updating the diagnostics
 	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)(mAvailable.front().size));
 	diag.updateSegmentInf(mAvailable);
+
+	// Update the external disagnostics
+	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)(mAvailable.front().size));
 }
 
 
@@ -97,8 +106,10 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 	{
 		// Updating the log
 		log.updateErrorLog(aSize, mAvailable.front().size);
+
 		log.~Logger();
 		diag.~Diagnostics();
+		diagExternal.~DiagnoseExternalFragmentation();
 		return true;
 	}
 
