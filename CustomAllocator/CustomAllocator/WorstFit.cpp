@@ -73,7 +73,7 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	if (checkInvalidAddress(aBlock, it))
 	{
-		return;
+		std::abort();
 	}
 
 	log.increaseDeallocations((int)it->size);
