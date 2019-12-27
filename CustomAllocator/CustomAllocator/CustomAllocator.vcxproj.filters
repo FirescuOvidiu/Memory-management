@@ -42,6 +42,12 @@
     <ClInclude Include="WorstFit.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
+    <ClInclude Include="DiagnoseExternalFragmentation.h">
+      <Filter>Diagnostic Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagnoseInternalFragmentation.h">
+      <Filter>Diagnostic Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -70,6 +76,12 @@
     </ClCompile>
     <ClCompile Include="WorstFit.cpp">
       <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagnoseExternalFragmentation.cpp">
+      <Filter>Diagnostic Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="DiagnoseInternalFragmentation.cpp">
+      <Filter>Diagnostic Tools</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
