@@ -14,7 +14,7 @@ void Diagnostics::initializeDiagnostics(const int poolSize)
 
 
 /*
-	Method used to update the data members used for storing informations about memory
+	Method used to update data members used for storing informations about memory
 */
 void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory)
 {
@@ -30,7 +30,7 @@ void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory)
 
 
 /*
-	Method used to update the data members used for storing informations about segments
+	Method used to update data members used for storing informations about segments
 */
 void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 {
@@ -59,7 +59,7 @@ void Diagnostics::updateSegmentInf(const std::list<PoolElement>& mAvailable)
 
 
 /*
-	Returns the total size of the memory pool allocated at the start of the program
+	Returns total size of the memory pool allocated at the start of the program
 */
 int Diagnostics::getTotalMemory() const
 {

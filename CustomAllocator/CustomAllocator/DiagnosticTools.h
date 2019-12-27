@@ -1,6 +1,9 @@
 #pragma once
 
 
+/*
+	Contains all the diagnostic tools used to evaluate the custom allocators
+*/
 class DiagnosticTools
 {
 protected:

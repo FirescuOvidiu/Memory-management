@@ -3,8 +3,8 @@
 
 
 /*
-	Constructor used to open the file log, and initializate the data members
-	When setting the log level debug to a higher log level debug make all the previous debug levels true
+	Constructor used to open the file log and initialize data members
+	When setting Log_Level_Debug to a higher Log_Level_Debug make all the previous debug levels true
 */
 Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
 {

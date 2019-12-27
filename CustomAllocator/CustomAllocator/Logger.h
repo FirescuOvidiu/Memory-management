@@ -14,7 +14,7 @@ typedef enum class Log_Levels
 }LogLevel;
 
 
-// Represents the log type
+// Represents the log types
 typedef enum class Log_Types
 {
 	No_Log = 1,

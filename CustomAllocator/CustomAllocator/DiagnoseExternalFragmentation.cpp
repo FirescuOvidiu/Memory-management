@@ -2,7 +2,7 @@
 
 
 /*
-	Method used to initialize member totalMemory 
+	Method used to initialize data member totalMemory
 */
 void DiagnoseExternalFragmentation::initExternalFrag(const int _totalMemory)
 {
@@ -11,7 +11,7 @@ void DiagnoseExternalFragmentation::initExternalFrag(const int _totalMemory)
 
 
 /*
-	Method used to update the data members used for calculating the fragmentation
+	Method used to update data members used to calculate the fragmentation
 */
 void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvailable, const int biggestContMemory)
 {
@@ -22,13 +22,13 @@ void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvai
 	nrFragmentation++;
 }
 
+
 /*
-	Destructor used to write the informations gathered during the program into the file diagExternalFrag.diag
+	Destructor used to write informations gathered during the application into the file diagExternalFrag.diag
 */
 DiagnoseExternalFragmentation::~DiagnoseExternalFragmentation()
 {
 	avgFragmentation = avgFragmentation / nrFragmentation * 100;
-
 	diagFile.open("diagExternalFrag.diag", std::ofstream::out);
 
 	diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
