@@ -1,12 +1,18 @@
 #include "stdafx.h"
 
 
+/*
+	Method used to initialize member totalMemory 
+*/
 void DiagnoseExternalFragmentation::initExternalFrag(const int _totalMemory)
 {
 	totalMemory = _totalMemory;
 }
 
 
+/*
+	Method used to update the data members used for calculating the fragmentation
+*/
 void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvailable, const int biggestContMemory)
 {
 	double currFragmentation{ 0 };
@@ -16,7 +22,9 @@ void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvai
 	nrFragmentation++;
 }
 
-
+/*
+	Destructor used to write the informations gathered during the program into the file diagExternalFrag.diag
+*/
 DiagnoseExternalFragmentation::~DiagnoseExternalFragmentation()
 {
 	avgFragmentation = avgFragmentation / nrFragmentation * 100;
