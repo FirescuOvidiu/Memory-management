@@ -118,12 +118,23 @@ void Logger::updateInfoLog(size_t poolSize, char* startAddress)
 /*
 	Method used to update the log for the following level: Log_Level_Error
 */
-void Logger::updateErrorLog(size_t memoryToAllocate, size_t biggestContMemory)
+void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation)
 {
-	updateLog("Bad alloc because the biggest continuous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
-	updateLog("Memory available: " + std::to_string(totalMemoryAvailable), LogLevel::Log_Level_Error);
-	updateLog("Memory needed: " + std::to_string(memoryToAllocate), LogLevel::Log_Level_Error);
-	updateLog("Biggest continuous memory: " + std::to_string(biggestContMemory), LogLevel::Log_Level_Error);
+	if (situation == "Bad alloc")
+	{
+		updateLog("Bad alloc because the biggest continuous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
+		updateLog("Memory available: " + std::to_string(totalMemoryAvailable), LogLevel::Log_Level_Error);
+		updateLog("Memory needed: " + std::to_string(memoryToAllocate), LogLevel::Log_Level_Error);
+		updateLog("Biggest continuous memory: " + std::to_string(biggestContMemory), LogLevel::Log_Level_Error);
+	}
+
+	if (situation == "Invalid Address")
+	{
+		std::stringstream ss;
+		ss << block;
+
+		updateLog("The application tries to deallocate an address that's not allocated. Adress: " + ss.str() + "\n", LogLevel::Log_Level_Error);
+	}
 }
 
 

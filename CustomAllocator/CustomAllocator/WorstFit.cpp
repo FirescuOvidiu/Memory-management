@@ -104,8 +104,8 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 	// The biggest contiguous memory is smaller than the memory requested
 	if (mAvailable.empty()|| (aSize > mAvailable.front().size))
 	{
-		// Updating the log
-		log.updateErrorLog(aSize, mAvailable.front().size);
+		// Update log
+		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 
 		log.~Logger();
 		diag.~Diagnostics();
@@ -124,12 +124,12 @@ bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::ite
 {
 	if (it == mAllocated.end())
 	{
-		std::stringstream ss;
-		ss << aBlock;
+		// Update log
+		log.updateErrorLog(aBlock, 0, mAvailable.front().size, "Invalid Address");
 
-		// Updating the log
-		log.updateLog("The application tries to deallocate an address that's not allocated. Adress: " + ss.str() + "\n", LogLevel::Log_Level_Warning);
-
+		log.~Logger();
+		diag.~Diagnostics();
+		diagExternal.~DiagnoseExternalFragmentation();
 		return true;
 	}
 
