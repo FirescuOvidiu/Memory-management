@@ -12,6 +12,9 @@ public:
 	~BuddySystem();
 
 private:
+	bool checkBadAlloc(size_t aSize, int& position);
+
+private:
 	char* startAddress;					// Start address of the memory pool
 	std::vector<std::set<PoolElement>> mAvailable;
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
