@@ -12,6 +12,10 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 		customAllocator = new WorstFit(poolSize);
 		break;
 
+	case 2:
+		customAllocator = new BuddySystem(poolSize);
+		break;
+
 	default:
 		customAllocator = new Strategy;
 	}

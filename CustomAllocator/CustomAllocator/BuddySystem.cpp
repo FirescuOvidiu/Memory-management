@@ -20,6 +20,8 @@ BuddySystem::BuddySystem(size_t poolSize)
 void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
 	log.increaseAllocations((int)aSize);
+
+
 	return nullptr;
 }
 
@@ -32,5 +34,5 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 BuddySystem::~BuddySystem()
 {
-
+	delete[] startAddress;
 }
