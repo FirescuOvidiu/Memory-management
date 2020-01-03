@@ -10,4 +10,10 @@ public:
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
 
 	~BuddySystem();
+
+private:
+	char* startAddress;					// Start address of the memory pool
+	std::vector<std::set<PoolElement>> mAvailable;
+	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
+	std::size_t poolSize;				// The size of the memory pool
 };

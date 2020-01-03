@@ -48,6 +48,9 @@
     <ClInclude Include="DiagnoseInternalFragmentation.h">
       <Filter>Diagnostic Tools</Filter>
     </ClInclude>
+    <ClInclude Include="BuddySystem.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -82,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="DiagnoseInternalFragmentation.cpp">
       <Filter>Diagnostic Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="BuddySystem.cpp">
+      <Filter>Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
