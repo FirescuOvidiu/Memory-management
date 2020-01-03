@@ -13,8 +13,8 @@ BuddySystem::BuddySystem(size_t poolSize)
 	this->poolSize = findPoolSize;
 	startAddress = new char[this->poolSize];
 
-	mAvailable.resize((int)log2(this->poolSize));
-	mAvailable[this->poolSize - 1].insert(PoolElement(startAddress, this->poolSize));
+	mAvailable.resize((int)log2(this->poolSize) + 1);
+	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
 	log.updateInfoLog(this->poolSize, startAddress);
