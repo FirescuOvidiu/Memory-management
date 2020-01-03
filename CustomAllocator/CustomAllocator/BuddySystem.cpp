@@ -47,6 +47,22 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
+	position = std::ceil(log2(aSize));
+	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
+	{
+		position++;
+	}
+
+	if (position == mAvailable.size())
+	{
+		// Update log
+		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
+
+		log.~Logger();
+		diag.~Diagnostics();
+		return true;
+	}
+	
 	return false;
 }
 
