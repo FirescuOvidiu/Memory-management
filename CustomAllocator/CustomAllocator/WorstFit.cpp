@@ -6,8 +6,8 @@
  */
 WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 {
-	mAvailable.push_back(PoolElement(new char[poolSize], poolSize));
-	startAddress = mAvailable.front().address;
+	startAddress = new char[poolSize];
+	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
 	log.updateInfoLog(poolSize, startAddress);
