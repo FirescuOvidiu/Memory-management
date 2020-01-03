@@ -35,16 +35,19 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 		throw exception;
 	}
 
-	auto currBlock = mAvailable[position].begin();
+	PoolElement currBlock((*mAvailable[position].begin()).address, (*mAvailable[position].begin()).size);
 	mAvailable[position].erase(mAvailable[position].begin());
 
 	if (aSize == pow(2, position))
 	{
-		return (*currBlock).address;
+		return currBlock.address;
 	}
 	else
 	{
+		for (;position >= 0; position--)
+		{
 
+		}
 	}
 
 	return nullptr;
