@@ -38,23 +38,23 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	PoolElement currBlock((*mAvailable[position].begin()).address, (*mAvailable[position].begin()).size);
 	mAvailable[position].erase(mAvailable[position].begin());
 
-	if (aSize == pow(2, position))
-	{
-		return currBlock.address;
-	}
-	else
+	if (aSize != pow(2, position))
 	{
 		PoolElement firstNewElement, secondNewElement;
 
-		for (;position >= 0; position--)
+		while (pow(2, position) > aSize)
 		{
 			firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
 			secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
 			
+			position--;
+			mAvailable[position].insert(secondNewElement);
+			currBlock = firstNewElement;
 		}
 	}
 
-	return nullptr;
+	mAllocated.insert(currBlock);
+	return currBlock.address;
 }
 
 
@@ -66,7 +66,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
-	position = std::ceil(log2(aSize));
+	position = (int)std::ceil(log2(aSize));
 	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
 	{
 		position++;
@@ -75,7 +75,7 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 	if (position == mAvailable.size())
 	{
 		// Update log
-		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
+		// log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 
 		log.~Logger();
 		diag.~Diagnostics();
