@@ -81,14 +81,21 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 }
 
 
+/*
+	Checking if we can't allocate memory for the user because different reasons
+*/
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
+	// We parse memory available and search for a block of memory that is 
+	// bigger or equal to aSize
 	position = (int)std::ceil(log2(aSize));
 	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
 	{
 		position++;
 	}
 
+	// If we don't have enough memory available or 
+	// The biggest contiguous memory is smaller than the memory requested
 	if (position == mAvailable.size())
 	{
 		// Find the biggest continuous memory available
