@@ -187,15 +187,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 	int position = 0;
 
 	position = (int)std::ceil(log2(deallocatedMemory.size));
-	buddy.size = deallocatedMemory.size;
-	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2 != 0)
-	{
-		buddy.address = deallocatedMemory.address - deallocatedMemory.size;
-	}
-	else
-	{
-		buddy.address = deallocatedMemory.address + deallocatedMemory.size;
-	}
+	findBuddy(buddy, deallocatedMemory);
 
 	auto it = mAvailable[position].find(buddy);
 	while (it != mAvailable[position].end())
@@ -205,22 +197,29 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 			deallocatedMemory.address = (*it).address;
 		}
 		deallocatedMemory.size *= 2;
+
 		mAvailable[position].erase(it);
 		position++;
 
-		buddy.size = deallocatedMemory.size;
-		if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2 != 0)
-		{
-			buddy.address = deallocatedMemory.address - deallocatedMemory.size;
-		}
-		else
-		{
-			buddy.address = deallocatedMemory.address + deallocatedMemory.size;
-		}
+		findBuddy(buddy, deallocatedMemory);
 		it = mAvailable[position].find(buddy);
 	}
 
 	mAvailable[position].insert(deallocatedMemory);
+}
+
+
+void BuddySystem::findBuddy(PoolElement& buddy, const PoolElement& deallocatedMemory)
+{
+	buddy.size = deallocatedMemory.size;
+	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2 != 0)
+	{
+		buddy.address = deallocatedMemory.address - deallocatedMemory.size;
+	}
+	else
+	{
+		buddy.address = deallocatedMemory.address + deallocatedMemory.size;
+	}
 }
 
 
