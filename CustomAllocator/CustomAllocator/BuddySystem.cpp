@@ -48,22 +48,19 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 		throw exception;
 	}
 
-	PoolElement currBlock((*mAvailable[position].begin()).address, (*mAvailable[position].begin()).size);
+	PoolElement firstNewElement, secondNewElement, currBlock;
+	
+	currBlock = (*mAvailable[position].begin());
 	mAvailable[position].erase(mAvailable[position].begin());
 
-	if (aSize != pow(2, position))
+	while (pow(2, position - 1) >= aSize)
 	{
-		PoolElement firstNewElement, secondNewElement;
+		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
+		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
 
-		while (pow(2, position - 1) >= aSize)
-		{
-			firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
-			secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
-			
-			position--;
-			mAvailable[position].insert(secondNewElement);
-			currBlock = firstNewElement;
-		}
+		position--;
+		mAvailable[position].insert(secondNewElement);
+		currBlock = firstNewElement;
 	}
 
 	mAllocated.insert(currBlock);
