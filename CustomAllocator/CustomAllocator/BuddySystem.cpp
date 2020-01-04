@@ -101,7 +101,7 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 			position--;
 		}
 		// Update log
-		 log.updateErrorLog(0, aSize, pow(2,position), "Bad alloc");
+		 log.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
 
 		log.~Logger();
 		diag.~Diagnostics();
@@ -185,7 +185,6 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 {
 	PoolElement buddy;
 	int position = 0;
-	bool find = true;
 
 	position = (int)std::ceil(log2(deallocatedMemory.size));
 	buddy.size = deallocatedMemory.size;
