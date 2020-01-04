@@ -7,8 +7,8 @@
  */
 BuddySystem::BuddySystem(size_t poolSize)
 {
-	// In case the poolSize is not a power of 2 we find the closest number to the poolSize
-	// that is a power of 2
+	// We find the first number that is a power of 2 and is smaller or equal with the aSize
+	// If poolSize is a power of 2 then findPoolSize will be equal with poolSize
 	int findPoolSize = 1;
 	while (findPoolSize <= poolSize)
 	{
@@ -39,7 +39,9 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 {
 	log.increaseAllocations((int)aSize);
 
+	// Position will be used to find an open block of memory 
 	int position = 0;
+	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize, position))
 	{
 		std::bad_alloc exception;
