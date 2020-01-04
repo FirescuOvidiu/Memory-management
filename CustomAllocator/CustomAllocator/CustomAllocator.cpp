@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManagement(2, 4000);
+MemoryManagement memoryManagement(2, 4096);
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
