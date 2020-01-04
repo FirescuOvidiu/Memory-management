@@ -91,8 +91,14 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 
 	if (position == mAvailable.size())
 	{
+		// Find the biggest continuous memory available
+		position = (int)std::ceil(log2(aSize));
+		while ((position >= 0) && (mAvailable[position].empty()))
+		{
+			position--;
+		}
 		// Update log
-		// log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
+		 log.updateErrorLog(0, aSize, pow(2,position), "Bad alloc");
 
 		log.~Logger();
 		diag.~Diagnostics();
