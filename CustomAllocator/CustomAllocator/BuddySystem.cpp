@@ -50,17 +50,23 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	PoolElement firstNewElement, secondNewElement, currBlock;
 	
+	// Get the open block from the memory available
 	currBlock = (*mAvailable[position].begin());
 	mAvailable[position].erase(mAvailable[position].begin());
 
+	// While half of current open block is bigger than aSize then 
+	// we split the current open block in two blocks
 	while (pow(2, position - 1) >= aSize)
 	{
+		// Split the current open block in two blocks
 		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
 		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
 
+		// The current block becomes the first half of the open blocke
+		currBlock = firstNewElement;
+		// The second half is inserted into the vector used to keep track of the available memory
 		position--;
 		mAvailable[position].insert(secondNewElement);
-		currBlock = firstNewElement;
 	}
 
 	mAllocated.insert(currBlock);
