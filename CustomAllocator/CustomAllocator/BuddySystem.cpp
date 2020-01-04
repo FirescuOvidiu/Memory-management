@@ -201,10 +201,24 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 	auto it = mAvailable[position].find(buddy);
 	while (it != mAvailable[position].end())
 	{
-		if ((*it).address < buddy.address)
+		if ((*it).address < deallocatedMemory.address)
 		{
-			buddy.address 
+			deallocatedMemory.address = (*it).address;
 		}
+		deallocatedMemory.size *= 2;
+		mAvailable[position].erase(it);
+		position++;
+
+		buddy.size = deallocatedMemory.size;
+		if ((int)log2(deallocatedMemory.address - startAddress) % 2 != 0)
+		{
+			buddy.address = deallocatedMemory.address - deallocatedMemory.size;
+		}
+		else
+		{
+			buddy.address = deallocatedMemory.address + deallocatedMemory.size;
+		}
+		it = mAvailable[position].find(buddy);
 	}
 }
 
