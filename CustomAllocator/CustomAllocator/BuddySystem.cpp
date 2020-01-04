@@ -86,6 +86,11 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 
 	log.increaseDeallocations((int)it->size);
+
+	PoolElement deallocatedMemory = *it;
+
+	// Remove the adress from the allocated block
+	mAllocated.erase(it);
 }
 
 
@@ -124,6 +129,9 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 }
 
 
+/*
+	This function is used to check if the user tried to deallocate a block of memory which is not allocated
+*/
 bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it)
 {
 	if (it == mAllocated.end())
@@ -142,12 +150,26 @@ bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>:
 
 
 /*
+	Function used to check if the program has memory leaks
+*/
+void BuddySystem::checkMemoryLeaks()
+{
+	if (!mAllocated.empty())
+	{
+		// Updating the log if the program has memory leaks
+		log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
+		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
+	}
+}
+
+
+/*
 	Destructor used to deallocated the memory pool, allocated at the start of the program
 	Also we check if the program has memory leaks
 */
 BuddySystem::~BuddySystem()
 {
-	//Need to check for memory leaks
+	checkMemoryLeaks();
 
 	delete[] startAddress;
 }

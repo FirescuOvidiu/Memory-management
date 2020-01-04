@@ -14,6 +14,7 @@ public:
 private:
 	bool checkBadAlloc(size_t aSize, int& position);
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
+	void checkMemoryLeaks();
 
 private:
 	char* startAddress;					// Start address of the memory pool
