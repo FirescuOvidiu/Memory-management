@@ -17,6 +17,8 @@ private:
 	void checkMemoryLeaks();
 
 	PoolElement getAvailableBlock(size_t aSize, int position);
+	void insertIntoAvailableMemory(const PoolElement& deletedMemory);
+
 private:
 	char* startAddress;					// Start address of the memory pool
 	std::vector<std::set<PoolElement>> mAvailable;

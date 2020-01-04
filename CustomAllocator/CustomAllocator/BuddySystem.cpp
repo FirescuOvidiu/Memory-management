@@ -71,6 +71,9 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Remove the adress from the allocated block
 	mAllocated.erase(it);
+
+	// Insert the address into the available memory (mAvailable)
+	insertIntoAvailableMemory(deallocatedMemory);
 }
 
 
@@ -142,6 +145,7 @@ void BuddySystem::checkMemoryLeaks()
 	}
 }
 
+
 /*
 	Method used to find the open block that is of size:
 	first number that is a power of 2 and is bigger or equal with the aSize
@@ -171,6 +175,15 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 	}
 
 	return currBlock;
+}
+
+
+/*
+	Insert the address that was removed from the allocated block into the available memory (mAvailable)
+*/
+void BuddySystem::insertIntoAvailableMemory(const PoolElement& deletedMemory)
+{
+
 }
 
 
