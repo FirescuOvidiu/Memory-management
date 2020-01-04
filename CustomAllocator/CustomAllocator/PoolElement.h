@@ -10,7 +10,7 @@
 class PoolElement
 {
 public:
-	PoolElement(char* address, size_t size) : address(address), size(size) {}
+	PoolElement(char* address = {}, size_t size = {}) : address(address), size(size) {}
 	void updateElement(char* _address, size_t _size);
 
 	bool operator<(const PoolElement& poolElement) const;

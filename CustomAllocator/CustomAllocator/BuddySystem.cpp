@@ -44,9 +44,13 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	}
 	else
 	{
+		PoolElement firstNewElement, secondNewElement;
+
 		for (;position >= 0; position--)
 		{
-
+			firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
+			secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
+			
 		}
 	}
 
