@@ -16,6 +16,7 @@ private:
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
 	void checkMemoryLeaks();
 
+	PoolElement getAvailableBlock(size_t aSize, int position);
 private:
 	char* startAddress;					// Start address of the memory pool
 	std::vector<std::set<PoolElement>> mAvailable;

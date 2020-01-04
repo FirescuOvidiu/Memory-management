@@ -48,30 +48,10 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 		throw exception;
 	}
 
-	PoolElement firstNewElement, secondNewElement, currBlock;
+	PoolElement availableBlock = getAvailableBlock(aSize,position);
 
-	// Get the open block from the memory available
-	currBlock = (*mAvailable[position].begin());
-	mAvailable[position].erase(mAvailable[position].begin());
-
-	// While half of current open block is bigger than aSize then 
-	// we split the current open block in two blocks
-	position--;
-	while (pow(2, position) >= aSize)
-	{
-		// Split the current open block in two blocks
-		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
-		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
-
-		// The current block becomes the first half of the open blocke
-		currBlock = firstNewElement;
-		// The second half is inserted into the vector used to keep track of the available memory
-		mAvailable[position].insert(secondNewElement);
-		position--;
-	}
-
-	mAllocated.insert(currBlock);
-	return currBlock.address;
+	mAllocated.insert(availableBlock);
+	return availableBlock.address;
 }
 
 
@@ -160,6 +140,37 @@ void BuddySystem::checkMemoryLeaks()
 		log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
 		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
 	}
+}
+
+/*
+	Method used to find the open block that is of size:
+	first number that is a power of 2 and is bigger or equal with the aSize
+*/
+PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
+{
+	PoolElement firstNewElement, secondNewElement, currBlock;
+
+	// Get the open block from the memory available
+	currBlock = (*mAvailable[position].begin());
+	mAvailable[position].erase(mAvailable[position].begin());
+
+	// While half of current open block is bigger than aSize then 
+	// we split the current open block into two blocks
+	position--;
+	while (pow(2, position) >= aSize)
+	{
+		// Split the current open block into two blocks
+		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
+		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
+
+		// The current block becomes the first half of the open block
+		currBlock = firstNewElement;
+		// The second half is inserted into the vector used to keep track of the available memory
+		mAvailable[position].insert(secondNewElement);
+		position--;
+	}
+
+	return currBlock;
 }
 
 
