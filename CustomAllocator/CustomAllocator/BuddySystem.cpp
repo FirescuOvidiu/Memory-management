@@ -77,7 +77,15 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
+	// Searching the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
+
+	if (checkInvalidAddress(aBlock, it))
+	{
+		std::abort();
+	}
+
+	log.increaseDeallocations((int)it->size);
 }
 
 
@@ -118,6 +126,17 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 
 bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it)
 {
+	if (it == mAllocated.end())
+	{
+		// Update log
+		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
+
+		log.~Logger();
+		diag.~Diagnostics();
+		diagExternal.~DiagnoseExternalFragmentation();
+		return true;
+	}
+
 	return false;
 }
 
