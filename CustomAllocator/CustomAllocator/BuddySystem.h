@@ -17,7 +17,7 @@ private:
 	void checkMemoryLeaks();
 
 	PoolElement getAvailableBlock(size_t aSize, int position);
-	void insertIntoAvailableMemory(const PoolElement& deletedMemory);
+	void insertIntoAvailableMemory(PoolElement& deallocatedMemory);
 
 private:
 	char* startAddress;					// Start address of the memory pool

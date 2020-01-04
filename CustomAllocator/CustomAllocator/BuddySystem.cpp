@@ -19,7 +19,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 	this->poolSize = findPoolSize;
 	startAddress = new char[this->poolSize];
 
-	mAvailable.resize((int)log2(this->poolSize) + 1);
+	mAvailable.resize((int)(log2(this->poolSize) + 1));
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
@@ -181,9 +181,31 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 /*
 	Insert the address that was removed from the allocated block into the available memory (mAvailable)
 */
-void BuddySystem::insertIntoAvailableMemory(const PoolElement& deletedMemory)
+void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 {
+	PoolElement buddy;
+	int position = 0;
+	bool find = true;
 
+	position = (int)std::ceil(log2(deallocatedMemory.size));
+	buddy.size = deallocatedMemory.size;
+	if ((int)log2(deallocatedMemory.address - startAddress) % 2 != 0)
+	{
+		buddy.address = deallocatedMemory.address - deallocatedMemory.size;
+	}
+	else
+	{
+		buddy.address = deallocatedMemory.address + deallocatedMemory.size;
+	}
+
+	auto it = mAvailable[position].find(buddy);
+	while (it != mAvailable[position].end())
+	{
+		if ((*it).address < buddy.address)
+		{
+			buddy.address 
+		}
+	}
 }
 
 
