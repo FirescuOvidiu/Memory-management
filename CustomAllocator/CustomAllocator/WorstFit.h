@@ -2,8 +2,8 @@
 #include "stdafx.h"
 
 
-/* 
-	Represents a memory pool
+/*
+	Class used to implement a custom allocator that uses the worst fit algorithm to allocate/deallocate memory
 */
 class WorstFit : public Strategy, public DiagnosticTools
 {
