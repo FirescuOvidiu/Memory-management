@@ -4,7 +4,7 @@
 BuddySystem::BuddySystem(size_t poolSize)
 {
 	int findPoolSize = 1;
-	while (findPoolSize < poolSize)
+	while (findPoolSize <= poolSize)
 	{
 		findPoolSize *= 2;
 	}
