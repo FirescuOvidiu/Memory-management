@@ -187,11 +187,14 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 	int position = 0;
 
 	position = (int)std::ceil(log2(deallocatedMemory.size));
+	// Finding the adjacent block of the deallocated block 
 	findAdjacentBlock(adjacentBlock, deallocatedMemory);
 
+	// Checking if the adjacent block is unallocated and available
 	auto it = mAvailable[position].find(adjacentBlock);
 	while (it != mAvailable[position].end())
 	{
+		// Merging deallocated block of memory with the adjacent block
 		if ((*it).address < deallocatedMemory.address)
 		{
 			deallocatedMemory.address = (*it).address;
@@ -201,6 +204,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 		mAvailable[position].erase(it);
 		position++;
 
+		// Finding the new adjacent block of the two merged blocks
 		findAdjacentBlock(adjacentBlock, deallocatedMemory);
 		it = mAvailable[position].find(adjacentBlock);
 	}
