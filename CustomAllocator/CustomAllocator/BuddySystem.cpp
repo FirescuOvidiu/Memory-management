@@ -116,6 +116,12 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 }
 
 
+bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it)
+{
+	return false;
+}
+
+
 /*
 	Destructor used to deallocated the memory pool, allocated at the start of the program
 	Also we check if the program has memory leaks
