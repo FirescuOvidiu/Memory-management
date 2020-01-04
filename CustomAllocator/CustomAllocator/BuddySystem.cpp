@@ -183,13 +183,13 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 */
 void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 {
-	PoolElement buddy;
+	PoolElement adjacentBlock;
 	int position = 0;
 
 	position = (int)std::ceil(log2(deallocatedMemory.size));
-	findBuddy(buddy, deallocatedMemory);
+	findAdjacentBlock(adjacentBlock, deallocatedMemory);
 
-	auto it = mAvailable[position].find(buddy);
+	auto it = mAvailable[position].find(adjacentBlock);
 	while (it != mAvailable[position].end())
 	{
 		if ((*it).address < deallocatedMemory.address)
@@ -201,15 +201,18 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 		mAvailable[position].erase(it);
 		position++;
 
-		findBuddy(buddy, deallocatedMemory);
-		it = mAvailable[position].find(buddy);
+		findAdjacentBlock(adjacentBlock, deallocatedMemory);
+		it = mAvailable[position].find(adjacentBlock);
 	}
 
 	mAvailable[position].insert(deallocatedMemory);
 }
 
 
-void BuddySystem::findBuddy(PoolElement& buddy, const PoolElement& deallocatedMemory)
+/*
+	Method used to find the adjacent block of the deallocated block of memory
+*/
+void BuddySystem::findAdjacentBlock(PoolElement& buddy, const PoolElement& deallocatedMemory) const
 {
 	buddy.size = deallocatedMemory.size;
 	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2 != 0)

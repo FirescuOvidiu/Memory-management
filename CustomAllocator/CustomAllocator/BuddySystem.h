@@ -18,7 +18,7 @@ private:
 
 	PoolElement getAvailableBlock(size_t aSize, int position);
 	void insertIntoAvailableMemory(PoolElement& deallocatedMemory);
-	void findBuddy(PoolElement& buddy, const PoolElement& deallocatedMemory);
+	void findAdjacentBlock(PoolElement& buddy, const PoolElement& deallocatedMemory) const;
 
 private:
 	char* startAddress;					// Start address of the memory pool
