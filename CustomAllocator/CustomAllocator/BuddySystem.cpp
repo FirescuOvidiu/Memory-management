@@ -42,7 +42,7 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	{
 		PoolElement firstNewElement, secondNewElement;
 
-		while (pow(2, position) > aSize)
+		while (pow(2, position - 1) >= aSize)
 		{
 			firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
 			secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
