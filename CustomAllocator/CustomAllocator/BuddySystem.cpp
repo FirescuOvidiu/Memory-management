@@ -1,8 +1,14 @@
 #include "stdafx.h"
 
 
+/*
+	Constructor used to allocate the memory pool, initialize data members and
+	save the first address for deallocation after the T.U. is finished in case of memory leaks
+ */
 BuddySystem::BuddySystem(size_t poolSize)
 {
+	// In case the poolSize is not a power of 2 we find the closest number to the poolSize
+	// that is a power of 2
 	int findPoolSize = 1;
 	while (findPoolSize <= poolSize)
 	{
@@ -24,6 +30,11 @@ BuddySystem::BuddySystem(size_t poolSize)
 }
 
 
+/*
+	Function used to allocate memory for the user
+	Returns an address to an open block of memory of size:
+	first number that is a power of 2 and is bigger or equal with the aSize
+*/
 void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
 	log.increaseAllocations((int)aSize);
@@ -86,7 +97,13 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 }
 
 
+/*
+	Destructor used to deallocated the memory pool, allocated at the start of the program
+	Also we check if the program has memory leaks
+*/
 BuddySystem::~BuddySystem()
 {
+	//Need to check for memory leaks
+
 	delete[] startAddress;
 }

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 /*
-	Constructor used to allocate the memory pool and
+	Constructor used to allocate the memory pool, initialize data members and
 	save the first address for deallocation after the T.U. is finished in case of memory leaks
  */
 WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
