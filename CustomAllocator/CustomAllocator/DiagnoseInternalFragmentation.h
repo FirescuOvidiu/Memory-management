@@ -11,6 +11,9 @@ class DiagnoseInternalFragmentation
 public:
 	DiagnoseInternalFragmentation() : totalMemory(0), totalMemoryAllocated(0), totalMemoryRequested(0), maxMemoryAllocated(0), maxMemoryRequested(0) {}
 
+	void initInternalFrag(const int _totalMemory);
+	void updateInternalFrag(const int memoryAllocated, const int memoryRequested);
+
 	~DiagnoseInternalFragmentation();
 
 private:
