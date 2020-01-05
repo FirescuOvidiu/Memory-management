@@ -15,7 +15,11 @@ void DiagnoseInternalFragmentation::initInternalFrag(const int _totalMemory)
 */
 void DiagnoseInternalFragmentation::updateInternalFrag(const int memoryAllocated, const int memoryRequested)
 {
+	totalMemoryAllocated += memoryAllocated;
+	totalMemoryRequested += memoryRequested;
 
+	if (totalMemoryAllocated > maxMemoryAllocated) maxMemoryAllocated = totalMemoryAllocated;
+	if (totalMemoryRequested > maxMemoryRequested) maxMemoryRequested = totalMemoryRequested;
 }
 
 
