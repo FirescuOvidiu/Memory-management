@@ -27,6 +27,9 @@ BuddySystem::BuddySystem(size_t poolSize)
 
 	// Initialize data members of the diagnostics
 	diag.initializeDiagnostics((int)this->poolSize);
+
+	// Initialize data members of the internal diagnostics
+	diagInternal.initInternalFrag((int)poolSize);
 }
 
 
@@ -49,6 +52,9 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	}
 
 	PoolElement availableBlock = getAvailableBlock(aSize,position);
+
+	// Update the internal disagnostics
+	diagInternal.updateInternalFrag(availableBlock.size, (int)aSize);
 
 	mAllocated.insert(availableBlock);
 	return availableBlock.address;
@@ -74,6 +80,10 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Insert the address into the available memory (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
+
+	// Update the internal disagnostics
+	// Need to save also the memory requested when allocating a block
+	diagInternal.updateInternalFrag(-deallocatedMemory.size, 0);
 }
 
 
@@ -105,6 +115,7 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 
 		log.~Logger();
 		diag.~Diagnostics();
+		diagInternal.~DiagnoseInternalFragmentation();
 		return true;
 	}
 
@@ -124,7 +135,7 @@ bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>:
 
 		log.~Logger();
 		diag.~Diagnostics();
-		diagExternal.~DiagnoseExternalFragmentation();
+		diagInternal.~DiagnoseInternalFragmentation();
 		return true;
 	}
 
