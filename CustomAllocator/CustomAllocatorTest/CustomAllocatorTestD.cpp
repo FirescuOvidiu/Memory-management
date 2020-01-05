@@ -5,17 +5,19 @@
 void testD()
 {
 	std::random_device rd;
-	std::uniform_int_distribution<int> dist(1, 80);
+	std::uniform_int_distribution<int> dist(64, 64);
 
-	int** test;
-	test = new int* [10];
-	for (int i = 0; i < 10; i++)
+	char** test;
+	int size = 16;
+
+	test = new char* [size];
+	for (int i = 0; i < size; i++)
 	{
-		test[i] = new int[dist(rd)];
+		test[i] = new char[dist(rd)];
 	}
 
-	std::uniform_int_distribution<int> dist2(1, 10);
-	std::uniform_int_distribution<int> distPos(0, 9);
+	std::uniform_int_distribution<int> dist2(1, size);
+	std::uniform_int_distribution<int> distPos(0, size - 1);
 	int nr = 0;
 	int pos = 0;
 	int iterations = 1000;
@@ -28,11 +30,11 @@ void testD()
 		{
 			pos = distPos(rd);
 			delete test[pos];
-			test[pos] = new int[dist(rd)];
+			test[pos] = new char[dist(rd)];
 		}
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < size; i++)
 	{
 		delete[] test[i];
 	}
