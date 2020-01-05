@@ -51,11 +51,12 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 		throw exception;
 	}
 
-	PoolElement availableBlock = getAvailableBlock(aSize,position);
+	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
 	// Update the internal disagnostics
 	diagInternal.updateInternalFrag(availableBlock.size, (int)aSize);
 
+	availableBlock.size = (int)aSize;
 	mAllocated.insert(availableBlock);
 	return availableBlock.address;
 }
@@ -73,17 +74,18 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	log.increaseDeallocations((int)it->size);
 
+	// Update the internal disagnostics
+	// Need to save also the memory requested when allocating a block
+	diagInternal.updateInternalFrag(-(int)(*it).size, -(int)std::ceil(log2((*it).size)));
+
 	PoolElement deallocatedMemory = *it;
 
 	// Remove the adress from the allocated block
 	mAllocated.erase(it);
 
 	// Insert the address into the available memory (mAvailable)
+	deallocatedMemory.size = (int)std::ceil(log2(deallocatedMemory.size));
 	insertIntoAvailableMemory(deallocatedMemory);
-
-	// Update the internal disagnostics
-	// Need to save also the memory requested when allocating a block
-	diagInternal.updateInternalFrag(-deallocatedMemory.size, 0);
 }
 
 
