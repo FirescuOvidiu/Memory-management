@@ -52,6 +52,7 @@ public:
 	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
 
 	~Logger();
+
 private:
 	static std::string getCurrentTime();
 	void writingToFile();
