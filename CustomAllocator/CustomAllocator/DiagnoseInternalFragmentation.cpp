@@ -28,5 +28,17 @@ void DiagnoseInternalFragmentation::updateInternalFrag(const int memoryAllocated
 */
 DiagnoseInternalFragmentation::~DiagnoseInternalFragmentation()
 {
+	if (totalMemory > 0)
+	{
+		diagFile.open("diagInternalFrag.diag", std::ofstream::out);
 
+		diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
+		diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
+		diagFile << "\tThe average number of bytes wasted during the application was: " << maxMemoryAllocated - maxMemoryRequested << " bytes.\n";
+		diagFile << "\tFragmentation during the application was:" << ((double)(maxMemoryAllocated - maxMemoryRequested) * 100) / totalMemory << "%.\n\n";
+		diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+
+
+		diagFile.close();
+	}
 }
