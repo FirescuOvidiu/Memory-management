@@ -9,12 +9,13 @@
 class DiagnoseInternalFragmentation
 {
 public:
-	DiagnoseInternalFragmentation() : totalMemoryAllocated(0), totalMemoryRequested(0), maxMemoryAllocated(0), maxMemoryRequested(0) {}
+	DiagnoseInternalFragmentation() : totalMemory(0), totalMemoryAllocated(0), totalMemoryRequested(0), maxMemoryAllocated(0), maxMemoryRequested(0) {}
 
 	~DiagnoseInternalFragmentation();
 
 private:
 	std::ofstream diagFile;
+	int totalMemory;
 	int totalMemoryAllocated, totalMemoryRequested;
 	int maxMemoryAllocated, maxMemoryRequested;
 };
