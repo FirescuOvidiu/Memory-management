@@ -66,7 +66,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
 	// Searching the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
-	int allocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
+	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 
 	if (checkInvalidAddress(aBlock, it))
 	{
@@ -76,8 +76,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	log.increaseDeallocations((int)(*it).size);
 
 	// Update the internal disagnostics
-	// Need to save also the memory requested when allocating a block
-	diagInternal.updateInternalFrag(-allocatedSize, -(int)(*it).size);
+	diagInternal.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
 
 	PoolElement deallocatedMemory = *it;
 
@@ -85,7 +84,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	mAllocated.erase(it);
 
 	// Insert the address into the available memory (mAvailable)
-	deallocatedMemory.size = allocatedSize;
+	deallocatedMemory.size = deallocatedSize;
 	insertIntoAvailableMemory(deallocatedMemory);
 }
 

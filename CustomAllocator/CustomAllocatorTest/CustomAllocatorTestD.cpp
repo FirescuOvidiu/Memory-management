@@ -5,7 +5,7 @@
 void testD()
 {
 	std::random_device rd;
-	std::uniform_int_distribution<int> dist(64, 64);
+	std::uniform_int_distribution<int> dist(32, 64);
 
 	char** test;
 	int size = 16;
