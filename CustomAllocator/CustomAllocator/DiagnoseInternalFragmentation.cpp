@@ -1,12 +1,27 @@
 #include "stdafx.h"
 
 
-DiagnoseInternalFragmentation::DiagnoseInternalFragmentation()
+/*
+	Method used to initialize data member totalMemory
+*/
+void DiagnoseInternalFragmentation::initInternalFrag(const int _totalMemory)
+{
+	totalMemory = _totalMemory;
+}
+
+
+/*
+	Method used to update data members used to calculate the fragmentation
+*/
+void DiagnoseInternalFragmentation::updateInternalFrag(const int memoryAllocated, const int memoryRequested)
 {
 
 }
 
 
+/*
+	Destructor used to write informations gathered during the application into the file diagInternalFrag.diag
+*/
 DiagnoseInternalFragmentation::~DiagnoseInternalFragmentation()
 {
 
