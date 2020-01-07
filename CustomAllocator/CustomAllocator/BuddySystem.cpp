@@ -7,16 +7,9 @@
  */
 BuddySystem::BuddySystem(size_t poolSize)
 {
-	// We find the first number that is a power of 2 and is smaller or equal with the aSize
-	// If poolSize is a power of 2 then findPoolSize will be equal with poolSize
-	int findPoolSize = 1;
-	while (findPoolSize <= poolSize)
-	{
-		findPoolSize *= 2;
-	}
-	findPoolSize /= 2;
-
-	this->poolSize = findPoolSize;
+	// this->poolSize will be the first number that is a power of 2 and is smaller or equal with poolSize
+	// If poolSize is a power of 2 then this->poolSize will be equal with poolSize
+	this->poolSize = (int)pow(2, (int)floor(log2((int)poolSize)));
 	startAddress = new char[this->poolSize];
 
 	mAvailable.resize((int)(log2(this->poolSize) + 1));
@@ -34,7 +27,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 
 
 /*
-	Function used to allocate memory for the user
+	Function used to allocate memory
 	Returns an address to an open block of memory of size:
 	first number that is a power of 2 and is bigger or equal with the aSize
 */
@@ -43,8 +36,16 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	log.increaseAllocations((int)aSize);
 
 	// Position will be used to find an open block of memory 
-	int position = 0;
-	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
+	int position = (int)std::ceil(log2(aSize));
+
+	// We parse memory available and search for a block of memory that is 
+	// bigger or equal to aSize
+	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
+	{
+		position++;
+	}
+
+	// Throwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize, position))
 	{
 		std::bad_alloc exception;
@@ -94,14 +95,6 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 */
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
-	// We parse memory available and search for a block of memory that is 
-	// bigger or equal to aSize
-	position = (int)std::ceil(log2(aSize));
-	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
-	{
-		position++;
-	}
-
 	// If we don't have enough memory available or 
 	// The biggest contiguous memory is smaller than the memory requested
 	if (position == mAvailable.size())
@@ -113,7 +106,7 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 			position--;
 		}
 		// Update log
-		 log.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
+		log.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
 
 		log.~Logger();
 		diag.~Diagnostics();
@@ -168,7 +161,7 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 	PoolElement firstNewElement, secondNewElement, currBlock;
 
 	// Get the open block from the memory available
-	currBlock = (*mAvailable[position].begin());
+	currBlock = *mAvailable[position].begin();
 	mAvailable[position].erase(mAvailable[position].begin());
 
 	// While half of current open block is bigger than aSize then 
