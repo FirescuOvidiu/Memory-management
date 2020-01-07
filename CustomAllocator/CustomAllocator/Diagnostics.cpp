@@ -16,7 +16,7 @@ void Diagnostics::initializeDiagnostics(const int poolSize)
 /*
 	Method used to update data members used for storing informations about memory
 */
-void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory)
+void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory, const int memoryToAllocate)
 {
 	nrMemoryUtil++;
 	nrMaxContMemory++;
@@ -25,6 +25,11 @@ void Diagnostics::updateMemoryInf(const int memoryUtil, const int maxContMemory)
 	if (maxMemoryUtil < memoryUtil)
 	{
 		maxMemoryUtil = memoryUtil;
+	}
+
+	if (memoryToAllocate != -1)
+	{
+		countBlocksAllocated[(int)(memoryToAllocate * 100 / totalMemory)]++;
 	}
 }
 
