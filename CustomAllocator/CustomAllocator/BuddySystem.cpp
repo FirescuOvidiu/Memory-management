@@ -57,7 +57,7 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	// Update the internal disagnostics
 	diagInternal.updateInternalFrag((int)availableBlock.size, (int)aSize);
 
-	availableBlock.size = (int)aSize;
+	availableBlock.size = aSize;
 	mAllocated.insert(availableBlock);
 	return availableBlock.address;
 }
@@ -97,10 +97,14 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
 	// If we don't have enough memory available or 
 	// The biggest contiguous memory is smaller than the memory requested
-	if (position == mAvailable.size())
+	if (position >= mAvailable.size())
 	{
 		// Find the biggest continuous memory available
 		position = (int)std::ceil(log2(aSize));
+		if (position >= mAvailable.size())
+		{
+			position = (int)mAvailable.size() - 1;
+		}
 		while ((position >= 0) && (mAvailable[position].empty()))
 		{
 			position--;
@@ -224,7 +228,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 void BuddySystem::findAdjacentBlock(PoolElement& buddy, const PoolElement& deallocatedMemory) const
 {
 	buddy.size = deallocatedMemory.size;
-	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2 != 0)
+	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2)
 	{
 		buddy.address = deallocatedMemory.address - deallocatedMemory.size;
 	}
