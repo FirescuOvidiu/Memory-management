@@ -26,8 +26,6 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 */
 void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	log.increaseAllocOrDealloc((int)aSize);
-
 	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
 	{
@@ -57,6 +55,9 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 	// Update the external disagnostics
 	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
 
+	// Update log
+	log.increaseAllocOrDealloc(-(int)aSize);
+
 	return block;
 }
 
@@ -76,8 +77,6 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 		std::abort();
 	}
 
-	log.increaseAllocOrDealloc(-(int)it->size);
-
 	PoolElement deallocatedMemory = *it;
 
 	// Remove the adress from the allocated block
@@ -92,6 +91,9 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Update the external disagnostics
 	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
+
+	// Update log
+	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
