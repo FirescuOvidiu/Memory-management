@@ -67,7 +67,6 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
 	// Searching the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
-	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 
 	if (checkInvalidAddress(aBlock, it))
 	{
@@ -76,6 +75,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	log.increaseDeallocations((int)(*it).size);
 
+	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 	// Update the internal disagnostics
 	diagInternal.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
 
@@ -173,7 +173,7 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
 		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
 
-		// The current block becomes the first half of the open block
+		// The first half becomes the current block
 		currBlock = firstNewElement;
 		// The second half is inserted into the vector used to keep track of the available memory
 		mAvailable[position].insert(secondNewElement);
@@ -190,14 +190,14 @@ PoolElement BuddySystem::getAvailableBlock(size_t aSize, int position)
 void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 {
 	PoolElement adjacentBlock;
-	int position = 0;
+	int position = (int)std::ceil(log2(deallocatedMemory.size));
 
-	position = (int)std::ceil(log2(deallocatedMemory.size));
 	// Finding the adjacent block of the deallocated block 
 	findAdjacentBlock(adjacentBlock, deallocatedMemory);
 
 	// Checking if the adjacent block is unallocated and available
 	auto it = mAvailable[position].find(adjacentBlock);
+
 	while (it != mAvailable[position].end())
 	{
 		// Merging deallocated block of memory with the adjacent block
@@ -207,8 +207,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 		}
 		deallocatedMemory.size *= 2;
 
-		mAvailable[position].erase(it);
-		position++;
+		mAvailable[position++].erase(it);
 
 		// Finding the new adjacent block of the two merged blocks
 		findAdjacentBlock(adjacentBlock, deallocatedMemory);
