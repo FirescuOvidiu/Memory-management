@@ -46,8 +46,7 @@ public:
 	void updateInfoLog(size_t poolSize, char* startAddresss);
 	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
 
-	void increaseAllocations(int size);
-	void increaseDeallocations(int size);
+	void increaseAllocOrDealloc(const int size);
 
 	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
 

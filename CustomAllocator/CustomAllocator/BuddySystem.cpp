@@ -33,7 +33,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 */
 void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	log.increaseAllocations((int)aSize);
+	log.increaseAllocOrDealloc((int)aSize);
 
 	// Position will be used to find an open block of memory 
 	int position = (int)std::ceil(log2(aSize));
@@ -73,7 +73,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 		std::abort();
 	}
 
-	log.increaseDeallocations((int)(*it).size);
+	log.increaseAllocOrDealloc(-(int)(*it).size);
 
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 	// Update the internal disagnostics

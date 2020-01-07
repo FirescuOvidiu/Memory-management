@@ -26,7 +26,7 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 */
 void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	log.increaseAllocations((int)aSize);
+	log.increaseAllocOrDealloc((int)aSize);
 
 	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
@@ -76,7 +76,7 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 		std::abort();
 	}
 
-	log.increaseDeallocations((int)it->size);
+	log.increaseAllocOrDealloc(-(int)it->size);
 
 	PoolElement deallocatedMemory = *it;
 

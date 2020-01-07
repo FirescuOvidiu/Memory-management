@@ -139,23 +139,19 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 
 
 /*
-	Method used to increase the number of allocations that occur during the application
+	Method used to increase the number of allocations or deallocations that occur during the application
 	and to update the total memory available
 */
-void Logger::increaseAllocations(int size)
+void Logger::increaseAllocOrDealloc(const int size)
 {
-	numberAllocations++;
-	totalMemoryAvailable -= size;
-}
-
-
-/*
-	Method used to increase the number of deallocations that occur during the application
-	and to update the total memory available
-*/
-void Logger::increaseDeallocations(int size)
-{
-	numberDeallocations++;
+	if (size > 0)
+	{
+		numberAllocations++;
+	}
+	else
+	{
+		numberDeallocations++;
+	}
 	totalMemoryAvailable += size;
 }
 
