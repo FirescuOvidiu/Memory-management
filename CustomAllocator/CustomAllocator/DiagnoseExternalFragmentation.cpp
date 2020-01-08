@@ -15,10 +15,7 @@ void DiagnoseExternalFragmentation::initExternalFrag(const int _totalMemory)
 */
 void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvailable, const int biggestContMemory)
 {
-	double currFragmentation{ 0 };
-
-	currFragmentation = 1 - (double)biggestContMemory / totalMemoryAvailable;
-	avgFragmentation += currFragmentation;
+	avgFragmentation += 1 - (double)biggestContMemory / totalMemoryAvailable;
 	nrFragmentation++;
 }
 
