@@ -2,9 +2,6 @@
 #include "stdafx.h"
 
 
-// Will modify this class later on
-
-
 /*
 	This class is used to evaluate the fragmentation state of the custom allocators
 	It also provides informations about the memory utilization

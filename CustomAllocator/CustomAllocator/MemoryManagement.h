@@ -8,8 +8,12 @@ class MemoryManagement
 {
 public:
 	MemoryManagement(const int context, const int poolSize);
+
+	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
+	void __cdecl freeMemory(void* aBlock, int aBlockUse);
+
 	~MemoryManagement();
 
-public:
+private:
 	Strategy* customAllocator;
 };
