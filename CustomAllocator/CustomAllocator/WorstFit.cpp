@@ -49,7 +49,7 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 	}
 
 	// Updating the diagnostics
-	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)mAvailable.front().size, (int)aSize);
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)aSize);
 
 	// Update the external disagnostics
 	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
@@ -85,7 +85,7 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	insertIntoAvailableMemory(deallocatedMemory);
 
 	// Updating the diagnostics
-	diag.updateMemoryInf(diag.getTotalMemory() - log.totalMemoryAvailable, (int)mAvailable.front().size, -1);
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, -1);
 
 	// Update the external disagnostics
 	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
