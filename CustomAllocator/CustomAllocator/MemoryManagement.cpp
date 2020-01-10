@@ -27,7 +27,7 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize)
 */
 void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
