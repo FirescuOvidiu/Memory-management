@@ -52,7 +52,10 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
-	// Update the internal disagnostics
+	// Updating the diagnostics
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)aSize);
+
+	// Update the internal diagnostics
 	diagInternal.updateInternalFrag((int)availableBlock.size, (int)aSize);
 
 	// Update log
@@ -75,6 +78,10 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
+
+	// Updating the diagnostics
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, -1);
+
 	// Update the internal disagnostics
 	diagInternal.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
 
