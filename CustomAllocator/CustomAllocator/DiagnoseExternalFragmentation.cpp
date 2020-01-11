@@ -6,6 +6,7 @@
 */
 void DiagnoseExternalFragmentation::initExternalFrag(const int _totalMemory)
 {
+	diagFile.open("diagExternalFrag.diag", std::ofstream::out);
 	totalMemory = _totalMemory;
 }
 
@@ -25,10 +26,9 @@ void DiagnoseExternalFragmentation::updateExternalFrag(const int totalMemoryAvai
 */
 DiagnoseExternalFragmentation::~DiagnoseExternalFragmentation()
 {
-	if (totalMemory > 0)
+	if (diagFile.is_open())
 	{
 		avgFragmentation = avgFragmentation / nrFragmentation * 100;
-		diagFile.open("diagExternalFrag.diag", std::ofstream::out);
 
 		diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
 		diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
