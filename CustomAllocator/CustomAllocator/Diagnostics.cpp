@@ -4,7 +4,7 @@
 /*
 	Method used to initialize members totalMemory
 */
-void Diagnostics::initializeDiagnostics(const int poolSize)
+void Diagnostics::initDiagnostics(const int poolSize)
 {
 	this->totalMemory = poolSize;
 }

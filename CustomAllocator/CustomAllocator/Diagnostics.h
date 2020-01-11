@@ -11,7 +11,7 @@ class Diagnostics
 public:
 	Diagnostics() : totalMemory(0), maxMemoryUtil(0), nrMemoryUtil(0), avgMemoryUtil(0), countBlocksAllocated(100) {}
 
-	void initializeDiagnostics(const int _totalMemory);
+	void initDiagnostics(const int _totalMemory);
 	void updateDiagnostics(const int memoryUtil, const int memoryToAllocate);
 
 	int getTotalMemory() const;
