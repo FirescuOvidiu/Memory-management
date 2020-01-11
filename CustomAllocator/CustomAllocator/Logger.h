@@ -41,7 +41,6 @@ class Logger
 public:
 	Logger();
 
-	void updateLog(const std::string& message, const LogLevel LogLevel);
 	void updateInfoLog(size_t poolSize, char* startAddresss);
 	void updateWarningLog(size_t poolSize);
 	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
@@ -49,14 +48,14 @@ public:
 
 	void increaseAllocOrDealloc(const int size);
 
-	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
-
 	~Logger();
 
 private:
-	static std::string getCurrentTime();
+	void updateLog(const std::string& message, const LogLevel LogLevel);
 	void writingToFile();
 	void writingToConsole();
+	std::string tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel);
+	static std::string getCurrentTime();
 
 public:
 	int totalMemoryAvailable;
