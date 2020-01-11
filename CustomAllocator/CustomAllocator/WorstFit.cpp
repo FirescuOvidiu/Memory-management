@@ -20,7 +20,7 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 */
 void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	// Thorwing exception in case we can't allocate the memory because different reasons (see function)
+	// Throw exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
 	{
 		std::bad_alloc exception;
@@ -42,7 +42,7 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		currBlock++;
 	}
 
-	// Updating the diagnostics
+	// Update the diagnostics
 	diagTools.updateDiagnostics((int)aSize);
 
 	// Update the external disagnostics
@@ -62,7 +62,7 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 */
 void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
-	// Searching the address that the user wants to delete in mAllocated
+	// Search the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
 	if (checkInvalidAddress(aBlock, it))
@@ -78,7 +78,7 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Insert the address into the unallocated list (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
 
-	// Updating the diagnostics
+	// Update the diagnostics
 	diagTools.updateDiagnostics(-1);
 
 	// Update the external disagnostics
@@ -90,7 +90,7 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 
 /*
-	Checking if we can't allocate memory for the user because different reasons
+	Check if we can't allocate memory for the user because different reasons
 */
 bool WorstFit::checkBadAlloc(size_t aSize)
 {

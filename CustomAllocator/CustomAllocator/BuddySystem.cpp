@@ -63,7 +63,7 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
-	// Searching the address that the user wants to delete in mAllocated
+	// Search the address that the user wants to delete in mAllocated
 	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
 	if (checkInvalidAddress(aBlock, it))
@@ -94,7 +94,7 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 
 /*
-	Checking if we can't allocate memory for the user because different reasons
+	Check if we can't allocate memory for the user because different reasons
 */
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
@@ -192,15 +192,15 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 	PoolElement adjacentBlock;
 	int position = (int)std::ceil(log2(deallocatedMemory.size));
 
-	// Finding the adjacent block of the deallocated block 
+	// Find the adjacent block of the deallocated block 
 	findAdjacentBlock(adjacentBlock, deallocatedMemory);
 
-	// Checking if the adjacent block is unallocated and available
+	// Check if the adjacent block is unallocated and available
 	auto it = mAvailable[position].find(adjacentBlock);
 
 	while (it != mAvailable[position].end())
 	{
-		// Merging deallocated block of memory with the adjacent block
+		// Merge deallocated block of memory with the adjacent block
 		if ((*it).address < deallocatedMemory.address)
 		{
 			deallocatedMemory.address = (*it).address;
@@ -209,7 +209,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 
 		mAvailable[position++].erase(it);
 
-		// Finding the new adjacent block of the two merged blocks
+		// Find the new adjacent block of the two merged blocks
 		findAdjacentBlock(adjacentBlock, deallocatedMemory);
 		it = mAvailable[position].find(adjacentBlock);
 	}
