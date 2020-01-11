@@ -38,7 +38,6 @@ DiagnoseInternalFragmentation::~DiagnoseInternalFragmentation()
 		diagFile << "\tFragmentation during the application was:" << ((double)(maxMemoryAllocated - maxMemoryRequested) * 100) / totalMemory << "%.\n\n";
 		diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
-
 		diagFile.close();
 	}
 }

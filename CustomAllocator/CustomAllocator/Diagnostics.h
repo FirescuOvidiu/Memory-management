@@ -19,10 +19,10 @@ public:
 	~Diagnostics();
 
 private:
-	std::vector<int> countBlocksAllocated;
 	// Evaluates the state of the memory, contains informations about memory 
 	std::ofstream diagFile;
 	int totalMemory;
+	std::vector<int> countBlocksAllocated;
 
 	int nrMemoryUtil;			// Used to calculate average memory utilization
 	double avgMemoryUtil;		// Average memory utilization
