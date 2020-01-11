@@ -41,7 +41,7 @@ class Logger
 public:
 	Logger();
 
-	void updateInfoLog(size_t poolSize, char* startAddresss);
+	void initLogger(size_t poolSize, char* startAddresss);
 	void updateWarningLog(size_t poolSize);
 	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
 	void updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end);

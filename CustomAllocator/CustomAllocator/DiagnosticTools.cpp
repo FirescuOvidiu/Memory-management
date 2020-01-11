@@ -1,13 +1,24 @@
 #include "stdafx.h"
 
 
-//----------------------------------------------------------------------------
-void DiagnosticTools::updateInfoLog(size_t poolSize, char* startAddresss)
+void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress)
 {
-	log.updateInfoLog(poolSize, startAddresss);
+	// Initialize data members of logger
+	log.initLogger(poolSize, startAddress);
+
+	// Initialize data members of the diagnostics
+	diag.initDiagnostics((int)poolSize);
+
+	// Initialize data members of the external diagnostics
+	diagExternal.initExternalFrag((int)poolSize);
+
+	// Initialize data members of the external diagnostics
+	diagInternal.initInternalFrag((int)poolSize);
+
 }
 
 
+//----------------------------------------------------------------------------
 void DiagnosticTools::updateWarningLog(size_t poolSize)
 {
 	log.updateWarningLog(poolSize);
@@ -32,12 +43,6 @@ void DiagnosticTools::increaseAllocOrDealloc(const int size)
 
 
 //----------------------------------------------------------------------------
-void DiagnosticTools::initExternalFrag(const int totalMemory)
-{
-	diagExternal.initExternalFrag(totalMemory);
-}
-
-
 void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 {
 	diagExternal.updateExternalFrag(log.totalMemoryAvailable, biggestContMemory);
@@ -45,12 +50,6 @@ void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 
 
 //----------------------------------------------------------------------------
-void DiagnosticTools::initInternalFrag(const int totalMemory)
-{
-	diagInternal.initInternalFrag(totalMemory);
-}
-
-
 void DiagnosticTools::updateInternalFrag(const int memoryAllocated, const int memoryRequested)
 {
 	diagInternal.updateInternalFrag(memoryAllocated, memoryRequested);
@@ -58,12 +57,6 @@ void DiagnosticTools::updateInternalFrag(const int memoryAllocated, const int me
 
 
 //----------------------------------------------------------------------------
-void DiagnosticTools::initDiagnostics(const int totalMemory)
-{
-	diag.initDiagnostics(totalMemory);
-}
-
-
 void DiagnosticTools::updateDiagnostics(const int memoryToAllocate)
 {
 	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, memoryToAllocate);

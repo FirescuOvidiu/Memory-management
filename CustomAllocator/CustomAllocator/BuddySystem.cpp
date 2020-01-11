@@ -15,14 +15,8 @@ BuddySystem::BuddySystem(size_t poolSize)
 	mAvailable.resize((int)(log2(this->poolSize) + 1));
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
-	// Updating the log with informations about size of the memory pool, total memory available, start address
-	diagTools.updateInfoLog(this->poolSize, startAddress);
-
-	// Initialize data members of the diagnostics
-	diagTools.initDiagnostics((int)this->poolSize);
-
-	// Initialize data members of the internal diagnostics
-	diagTools.initInternalFrag((int)poolSize);
+	// Initialize data members of DiagnosticTools
+	diagTools.initDiagnosticTools(poolSize, startAddress);
 }
 
 

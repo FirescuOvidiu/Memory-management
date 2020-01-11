@@ -84,9 +84,9 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 
 
 /*
-	Method used to update the log for the following level: Log_Level_Info
+	Method used to initialize the log
 */
-void Logger::updateInfoLog(size_t poolSize, char* startAddress)
+void Logger::initLogger(size_t poolSize, char* startAddress)
 {
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
