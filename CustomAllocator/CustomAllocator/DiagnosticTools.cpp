@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 
+//----------------------------------------------------------------------------
 void DiagnosticTools::updateInfoLog(size_t poolSize, char* startAddresss)
 {
 	log.updateInfoLog(poolSize, startAddresss);
@@ -30,6 +31,7 @@ void DiagnosticTools::increaseAllocOrDealloc(const int size)
 }
 
 
+//----------------------------------------------------------------------------
 void DiagnosticTools::initExternalFrag(const int totalMemory)
 {
 	diagExternal.initExternalFrag(totalMemory);
@@ -42,6 +44,7 @@ void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 }
 
 
+//----------------------------------------------------------------------------
 void DiagnosticTools::initInternalFrag(const int totalMemory)
 {
 	diagInternal.initInternalFrag(totalMemory);
@@ -54,6 +57,7 @@ void DiagnosticTools::updateInternalFrag(const int memoryAllocated, const int me
 }
 
 
+//----------------------------------------------------------------------------
 void DiagnosticTools::initDiagnostics(const int totalMemory)
 {
 	diag.initDiagnostics(totalMemory);
