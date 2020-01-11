@@ -9,14 +9,8 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 	startAddress = new char[poolSize];
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
-	// Updating the log with informations about size of the memory pool, total memory available, start address
-	diagTools.updateInfoLog(poolSize, startAddress);
-
-	// Initialize data members of the diagnostics
-	diagTools.initDiagnostics((int)poolSize);
-
-	// Initialize data members of the external diagnostics
-	diagTools.initExternalFrag((int)poolSize);
+	// Initialize data members of DiagnosticTools
+	diagTools.initDiagnosticTools(poolSize, startAddress);
 }
 
 
