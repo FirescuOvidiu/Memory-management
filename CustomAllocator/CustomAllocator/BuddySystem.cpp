@@ -16,13 +16,13 @@ BuddySystem::BuddySystem(size_t poolSize)
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
-	log.updateInfoLog(this->poolSize, startAddress);
+	diagTools.log.updateInfoLog(this->poolSize, startAddress);
 
 	// Initialize data members of the diagnostics
-	diag.initializeDiagnostics((int)this->poolSize);
+	diagTools.diag.initializeDiagnostics((int)this->poolSize);
 
 	// Initialize data members of the internal diagnostics
-	diagInternal.initInternalFrag((int)poolSize);
+	diagTools.diagInternal.initInternalFrag((int)poolSize);
 }
 
 
@@ -53,13 +53,13 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)aSize);
+	diagTools.diag.updateDiagnostics(diagTools.diag.getTotalMemory() - diagTools.log.totalMemoryAvailable, (int)aSize);
 
 	// Update the internal diagnostics
-	diagInternal.updateInternalFrag((int)availableBlock.size, (int)aSize);
+	diagTools.diagInternal.updateInternalFrag((int)availableBlock.size, (int)aSize);
 
 	// Update log
-	log.increaseAllocOrDealloc(-(int)aSize);
+	diagTools.log.increaseAllocOrDealloc(-(int)aSize);
 
 	availableBlock.size = aSize;
 	mAllocated.insert(availableBlock);
@@ -80,13 +80,13 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, -1);
+	diagTools.diag.updateDiagnostics(diagTools.diag.getTotalMemory() - diagTools.log.totalMemoryAvailable, -1);
 
 	// Update the internal disagnostics
-	diagInternal.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
+	diagTools.diagInternal.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
 
 	// Update log
-	log.increaseAllocOrDealloc((int)(*it).size);
+	diagTools.log.increaseAllocOrDealloc((int)(*it).size);
 
 	PoolElement deallocatedMemory = *it;
 
@@ -119,11 +119,11 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 			position--;
 		}
 		// Update log
-		log.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
+		diagTools.log.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
 
-		log.~Logger();
-		diag.~Diagnostics();
-		diagInternal.~DiagnoseInternalFragmentation();
+		diagTools.log.~Logger();
+		diagTools.diag.~Diagnostics();
+		diagTools.diagInternal.~DiagnoseInternalFragmentation();
 		return true;
 	}
 
@@ -139,11 +139,11 @@ bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>:
 	if (it == mAllocated.end())
 	{
 		// Update log
-		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
+		diagTools.log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 
-		log.~Logger();
-		diag.~Diagnostics();
-		diagInternal.~DiagnoseInternalFragmentation();
+		diagTools.log.~Logger();
+		diagTools.diag.~Diagnostics();
+		diagTools.diagInternal.~DiagnoseInternalFragmentation();
 		return true;
 	}
 
@@ -159,8 +159,8 @@ void BuddySystem::checkMemoryLeaks()
 	if (!mAllocated.empty())
 	{
 		// Updating the log if the program has memory leaks
-		log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
-		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
+		diagTools.log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
+		diagTools.log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - diagTools.log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
 	}
 }
 

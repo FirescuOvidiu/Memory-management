@@ -10,13 +10,13 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
 	// Updating the log with informations about size of the memory pool, total memory available, start address
-	log.updateInfoLog(poolSize, startAddress);
+	diagTools.log.updateInfoLog(poolSize, startAddress);
 
 	// Initialize data members of the diagnostics
-	diag.initializeDiagnostics((int)poolSize);
+	diagTools.diag.initializeDiagnostics((int)poolSize);
 
 	// Initialize data members of the external diagnostics
-	diagExternal.initExternalFrag((int)poolSize);
+	diagTools.diagExternal.initExternalFrag((int)poolSize);
 }
 
 
@@ -49,13 +49,13 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 	}
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, (int)aSize);
+	diagTools.diag.updateDiagnostics(diagTools.diag.getTotalMemory() - diagTools.log.totalMemoryAvailable, (int)aSize);
 
 	// Update the external disagnostics
-	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
+	diagTools.diagExternal.updateExternalFrag(diagTools.log.totalMemoryAvailable, (int)mAvailable.front().size);
 
 	// Update log
-	log.increaseAllocOrDealloc(-(int)aSize);
+	diagTools.log.increaseAllocOrDealloc(-(int)aSize);
 
 	return block;
 }
@@ -85,13 +85,13 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	insertIntoAvailableMemory(deallocatedMemory);
 
 	// Updating the diagnostics
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, -1);
+	diagTools.diag.updateDiagnostics(diagTools.diag.getTotalMemory() - diagTools.log.totalMemoryAvailable, -1);
 
 	// Update the external disagnostics
-	diagExternal.updateExternalFrag(log.totalMemoryAvailable, (int)mAvailable.front().size);
+	diagTools.diagExternal.updateExternalFrag(diagTools.log.totalMemoryAvailable, (int)mAvailable.front().size);
 
 	// Update log
-	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
+	diagTools.log.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
@@ -105,11 +105,11 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 	if (mAvailable.empty()|| (aSize > mAvailable.front().size))
 	{
 		// Update log
-		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
+		diagTools.log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 
-		log.~Logger();
-		diag.~Diagnostics();
-		diagExternal.~DiagnoseExternalFragmentation();
+		diagTools.log.~Logger();
+		diagTools.diag.~Diagnostics();
+		diagTools.diagExternal.~DiagnoseExternalFragmentation();
 		return true;
 	}
 
@@ -125,11 +125,11 @@ bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::ite
 	if (it == mAllocated.end())
 	{
 		// Update log
-		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
+		diagTools.log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 
-		log.~Logger();
-		diag.~Diagnostics();
-		diagExternal.~DiagnoseExternalFragmentation();
+		diagTools.log.~Logger();
+		diagTools.diag.~Diagnostics();
+		diagTools.diagExternal.~DiagnoseExternalFragmentation();
 		return true;
 	}
 
@@ -145,8 +145,8 @@ void WorstFit::checkMemoryLeaks()
 	if (!mAllocated.empty())
 	{
 		// Updating the log if the program has memory leaks
-		log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
-		log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
+		diagTools.log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
+		diagTools.log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - diagTools.log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
 	}
 }
 

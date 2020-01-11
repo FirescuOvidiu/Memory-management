@@ -52,7 +52,7 @@ Diagnostics::~Diagnostics()
 	diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n";
 	diagFile << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
 	diagFile << "\tThe maximum memory utilization during the application was: " << maxMemoryUtil << " bytes out of " << totalMemory << " bytes (" << (double)maxMemoryUtil / calculatProcents << "%).\n";
-	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtil << " bytes (" << avgMemoryUtil / calculatProcents << "%).\n";
+	diagFile << "\tThe average memory utilization (allocated) during the application was: " << avgMemoryUtil << " bytes (" << avgMemoryUtil / calculatProcents << "%).\n\n";
 	diagFile << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 
 	diagFile.close();

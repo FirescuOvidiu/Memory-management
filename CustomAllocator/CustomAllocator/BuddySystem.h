@@ -4,7 +4,7 @@
 /*
 	Class used to implement a custom allocator that uses the buddy system algorithm to allocate/deallocate memory
 */
-class BuddySystem : public Strategy, public DiagnosticTools
+class BuddySystem : public Strategy
 {
 public:
 	BuddySystem(size_t poolSize);
@@ -28,4 +28,6 @@ private:
 	std::vector<std::set<PoolElement>> mAvailable; 	// Stores the memory unallocated sorted ascending by the size
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
 	std::size_t poolSize;				// The size of the memory pool
+
+	DiagnosticTools diagTools;
 };
