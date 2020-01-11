@@ -116,6 +116,16 @@ void Logger::updateInfoLog(size_t poolSize, char* startAddress)
 
 
 /*
+	Method used to update the log for the following level: Log_level_warning
+*/
+void Logger::updateWarningLog(size_t poolSize)
+{
+	updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
+	updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
+}
+
+
+/*
 	Method used to update the log for the following level: Log_Level_Error
 */
 void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation)
