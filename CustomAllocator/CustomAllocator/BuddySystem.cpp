@@ -158,9 +158,8 @@ void BuddySystem::checkMemoryLeaks()
 {
 	if (!mAllocated.empty())
 	{
-		// Updating the log if the program has memory leaks
-		diagTools.log.updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
-		diagTools.log.updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string((int)poolSize - diagTools.log.totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
+		// Update log
+		diagTools.log.updateWarningLog(poolSize);
 	}
 }
 

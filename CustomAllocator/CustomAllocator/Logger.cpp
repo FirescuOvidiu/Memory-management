@@ -84,23 +84,6 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 
 
 /*
-	Method used to update the log for the following levels: Log_Level_Debug1, Log_Level_Debug2, Log_Level_Debug3
-*/
-void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end)
-{
-
-	updateLog(message, LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug1);
-
-	if (end)
-	{
-		outputMessages[(int)LogLevel::Log_Level_Debug1] += "\n";
-	}
-}
-
-
-/*
 	Method used to update the log for the following level: Log_Level_Info
 */
 void Logger::updateInfoLog(size_t poolSize, char* startAddress)
@@ -144,6 +127,23 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 		ss << block;
 
 		updateLog("The application tries to deallocate an address that's not allocated. Adress: " + ss.str() + "\n", LogLevel::Log_Level_Error);
+	}
+}
+
+
+/*
+	Method used to update the log for the following levels: Log_Level_Debug1, Log_Level_Debug2, Log_Level_Debug3
+*/
+void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end)
+{
+
+	updateLog(message, LogLevel::Log_Level_Debug1);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug1);
+	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug1);
+
+	if (end)
+	{
+		outputMessages[(int)LogLevel::Log_Level_Debug1] += "\n";
 	}
 }
 
