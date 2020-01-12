@@ -42,14 +42,14 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		currBlock++;
 	}
 
+	// Update log
+	diagTools.increaseAllocOrDealloc(-(int)aSize);
+
 	// Update the diagnostics
 	diagTools.updateDiagnostics((int)aSize);
 
 	// Update the external disagnostics
 	diagTools.updateExternalFrag((int)mAvailable.front().size);
-
-	// Update log
-	diagTools.increaseAllocOrDealloc(-(int)aSize);
 
 	return block;
 }
@@ -78,14 +78,14 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Insert the address into the unallocated list (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
 
+	// Update log
+	diagTools.increaseAllocOrDealloc((int)deallocatedMemory.size);
+
 	// Update the diagnostics
 	diagTools.updateDiagnostics(-1);
 
 	// Update the external disagnostics
 	diagTools.updateExternalFrag((int)mAvailable.front().size);
-
-	// Update log
-	diagTools.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
