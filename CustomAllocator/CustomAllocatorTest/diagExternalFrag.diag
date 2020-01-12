@@ -4,7 +4,7 @@
 
 	Total memory allocated by the memory pool: 4096 bytes.
 
-	The average number of bytes wasted during the application was: 3032.88 bytes.
-	Fragmentation during the application was:74.04%.
+	The average number of bytes wasted during the application was: -nan(ind) bytes.
+	Fragmentation during the application was:-nan(ind)%.
 
 	<----------------------- END OF APPLICATION ----------------------->
