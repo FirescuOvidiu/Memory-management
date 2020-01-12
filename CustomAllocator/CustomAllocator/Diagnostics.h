@@ -3,8 +3,8 @@
 
 
 /*
-	This class is used to evaluate the fragmentation state of the custom allocators
-	It also provides informations about the memory utilization
+	This class is used to evaluate the state of the memory,
+	provides informations about the memory utilization, blocks allocated
 */
 class Diagnostics
 {

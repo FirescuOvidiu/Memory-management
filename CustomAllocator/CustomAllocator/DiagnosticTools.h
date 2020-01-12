@@ -7,6 +7,7 @@
 class DiagnosticTools
 {
 public:
+	// Method used to initialize diagnostic tools
 	void initDiagnosticTools(size_t poolSize, char* startAddress);
 
 	// Methods used to update log
