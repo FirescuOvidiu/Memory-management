@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress)
+void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress, bool typeFragmentation)
 {
 	// Initialize data members of logger
 	log.initLogger(poolSize, startAddress);
@@ -9,12 +9,23 @@ void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress)
 	// Initialize data members of the diagnostics
 	diag.initDiagnostics((int)poolSize);
 
-	// Initialize data members of the external diagnostics
-	diagExternal.initExternalFrag((int)poolSize);
+	if (typeFragmentation)
+	{
+		// Initialize data members of the external diagnostics
+		diagExternal.initExternalFrag((int)poolSize);
+	}
+	else
+	{
+		// Initialize data members of the external diagnostics
+		diagInternal.initInternalFrag((int)poolSize);
+	}
+}
 
-	// Initialize data members of the external diagnostics
-	diagInternal.initInternalFrag((int)poolSize);
 
+void DiagnosticTools::updateDiagnosticTools(const int size, const int memoryToAllocate)
+{
+	log.increaseAllocOrDealloc(size);
+	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, memoryToAllocate);
 }
 
 
@@ -36,12 +47,6 @@ void DiagnosticTools::updateErrorLog(void* block, size_t memoryToAllocate, size_
 }
 
 
-void DiagnosticTools::increaseAllocOrDealloc(const int size)
-{
-	log.increaseAllocOrDealloc(size);
-}
-
-
 //----------------------------------------------------------------------------
 void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 {
@@ -53,11 +58,4 @@ void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 void DiagnosticTools::updateInternalFrag(const int memoryAllocated, const int memoryRequested)
 {
 	diagInternal.updateInternalFrag(memoryAllocated, memoryRequested);
-}
-
-
-//----------------------------------------------------------------------------
-void DiagnosticTools::updateDiagnostics(const int memoryToAllocate)
-{
-	diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, memoryToAllocate);
 }

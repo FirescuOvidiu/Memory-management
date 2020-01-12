@@ -8,21 +8,18 @@ class DiagnosticTools
 {
 public:
 	// Method used to initialize diagnostic tools
-	void initDiagnosticTools(size_t poolSize, char* startAddress);
+	void initDiagnosticTools(size_t poolSize, char* startAddress, bool typeFragmentation);
+	void updateDiagnosticTools(const int size, const int memoryToAllocate);
 
 	// Methods used to update log
 	void updateWarningLog(size_t poolSize);
 	void updateErrorLog(void* block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
-	void increaseAllocOrDealloc(const int size);
 
 	// Methods used to update diagExternal
 	void updateExternalFrag(const int biggestContMemory);
 
 	// Methods used to update diagInternal
 	void updateInternalFrag(const int memoryAllocated, const int memoryRequested);
-
-	// Methods used to update diag
-	void updateDiagnostics(const int memoryToAllocate);
 
 private:
 	Logger log;			// Logger of the custom allocator

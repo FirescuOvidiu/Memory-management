@@ -16,7 +16,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
 	// Initialize data members of DiagnosticTools
-	diagTools.initDiagnosticTools(poolSize, startAddress);
+	diagTools.initDiagnosticTools(poolSize, startAddress, false);
 }
 
 
@@ -46,13 +46,10 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
-	// Update log
-	diagTools.increaseAllocOrDealloc(-(int)aSize);
+	// Update DiagnosticTools
+	diagTools.updateDiagnosticTools(-(int)aSize, (int)aSize);
 
-	// Update the diagnostics
-	diagTools.updateDiagnostics((int)aSize);
-
-	// Update the internal diagnostics
+	// Update internal diagnostics
 	diagTools.updateInternalFrag((int)availableBlock.size, (int)aSize);
 
 	availableBlock.size = aSize;
@@ -73,11 +70,8 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
 
-	// Update log
-	diagTools.increaseAllocOrDealloc((int)(*it).size);
-
-	// Update the diagnostics
-	diagTools.updateDiagnostics(-1);
+	// Update DiagnosticTools
+	diagTools.updateDiagnosticTools((int)(*it).size, -1);
 
 	// Update the internal disagnostics
 	diagTools.updateInternalFrag(-deallocatedSize, -(int)(*it).size);

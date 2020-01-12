@@ -10,7 +10,7 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
 	// Initialize data members of DiagnosticTools
-	diagTools.initDiagnosticTools(poolSize, startAddress);
+	diagTools.initDiagnosticTools(poolSize, startAddress, true);
 }
 
 
@@ -41,12 +41,10 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		std::swap(currBlock->size, std::next(currBlock)->size);
 		currBlock++;
 	}
+	
 
-	// Update log
-	diagTools.increaseAllocOrDealloc(-(int)aSize);
-
-	// Update the diagnostics
-	diagTools.updateDiagnostics((int)aSize);
+	// Update DiagnosticTools
+	diagTools.updateDiagnosticTools(-(int)aSize, (int)aSize);
 
 	// Update the external disagnostics
 	diagTools.updateExternalFrag((int)mAvailable.front().size);
@@ -78,11 +76,8 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Insert the address into the unallocated list (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
 
-	// Update log
-	diagTools.increaseAllocOrDealloc((int)deallocatedMemory.size);
-
-	// Update the diagnostics
-	diagTools.updateDiagnostics(-1);
+	// Update DiagnosticTools
+	diagTools.updateDiagnosticTools((int)deallocatedMemory.size, -1);
 
 	// Update the external disagnostics
 	diagTools.updateExternalFrag((int)mAvailable.front().size);
