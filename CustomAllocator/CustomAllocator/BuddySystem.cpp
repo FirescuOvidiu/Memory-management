@@ -218,7 +218,7 @@ void BuddySystem::insertIntoAvailableMemory(PoolElement& deallocatedMemory)
 void BuddySystem::findAdjacentBlock(PoolElement& buddy, const PoolElement& deallocatedMemory) const
 {
 	buddy.size = deallocatedMemory.size;
-	if (((int)log2(deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2)
+	if (((deallocatedMemory.address - startAddress) / deallocatedMemory.size) % 2)
 	{
 		buddy.address = deallocatedMemory.address - deallocatedMemory.size;
 	}
