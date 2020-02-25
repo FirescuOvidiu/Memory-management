@@ -14,9 +14,6 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
-    m_logLevels[(int)Log_Levels::Log_Level_Debug1] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug2] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Debug3] = true;
 
 	m_logType = LogType::File_Log;
 
@@ -56,11 +53,6 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 
 	switch (LogLevel)
 	{
-		
-	case LogLevel::Log_Level_Debug1:
-		outputMessages[(int)LogLevel::Log_Level_Debug1] += "[DEBUG]";
-		break;
-
 	case LogLevel::Log_Level_Info:
 		outputMessages[(int)LogLevel::Log_Level_Info] += "[INFO]";
 		break;
@@ -132,23 +124,6 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 
 
 /*
-	Method used to update the log for the following levels: Log_Level_Debug1, Log_Level_Debug2, Log_Level_Debug3
-*/
-void Logger::updateDebugLog(const std::string& message, const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, bool end)
-{
-
-	updateLog(message, LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug2), LogLevel::Log_Level_Debug1);
-	updateLog(tupletsAdressAndSize(mAvailable, mAllocated, LogLevel::Log_Level_Debug3), LogLevel::Log_Level_Debug1);
-
-	if (end)
-	{
-		outputMessages[(int)LogLevel::Log_Level_Debug1] += "\n";
-	}
-}
-
-
-/*
 	Method used to increase the number of allocations or deallocations that occur during the application
 	and to update the total memory available
 */
@@ -163,45 +138,6 @@ void Logger::increaseAllocOrDealloc(const int size)
 		numberDeallocations++;
 	}
 	totalMemoryAvailable += size;
-}
-
-
-/*
-	Method returns a string that is composed of tuplets (address, size) that represent 
-	- all the address and the size which are available to be allocated
-	- or all the adress and the size which are allocated depending on the LogLevel
-	Method used for Debugging
-*/
-std::string Logger::tupletsAdressAndSize(const std::list<PoolElement>& mAvailable, const std::set<PoolElement>& mAllocated, const LogLevel& LogLevel)
-{
-	if (!m_logLevels[(int)LogLevel])
-	{
-		return "";
-	}
-
-	std::stringstream ss_currTuplet;
-	std::string memoryAndSize;
-
-	if (LogLevel == LogLevel::Log_Level_Debug2)
-	{
-		memoryAndSize += "Memory Available: ";
-		for (auto it = mAvailable.begin(); it != mAvailable.end(); it++)
-		{
-			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-		}
-	}
-
-	if (LogLevel == LogLevel::Log_Level_Debug3)
-	{
-		memoryAndSize += "Memory Allocated: ";
-		for (auto it = mAllocated.begin(); it != mAllocated.end(); it++)
-		{
-			ss_currTuplet << "(" << static_cast<void*>(it->address) << "," << it->size << ") \t";
-		}
-	}
-
-	memoryAndSize += ss_currTuplet.str();
-	return memoryAndSize;
 }
 
 

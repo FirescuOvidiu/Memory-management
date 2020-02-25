@@ -14,6 +14,9 @@ public:
 
 	~MemoryManagement();
 
+public:
+	DiagnosticTools diagTools;
+
 private:
 	Strategy* customAllocator;
 };
