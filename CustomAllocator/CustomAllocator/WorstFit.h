@@ -28,6 +28,4 @@ private:
 	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
 	std::size_t poolSize;				// The size of the memory pool
-
-	DiagnosticTools diagTools;
 };
