@@ -86,6 +86,22 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 }
 
 
+std::pair<int, int> WorstFit::getCurrentState() const
+{
+	int biggestContMemory = 0, memoryAvailable = 0, memoryAllocated = 0;
+
+	for (const auto& mAllocated : mAllocated)
+	{
+		memoryAllocated += mAllocated.size;
+	}
+
+	memoryAvailable = poolSize - memoryAllocated;
+	biggestContMemory = (*(mAvailable.begin())).size;
+
+	return std::make_pair(biggestContMemory, memoryAvailable);
+}
+
+
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

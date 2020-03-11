@@ -41,6 +41,15 @@ void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 
 
 /*
+	Used to evaluate the fragmentation state of the custom allocator
+*/
+void MemoryManagement::evaluateFragmentationState()
+{
+	diagTools.evaluateFragmentation();
+}
+
+
+/*
 	Destructor used to destroy the custom allocator after the application ends
 */
 MemoryManagement::~MemoryManagement()

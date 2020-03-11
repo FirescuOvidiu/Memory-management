@@ -89,6 +89,30 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 }
 
 
+
+std::pair<int, int> BuddySystem::getCurrentState()
+{
+	int memoryAllocated = 0, memoryAvailable = 0, memoryRequested = 0;
+
+	for (const auto& mAllocated : mAllocated)
+	{
+		memoryRequested += mAllocated.size;
+	}
+
+	for (const auto& mAvailable : mAvailable)
+	{
+		for (const auto& currAvailableBlock : mAvailable)
+		{
+			memoryAvailable += currAvailableBlock.size;
+		}
+	}
+
+	memoryAllocated = poolSize - memoryAvailable;
+
+	return std::make_pair(memoryAllocated, memoryRequested);
+}
+
+
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

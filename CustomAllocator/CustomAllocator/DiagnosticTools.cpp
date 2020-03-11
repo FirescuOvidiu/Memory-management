@@ -1,11 +1,8 @@
 #include "stdafx.h"
 
 
-void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress, bool typeFragmentation)
+void DiagnosticTools::initDiagnosticTools(size_t poolSize, bool typeFragmentation)
 {
-	// Initialize data members of the diagnostics
-	diag.initDiagnostics((int)poolSize);
-
 	if (typeFragmentation)
 	{
 		// Initialize data members of the external diagnostics
@@ -21,7 +18,6 @@ void DiagnosticTools::initDiagnosticTools(size_t poolSize, char* startAddress, b
 
 void DiagnosticTools::updateDiagnosticTools(const int size, const int memoryToAllocate)
 {
-	// log.increaseAllocOrDealloc(size);
 	// diag.updateDiagnostics(diag.getTotalMemory() - log.totalMemoryAvailable, memoryToAllocate);
 }
 

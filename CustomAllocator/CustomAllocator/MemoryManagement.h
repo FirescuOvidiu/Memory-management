@@ -12,11 +12,11 @@ public:
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);
 
+	void evaluateFragmentationState();
+
 	~MemoryManagement();
 
-public:
-	DiagnosticTools diagTools;
-
 private:
+	DiagnosticTools diagTools;
 	Strategy* customAllocator;
 };
