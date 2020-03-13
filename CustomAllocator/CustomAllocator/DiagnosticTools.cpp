@@ -3,16 +3,8 @@
 
 void DiagnosticTools::initDiagnosticTools(size_t poolSize, bool typeFragmentation)
 {
-	if (typeFragmentation)
-	{
-		// Initialize data members of the external diagnostics
-		diagExternal.initExternalFrag((int)poolSize);
-	}
-	else
-	{
-		// Initialize data members of the external diagnostics
-		diagInternal.initInternalFrag((int)poolSize);
-	}
+	this->totalMemory = (int)poolSize;
+	this->typeFragmentation = typeFragmentation;
 }
 
 
@@ -32,5 +24,5 @@ void DiagnosticTools::updateExternalFrag(const int biggestContMemory)
 //----------------------------------------------------------------------------
 void DiagnosticTools::updateInternalFrag(const int memoryAllocated, const int memoryRequested)
 {
-	diagInternal.updateInternalFrag(memoryAllocated, memoryRequested);
+	//diagInternal.updateInternalFrag(memoryAllocated, memoryRequested);
 }

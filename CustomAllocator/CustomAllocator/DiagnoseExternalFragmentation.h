@@ -6,19 +6,9 @@
 	It calculates the external fragmentation based on the formula:
 	Fragmentation = 1 - (biggest free continuous memory)/(total free memory)
 */
-class DiagnoseExternalFragmentation
+class DiagnoseExternalFragmentation : public DiagnosticTools
 {
 public:
-	DiagnoseExternalFragmentation() : totalMemory(0), nrFragmentation(0), avgFragmentation(0) {}
-
-	void initExternalFrag(const int _totalMemory);
 	void updateExternalFrag(const int totalMemoryAvailable, const int biggestContMemory);
-
-	~DiagnoseExternalFragmentation();
-
-private:
-	std::ofstream diagFile;
-	int totalMemory;
-	int nrFragmentation;		// Used to calculate the average fragmentation
-	double avgFragmentation;
+	void evaluateFragmentation(const std::pair<int, int> currentState) override;
 };

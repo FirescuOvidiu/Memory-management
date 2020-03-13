@@ -2,9 +2,9 @@
 
 	<----------------------- START OF APPLICATION ----------------------->
 
-	Total memory allocated by the memory pool: 4096 bytes.
+	Total memory allocated by the memory pool: 0 bytes.
 
-	The maximum memory utilization during the application was: 1053 bytes out of 4096 bytes (26.32%).
-	The average memory utilization (allocated) during the application was: 869.91 bytes (21.75%).
+	The maximum memory utilization during the application was: 0 bytes out of 0 bytes (-nan(ind)%).
+	The average memory utilization (allocated) during the application was: -nan(ind) bytes (-nan(ind)%).
 
 	<----------------------- END OF APPLICATION ----------------------->

@@ -6,19 +6,9 @@
 	It calculates the internal fragmentation based on the following method:
 	The maximum amount of memory used by the allocator relative to the maximum amount of live memory
 */
-class DiagnoseInternalFragmentation
+class DiagnoseInternalFragmentation : public DiagnosticTools
 {
 public:
-	DiagnoseInternalFragmentation() : totalMemory(0), totalMemoryAllocated(0), totalMemoryRequested(0), maxMemoryAllocated(0), maxMemoryRequested(0) {}
-
-	void initInternalFrag(const int _totalMemory);
 	void updateInternalFrag(const int memoryAllocated, const int memoryRequested);
-
-	~DiagnoseInternalFragmentation();
-
-private:
-	std::ofstream diagFile;
-	int totalMemory;
-	int totalMemoryAllocated, totalMemoryRequested;
-	int maxMemoryAllocated, maxMemoryRequested;
+	void evaluateFragmentation(const std::pair<int, int> currentState) override;
 };

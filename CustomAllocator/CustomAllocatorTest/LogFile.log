@@ -1,13 +1,13 @@
-2020-01-12 18:38:40	[INFO]	<----------------------- START OF APPLICATION ----------------------->
+2020-02-25 13:37:25	[INFO]	<----------------------- START OF APPLICATION ----------------------->
 
 
 
 
-2020-01-12 18:38:40	[INFO]	Size of the memory pool: 4096 bytes.
-2020-01-12 18:38:40	[INFO]	Start address: 0000021CD25D3010
-2020-01-12 18:38:41	[INFO]	Number of allocations during application: 8689
-2020-01-12 18:38:41	[INFO]	Number of deallocations during application: 8689
+2020-02-25 13:37:25	[INFO]	Size of the memory pool: 4096 bytes.
+2020-02-25 13:37:25	[INFO]	Start address: 0000018C192322E0
+2020-02-25 13:37:26	[INFO]	Number of allocations during application: 0
+2020-02-25 13:37:26	[INFO]	Number of deallocations during application: 0
 
 
 
-2020-01-12 18:38:41	[INFO]	<----------------------- END OF APPLICATION ----------------------->
+2020-02-25 13:37:26	[INFO]	<----------------------- END OF APPLICATION ----------------------->
