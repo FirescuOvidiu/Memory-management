@@ -9,6 +9,5 @@
 class DiagnoseInternalFragmentation : public DiagnosticTools
 {
 public:
-	void updateInternalFrag(const int memoryAllocated, const int memoryRequested);
 	void evaluateFragmentation(const std::pair<int, int> currentState) override;
 };

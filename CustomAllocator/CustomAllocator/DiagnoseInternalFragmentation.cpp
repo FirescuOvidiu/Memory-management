@@ -38,4 +38,6 @@ void DiagnoseInternalFragmentation::evaluateFragmentation(const std::pair<int, i
 	int currMemoryAllocated = currentState.first;
 	int currMemoryRequested = currentState.second;
 	int fragmentationState = currMemoryAllocated - currMemoryRequested;
+
+	showFragmentationState((double)fragmentationState);
 }

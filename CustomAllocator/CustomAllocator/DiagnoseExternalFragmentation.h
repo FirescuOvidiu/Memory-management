@@ -9,6 +9,5 @@
 class DiagnoseExternalFragmentation : public DiagnosticTools
 {
 public:
-	void updateExternalFrag(const int totalMemoryAvailable, const int biggestContMemory);
 	void evaluateFragmentation(const std::pair<int, int> currentState) override;
 };
