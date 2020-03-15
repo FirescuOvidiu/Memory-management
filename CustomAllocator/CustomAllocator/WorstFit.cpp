@@ -9,8 +9,6 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 	startAddress = new char[poolSize];
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
-	// Initialize data members of DiagnosticTools
-	// diagTools.initDiagnosticTools(poolSize, startAddress, true);
 	// Initialize data members of logger
 	log.initLogger(poolSize, startAddress);
 }
@@ -43,13 +41,6 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		std::swap(currBlock->size, std::next(currBlock)->size);
 		currBlock++;
 	}
-	
-
-	// Update DiagnosticTools
-	//diagTools.updateDiagnosticTools(-(int)aSize, (int)aSize);
-
-	// Update the external disagnostics
-	//diagTools.updateExternalFrag((int)mAvailable.front().size);
 
 	return block;
 }
@@ -77,12 +68,6 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Insert the address into the unallocated list (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
-
-	// Update DiagnosticTools
-	// diagTools.updateDiagnosticTools((int)deallocatedMemory.size, -1);
-
-	// Update the external disagnostics
-	// diagTools.updateExternalFrag((int)mAvailable.front().size);
 }
 
 
@@ -112,7 +97,6 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 	if (mAvailable.empty()|| (aSize > mAvailable.front().size))
 	{
 		// Update log
-		// diagTools.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 		log.~Logger();
 
@@ -131,7 +115,6 @@ bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::ite
 	if (it == mAllocated.end())
 	{
 		// Update log
-		// diagTools.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 		log.~Logger();
 
@@ -150,7 +133,6 @@ void WorstFit::checkMemoryLeaks()
 	if (!mAllocated.empty())
 	{
 		// Update log
-		// diagTools.updateWarningLog(poolSize);
 		log.updateWarningLog(poolSize);
 	}
 }

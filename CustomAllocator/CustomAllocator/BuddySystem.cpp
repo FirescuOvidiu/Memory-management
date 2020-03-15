@@ -15,8 +15,6 @@ BuddySystem::BuddySystem(size_t poolSize)
 	mAvailable.resize((int)(log2(this->poolSize) + 1));
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
-	// Initialize data members of DiagnosticTools
-	// diagTools.initDiagnosticTools(poolSize, startAddress, false);
 	// Initialize data members of logger
 	log.initLogger(poolSize, startAddress);
 }
@@ -48,12 +46,6 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
-	// Update DiagnosticTools
-	// diagTools.updateDiagnosticTools(-(int)aSize, (int)aSize);
-
-	// Update internal diagnostics
-	// diagTools.updateInternalFrag((int)availableBlock.size, (int)aSize);
-
 	availableBlock.size = aSize;
 	mAllocated.insert(availableBlock);
 	return availableBlock.address;
@@ -71,12 +63,6 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
-
-	// Update DiagnosticTools
-	// diagTools.updateDiagnosticTools((int)(*it).size, -1);
-
-	// Update the internal disagnostics
-	// diagTools.updateInternalFrag(-deallocatedSize, -(int)(*it).size);
 
 	PoolElement deallocatedMemory = *it;
 
@@ -133,7 +119,6 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 			position--;
 		}
 		// Update log
-		// diagTools.updateErrorLog(0, aSize, (int)pow(2,position), "Bad alloc");
 		log.updateErrorLog(0, aSize, (int)pow(2, position), "Bad alloc");
 		log.~Logger();
 
@@ -152,7 +137,6 @@ bool BuddySystem::checkInvalidAddress(void* aBlock, const std::set<PoolElement>:
 	if (it == mAllocated.end())
 	{
 		// Update log
-		// diagTools.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 		log.~Logger();
 
@@ -171,7 +155,6 @@ void BuddySystem::checkMemoryLeaks()
 	if (!mAllocated.empty())
 	{
 		// Update log
-		// diagTools.updateWarningLog(poolSize);
 		log.updateWarningLog(poolSize);
 	}
 }
