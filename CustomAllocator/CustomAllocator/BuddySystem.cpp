@@ -81,8 +81,11 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 }
 
 
-
-std::pair<int, int> BuddySystem::getCurrentState()
+/*
+	Method used to get the memory allocated and memory requested by the user at this point
+	This variables are used to evaluate the fragmentation state of the custom allocator
+*/
+std::pair<int, int> BuddySystem::getCurrentState() const
 {
 	int memoryAllocated = 0, memoryAvailable = 0, memoryRequested = 0;
 

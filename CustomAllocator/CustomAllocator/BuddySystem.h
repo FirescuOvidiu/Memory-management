@@ -12,7 +12,7 @@ public:
 	void* __cdecl allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/) override;
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
 
-	std::pair<int, int> getCurrentState();
+	std::pair<int, int> getCurrentState() const;
 
 	~BuddySystem();
 

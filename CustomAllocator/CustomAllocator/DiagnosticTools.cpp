@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
 
+/*
+	Method used to initialize data members of the class
+*/
 void DiagnosticTools::initDiagnosticTools(const size_t poolSize, const diagnosticTypes _diagType)
 {
 	this->totalMemory = (int)poolSize;
@@ -8,6 +11,10 @@ void DiagnosticTools::initDiagnosticTools(const size_t poolSize, const diagnosti
 }
 
 
+/*
+	Method used to display the fragmentation state of the custom allocators
+	after we calculate it
+*/
 void DiagnosticTools::showFragmentationState(double fragmentationState)
 {
 	switch (diagType)
