@@ -90,13 +90,13 @@ std::pair<int, int> WorstFit::getCurrentState() const
 {
 	int biggestContMemory = 0, memoryAvailable = 0, memoryAllocated = 0;
 
-	for (const auto& mAllocated : mAllocated)
+	for (const auto& itMemoryAllocated : mAllocated)
 	{
-		memoryAllocated += mAllocated.size;
+		memoryAllocated += (int)itMemoryAllocated.size;
 	}
 
-	memoryAvailable = poolSize - memoryAllocated;
-	biggestContMemory = (*(mAvailable.begin())).size;
+	memoryAvailable = (int)poolSize - memoryAllocated;
+	biggestContMemory = (int)(*(mAvailable.begin())).size;
 
 	return std::make_pair(biggestContMemory, memoryAvailable);
 }

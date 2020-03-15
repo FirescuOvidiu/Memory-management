@@ -1,11 +1,10 @@
 #include "stdafx.h"
 
 
-void DiagnosticTools::initDiagnosticTools(size_t poolSize, bool typeFragmentation, diagnosticTypes diagType)
+void DiagnosticTools::initDiagnosticTools(const size_t poolSize, const diagnosticTypes _diagType)
 {
 	this->totalMemory = (int)poolSize;
-	this->typeFragmentation = typeFragmentation;
-	this->diagType = diagType;
+	this->diagType = _diagType;
 }
 
 

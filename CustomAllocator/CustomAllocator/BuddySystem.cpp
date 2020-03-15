@@ -94,20 +94,20 @@ std::pair<int, int> BuddySystem::getCurrentState()
 {
 	int memoryAllocated = 0, memoryAvailable = 0, memoryRequested = 0;
 
-	for (const auto& mAllocated : mAllocated)
+	for (const auto& itMemoryAllocated : mAllocated)
 	{
-		memoryRequested += mAllocated.size;
+		memoryRequested += (int)itMemoryAllocated.size;
 	}
 
-	for (const auto& mAvailable : mAvailable)
+	for (const auto& itMemoryAvailable : mAvailable)
 	{
-		for (const auto& currAvailableBlock : mAvailable)
+		for (const auto& currAvailableBlock : itMemoryAvailable)
 		{
-			memoryAvailable += currAvailableBlock.size;
+			memoryAvailable += (int)currAvailableBlock.size;
 		}
 	}
 
-	memoryAllocated = poolSize - memoryAvailable;
+	memoryAllocated = (int)poolSize - memoryAvailable;
 
 	return std::make_pair(memoryAllocated, memoryRequested);
 }

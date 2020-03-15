@@ -9,5 +9,5 @@
 class DiagnoseInternalFragmentation : public DiagnosticTools
 {
 public:
-	void evaluateFragmentation(const std::pair<int, int> currentState) override;
+	void evaluateFragmentation(const std::pair<int, int>& currentState) override;
 };

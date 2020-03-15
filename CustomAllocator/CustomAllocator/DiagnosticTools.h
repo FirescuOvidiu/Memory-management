@@ -15,17 +15,20 @@ typedef enum class Diagnostic_Types
 class DiagnosticTools
 {
 public:
-	DiagnosticTools() : totalMemory(0), typeFragmentation(true), diagType(diagnosticTypes::No_Diagnostic) {}
+	DiagnosticTools() : totalMemory(0), diagType(diagnosticTypes::No_Diagnostic) {}
 
 	// Method used to initialize diagnostic tools
-	void initDiagnosticTools(size_t poolSize, bool typeFragmentation, diagnosticTypes diagType);
+	void initDiagnosticTools(const size_t poolSize, const diagnosticTypes _diagType);
 
-	virtual void evaluateFragmentation(const std::pair<int,int> currentState) = 0;
+	virtual void evaluateFragmentation(const std::pair<int,int>& currentState) = 0;
+
+protected:
 	void showFragmentationState(double fragmentationState);
 
 protected:
-	std::ofstream diagFile;
-	bool typeFragmentation;
 	int totalMemory;
+
+private:
+	std::ofstream diagFile;
 	diagnosticTypes diagType;
 };

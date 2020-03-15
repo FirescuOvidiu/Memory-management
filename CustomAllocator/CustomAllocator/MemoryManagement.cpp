@@ -4,16 +4,20 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const int context, const int poolSize)
+MemoryManagement::MemoryManagement(const int context, const int poolSize) : context(context), diagTools(nullptr)
 {
 	switch (context)
 	{
 	case 1:
 		customAllocator = new WorstFit(poolSize);
+		diagTools = new DiagnoseExternalFragmentation();
+		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::File_Diagnostic);
 		break;
 
 	case 2:
 		customAllocator = new BuddySystem(poolSize);
+		diagTools = new DiagnoseInternalFragmentation();
+		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::File_Diagnostic);
 		break;
 
 	default:
@@ -45,7 +49,16 @@ void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 */
 void MemoryManagement::evaluateFragmentationState()
 {
-	diagTools.evaluateFragmentation();
+	switch (context)
+	{
+	case 1:
+		diagTools->evaluateFragmentation(static_cast<WorstFit*>(customAllocator)->getCurrentState());
+		break;
+
+	case 2:
+		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(customAllocator)->getCurrentState());
+		break;
+	}
 }
 
 
