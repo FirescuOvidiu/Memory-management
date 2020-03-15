@@ -46,8 +46,12 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	PoolElement availableBlock = getAvailableBlock(aSize, position);
 
+	// Update logger
+	log.increaseAllocOrDealloc(-(int)availableBlock.size);
+
 	availableBlock.size = aSize;
 	mAllocated.insert(availableBlock);
+
 	return availableBlock.address;
 }
 
@@ -63,7 +67,6 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	}
 
 	int deallocatedSize = (int)pow(2, (int)std::ceil(log2((*it).size)));
-
 	PoolElement deallocatedMemory = *it;
 
 	// Remove the adress from the allocated block
@@ -72,6 +75,9 @@ void __cdecl BuddySystem::freeMemory(void* aBlock, int /*aBlockUse*/)
 	// Insert the address into the available memory (mAvailable)
 	deallocatedMemory.size = deallocatedSize;
 	insertIntoAvailableMemory(deallocatedMemory);
+
+	// Update logger
+	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
@@ -118,6 +124,7 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 		{
 			position--;
 		}
+
 		// Update log
 		log.updateErrorLog(0, aSize, (int)pow(2, position), "Bad alloc");
 		log.~Logger();

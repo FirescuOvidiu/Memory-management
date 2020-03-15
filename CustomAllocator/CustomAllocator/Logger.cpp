@@ -24,10 +24,10 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 	switch (m_logType)
 	{
 	case LogType::File_Log:
-		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n\n";
+		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
 		break;
 	case LogType::Console_Log:
-		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n\n";
+		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
 		break;
 	default:
 		break;
@@ -128,7 +128,7 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 */
 void Logger::increaseAllocOrDealloc(const int size)
 {
-	if (size > 0)
+	if (size < 0)
 	{
 		numberAllocations++;
 	}

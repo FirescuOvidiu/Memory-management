@@ -42,6 +42,9 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		currBlock++;
 	}
 
+	// Update logger
+	log.increaseAllocOrDealloc(-(int)aSize);
+
 	return block;
 }
 
@@ -68,6 +71,9 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 	// Insert the address into the unallocated list (mAvailable)
 	insertIntoAvailableMemory(deallocatedMemory);
+
+	// Update Logger
+	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
