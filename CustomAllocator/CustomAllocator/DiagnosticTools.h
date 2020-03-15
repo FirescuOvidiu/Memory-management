@@ -24,6 +24,7 @@ public:
 	virtual void evaluateFragmentation(const std::pair<int,int>& currentState) = 0;
 
 protected:
+	// Method used to display the fragmentation state of the custom allocators
 	void showFragmentationState(double fragmentationState);
 
 protected:

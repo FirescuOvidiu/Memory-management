@@ -11,13 +11,13 @@ MemoryManagement::MemoryManagement(const int context, const int poolSize) : cont
 	case 1:
 		customAllocator = new WorstFit(poolSize);
 		diagTools = new DiagnoseExternalFragmentation();
-		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::File_Diagnostic);
+		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::Console_Diagnostic);
 		break;
 
 	case 2:
 		customAllocator = new BuddySystem(poolSize);
 		diagTools = new DiagnoseInternalFragmentation();
-		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::File_Diagnostic);
+		diagTools->initDiagnosticTools(poolSize, diagnosticTypes::Console_Diagnostic);
 		break;
 
 	default:
