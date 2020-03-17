@@ -4,3 +4,4 @@ EXPORTS
   CustomAllocator_Delete
   CustomAllocator_Malloc
   CustomAllocator_Free
+  evaluateFragmentationState

@@ -30,3 +30,8 @@ void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*a
 
 	memoryManagement.freeMemory(aBlock, aBlockUse);
 }
+
+void evaluateFragmentationState()
+{
+	memoryManagement.evaluateFragmentation();
+}

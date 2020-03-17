@@ -21,7 +21,7 @@ void testD()
 	int nr = 0;
 	int pos = 0;
 	int iterations = 1000;
-	
+
 	for (int it = 0; it < iterations; it++)
 	{
 		nr = dist2(rd);

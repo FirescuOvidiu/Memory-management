@@ -47,7 +47,7 @@ void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 /*
 	Used to evaluate the fragmentation state of the custom allocator
 */
-void MemoryManagement::evaluateFragmentationState()
+void MemoryManagement::evaluateFragmentation()
 {
 	switch (context)
 	{
