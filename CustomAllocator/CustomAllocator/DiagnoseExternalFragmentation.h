@@ -9,5 +9,6 @@
 class DiagnoseExternalFragmentation : public DiagnosticTools
 {
 public:
+	DiagnoseExternalFragmentation(const int totalMemory = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic) : DiagnosticTools(totalMemory, diagType) {}
 	void evaluateFragmentation(const std::pair<int, int>& currentState) override;
 };

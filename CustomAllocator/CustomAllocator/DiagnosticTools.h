@@ -15,10 +15,7 @@ typedef enum class Diagnostic_Types
 class DiagnosticTools
 {
 public:
-	DiagnosticTools() : totalMemory(0), diagType(diagnosticTypes::No_Diagnostic) {}
-
-	// Method used to initialize diagnostic tools
-	void initDiagnosticTools(const size_t poolSize, const diagnosticTypes _diagType);
+	DiagnosticTools(const int totalMemory = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic) : totalMemory(totalMemory), diagType(diagType) {}
 
 	// Method used to evaluate the fragmentation state of the custom allocators
 	virtual void evaluateFragmentation(const std::pair<int,int>& currentState) = 0;

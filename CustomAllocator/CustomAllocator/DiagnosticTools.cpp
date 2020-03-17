@@ -2,16 +2,6 @@
 
 
 /*
-	Method used to initialize data members of the class
-*/
-void DiagnosticTools::initDiagnosticTools(const size_t poolSize, const diagnosticTypes _diagType)
-{
-	this->totalMemory = (int)poolSize;
-	this->diagType = _diagType;
-}
-
-
-/*
 	Method used to display the fragmentation state of the custom allocators
 	after we calculate it
 */
