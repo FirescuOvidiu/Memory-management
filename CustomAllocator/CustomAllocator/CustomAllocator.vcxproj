@@ -187,7 +187,6 @@
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="DiagnoseExternalFragmentation.h" />
     <ClInclude Include="DiagnoseInternalFragmentation.h" />
-    <ClInclude Include="Diagnostics.h" />
     <ClInclude Include="DiagnosticTools.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MemoryManagement.h" />
@@ -202,7 +201,6 @@
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="DiagnoseExternalFragmentation.cpp" />
     <ClCompile Include="DiagnoseInternalFragmentation.cpp" />
-    <ClCompile Include="Diagnostics.cpp" />
     <ClCompile Include="DiagnosticTools.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />

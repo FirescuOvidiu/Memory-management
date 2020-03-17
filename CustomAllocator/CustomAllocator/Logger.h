@@ -48,16 +48,16 @@ private:
 	void writingToConsole();
 	static std::string getCurrentTime();
 
-public:
-	int totalMemoryAvailable;
-
 private:
 	std::ofstream m_loggerFile;
 	std::vector<bool> m_logLevels;
 	LogType m_logType;
 
 	std::vector<std::string> outputMessages;
+	std::vector<int> countBlocksAllocated;
 
 	int numberAllocations;
 	int numberDeallocations;
+	int totalMemoryAvailable;
+	int totalMemory;
 };

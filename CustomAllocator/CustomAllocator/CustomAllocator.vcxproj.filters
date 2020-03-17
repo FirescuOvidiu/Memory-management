@@ -27,9 +27,6 @@
     <ClInclude Include="Logger.h">
       <Filter>Diagnostic Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Diagnostics.h">
-      <Filter>Diagnostic Tools</Filter>
-    </ClInclude>
     <ClInclude Include="Strategy.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
@@ -63,9 +60,6 @@
       <Filter>Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="Logger.cpp">
-      <Filter>Diagnostic Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="Diagnostics.cpp">
       <Filter>Diagnostic Tools</Filter>
     </ClCompile>
     <ClCompile Include="Strategy.cpp">

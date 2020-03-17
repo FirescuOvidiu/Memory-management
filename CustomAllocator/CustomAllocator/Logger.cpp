@@ -5,11 +5,11 @@
 /*
 	Constructor used to open the file log and initialize data members
 */
-Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvailable(0)
+Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100)
 {
 	m_loggerFile.open("LogFile.log", std::ofstream::out);
 
-	m_logLevels.resize(6);
+	m_logLevels.resize(3);
 	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
 	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
@@ -33,7 +33,7 @@ Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemoryAvai
 		break;
 	}
 
-	outputMessages.resize(4);
+	outputMessages.resize(3);
 }
 
 
@@ -81,7 +81,7 @@ void Logger::initLogger(size_t poolSize, char* startAddress)
 {
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
-	totalMemoryAvailable = (int)poolSize;
+	totalMemory = totalMemoryAvailable = (int)poolSize;
 
 	std::stringstream ss;
 	ss << static_cast<void*>(startAddress);
@@ -131,6 +131,7 @@ void Logger::increaseAllocOrDealloc(const int size)
 	if (size < 0)
 	{
 		numberAllocations++;
+		countBlocksAllocated[(-size) * 100 / totalMemory]++;
 	}
 	else
 	{
