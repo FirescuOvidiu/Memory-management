@@ -17,7 +17,7 @@ void GenerateTestUnits::generateTU()
 	outputTU << "\n\nPool size: " << poolSize << "\n";
 	outputTU << "Number of allocations: " << numberAllocations << "\n";
 	outputTU << "The size of objects allocated are between: " << rangeObjectSize.first << " and " << rangeObjectSize.second << "\n";
-	outputTU << "Allocation format: Allocate objectId objectSize \n";
+	outputTU << "Allocation   format: Allocate   objectId objectSize \n";
 	outputTU << "Deallocation format: Deallocate objectId \n\n";
 
 	// Select the distribution
@@ -63,7 +63,38 @@ void GenerateTestUnits::generateTU()
 
 void GenerateTestUnits::loadTU()
 {
+	inputTU.open("generatedTU.txt", std::ifstream::in);
+	std::string aux, instruction;
+	int objectId = 0, objectSize = 0;
+	char** test = nullptr;
 
+	for (int it = 0; it < 8; it++)
+	{
+		std::getline(inputTU, aux);
+	}
+
+	test = new char* [numberObjectsAllocated];
+	for (int it = 0; it < numberObjectsAllocated; it++)
+	{
+		test[it] = nullptr;
+	}
+
+	while (inputTU >> instruction)
+	{
+		if (instruction == "Allocate")
+		{
+			inputTU >> objectId >> objectSize;
+			test[objectId] = new char[objectSize];
+		}
+		else
+		{
+			inputTU >> objectId;
+			delete[] test[objectId];
+		}
+	}
+
+	delete[] test;
+	inputTU.close();
 }
 
 
