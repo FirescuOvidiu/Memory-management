@@ -4,18 +4,18 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const int context, const int poolSize) : context(context), diagTools(nullptr)
+MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : context(context), diagTools(nullptr)
 {
 	switch (context)
 	{
 	case 1:
 		customAllocator = new WorstFit(poolSize);
-		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagnosticTypes::Console_Diagnostic);
+		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagType);
 		break;
 
 	case 2:
 		customAllocator = new BuddySystem(poolSize);
-		diagTools = new DiagnoseInternalFragmentation((int)poolSize, diagnosticTypes::Console_Diagnostic);
+		diagTools = new DiagnoseInternalFragmentation((int)poolSize, diagType);
 		break;
 
 	default:
