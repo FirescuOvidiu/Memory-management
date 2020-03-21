@@ -33,6 +33,9 @@
     <ClInclude Include="CustomAllocatorTestD.h">
       <Filter>CustomAllocatorTests</Filter>
     </ClInclude>
+    <ClInclude Include="GenerateTestUnits.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -52,6 +55,9 @@
     </ClCompile>
     <ClCompile Include="CustomAllocatorTest.cpp" />
     <ClCompile Include="CustomAllocatorTestD.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateTestUnits.cpp">
       <Filter>CustomAllocatorTests</Filter>
     </ClCompile>
   </ItemGroup>
