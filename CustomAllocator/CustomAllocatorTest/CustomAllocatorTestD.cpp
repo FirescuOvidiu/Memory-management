@@ -29,7 +29,7 @@ void testD()
 		for (int i = 0; i < nr; i++)
 		{
 			pos = distPos(rd);
-			delete test[pos];
+			delete[] test[pos];
 			test[pos] = new char[dist(rd)];
 		}
 	}
