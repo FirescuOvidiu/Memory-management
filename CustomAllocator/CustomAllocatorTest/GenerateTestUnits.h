@@ -11,7 +11,6 @@ public:
 	void loadTU();
 
 private:
-
 	void deallocateObjects(const int countAllocations, std::set<int>& storeObjectId);
 
 private:

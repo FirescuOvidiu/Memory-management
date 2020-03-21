@@ -61,6 +61,9 @@ void GenerateTestUnits::generateTU()
 }
 
 
+/*
+	Method used to load the test unit generated
+*/
 void GenerateTestUnits::loadTU()
 {
 	inputTU.open("generatedTU.txt", std::ifstream::in);
@@ -68,6 +71,7 @@ void GenerateTestUnits::loadTU()
 	int objectId = 0, objectSize = 0;
 	char** test = nullptr;
 
+	// Ignore the lines that contains informations about the generated TU
 	for (int it = 0; it < 8; it++)
 	{
 		std::getline(inputTU, aux);
@@ -83,11 +87,13 @@ void GenerateTestUnits::loadTU()
 	{
 		if (instruction == "Allocate")
 		{
+			// Allocate new object 
 			inputTU >> objectId >> objectSize;
 			test[objectId] = new char[objectSize];
 		}
 		else
 		{
+			// Deallocate object
 			inputTU >> objectId;
 			delete[] test[objectId];
 		}
