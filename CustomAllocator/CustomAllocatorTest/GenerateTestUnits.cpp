@@ -24,8 +24,9 @@ void GenerateTestUnits::generateTU()
 	std::random_device rd;
 
 	// Need to add more distributions
-	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);
-	// std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);
+	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);		// Uniform distribution
+	//std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);	   // Bernoulli distribution
+	//std::normal_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2, 8);			// Normal distribution
 
 	std::set<int> storeObjectId;
 	int countAllocations = 0;
@@ -33,7 +34,7 @@ void GenerateTestUnits::generateTU()
 	// Allocate X objects
 	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
 	{
-		outputTU << "Allocate " << objectId << " " << distribution(rd) + rangeObjectSize.first << "\n";
+		outputTU << "Allocate " << objectId << " " << std::round(distribution(rd)) + rangeObjectSize.first << "\n";
 		countAllocations++;
 	}
 
@@ -46,7 +47,7 @@ void GenerateTestUnits::generateTU()
 		// Allocate Y random objects
 		for (const auto& objectId : storeObjectId)
 		{
-			outputTU << "Allocate " << objectId << " " << distribution(rd) + rangeObjectSize.first << "\n";
+			outputTU << "Allocate " << objectId << " " << std::round(distribution(rd)) + rangeObjectSize.first << "\n";
 			countAllocations++;
 		}
 
