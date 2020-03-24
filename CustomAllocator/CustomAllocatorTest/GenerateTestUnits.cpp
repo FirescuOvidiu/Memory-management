@@ -22,8 +22,10 @@ void GenerateTestUnits::generateTU()
 
 	// Select the distribution
 	std::random_device rd;
-	std::uniform_int_distribution<int> distribution(rangeObjectSize.first, rangeObjectSize.second);
+
 	// Need to add more distributions
+	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);
+	// std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);
 
 	std::set<int> storeObjectId;
 	int countAllocations = 0;
@@ -31,7 +33,7 @@ void GenerateTestUnits::generateTU()
 	// Allocate X objects
 	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
 	{
-		outputTU << "Allocate " << objectId << " " << distribution(rd) << "\n";
+		outputTU << "Allocate " << objectId << " " << distribution(rd) + rangeObjectSize.first << "\n";
 		countAllocations++;
 	}
 
@@ -44,7 +46,7 @@ void GenerateTestUnits::generateTU()
 		// Allocate Y random objects
 		for (const auto& objectId : storeObjectId)
 		{
-			outputTU << "Allocate " << objectId << " " << distribution(rd) << "\n";
+			outputTU << "Allocate " << objectId << " " << distribution(rd) + rangeObjectSize.first << "\n";
 			countAllocations++;
 		}
 
