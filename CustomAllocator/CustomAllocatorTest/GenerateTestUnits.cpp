@@ -26,6 +26,7 @@ void GenerateTestUnits::generateTU()
 	// Need to add more distributions
 	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);		// Uniform distribution
 	//std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);	   // Bernoulli distribution
+	//std::poisson_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2);			  // Poisson distribution
 	//std::normal_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2, 8);			// Normal distribution
 
 	std::set<int> storeObjectId;
