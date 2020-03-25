@@ -17,7 +17,7 @@ public:
 	~MemoryManagement();
 
 private:
-	DiagnosticTools* diagTools;
 	Strategy* customAllocator;
+	DiagnosticTools* diagTools;
 	int context;
 };
