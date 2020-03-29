@@ -23,13 +23,13 @@ void GenerateTestUnits::generateTU()
 	// Select the distribution
 	std::random_device rd;
 	//std::vector<double> intervals{ 0, (double)rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2, (double)rangeObjectSize.second - rangeObjectSize.first };
-	//std::vector<double> weights{ 32,0,32 };
+	//std::vector<double> weights{ 1,0,1 };
 
 	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);		// Uniform distribution
 	//std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);	   // Bernoulli distribution
-	//std::poisson_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2);			  // Rate-based distributions
+	//std::poisson_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2);			  // Rate-based distribution
 	//std::normal_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2, 8);			// Normal distribution
-	//std::piecewise_linear_distribution<> distribution(intervals.begin(), intervals.end(), weights.begin());		// Piecewise distributions
+	//std::piecewise_linear_distribution<> distribution(intervals.begin(), intervals.end(), weights.begin());		// Piecewise distribution
 	// Add more distributions
 
 	std::set<int> storeObjectId;
