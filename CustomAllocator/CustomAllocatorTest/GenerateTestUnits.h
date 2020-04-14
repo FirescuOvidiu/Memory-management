@@ -1,6 +1,5 @@
 #pragma once
 
-
 class GenerateTestUnits
 {
 public:
@@ -9,6 +8,7 @@ public:
 
 	void generateTU();
 	void loadTU();
+	void convertBinaryFile();
 
 private:
 	void deallocateObjects(const int countAllocations, std::set<int>& storeObjectId);
