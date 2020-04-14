@@ -16,7 +16,7 @@
 */
 void GenerateTestUnits::generateTU()
 {
-	outputTU.open("generatedBinaryTU.txt", std::ofstream::out | std::ofstream::binary);
+	outputTU.open("generatedBinaryTU.bin", std::ofstream::out | std::ofstream::binary);
 
 	// Select the distribution
 	std::random_device rd;
@@ -78,7 +78,7 @@ void GenerateTestUnits::generateTU()
 */
 void GenerateTestUnits::loadTU()
 {
-	inputTU.open("generatedBinaryTU.txt", std::ifstream::in | std::ifstream::binary);
+	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	std::string aux;
 	int objectId = 0, objectSize = 0;
 	char* instruction = new char;
@@ -106,6 +106,7 @@ void GenerateTestUnits::loadTU()
 		}
 	}
 
+	delete instruction;
 	delete[] test;
 	inputTU.close();
 }
@@ -116,7 +117,7 @@ void GenerateTestUnits::loadTU()
 */
 void GenerateTestUnits::convertBinaryFile()
 {
-	inputTU.open("generatedBinaryTU.txt", std::ifstream::in | std::ifstream::binary);
+	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
 	char* instruction = new char;
 	int objectId = 0, objectSize = 0;
