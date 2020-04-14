@@ -81,11 +81,9 @@ void GenerateTestUnits::loadTU()
 	inputTU.open("generatedBinaryTU.txt", std::ifstream::in | std::ifstream::binary);
 	std::string aux;
 	int objectId = 0, objectSize = 0;
-	char* instruction = nullptr;
-	char** test = nullptr;
+	char* instruction = new char;
+	char** test = new char* [numberObjectsAllocated];
 
-	instruction = new char;
-	test = new char* [numberObjectsAllocated];
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		test[it] = nullptr;
@@ -110,6 +108,37 @@ void GenerateTestUnits::loadTU()
 
 	delete[] test;
 	inputTU.close();
+}
+
+
+/*
+	Method used to convert a generated test unit binary file into a text file
+*/
+void GenerateTestUnits::convertBinaryFile()
+{
+	inputTU.open("generatedBinaryTU.txt", std::ifstream::in | std::ifstream::binary);
+	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
+	char* instruction = new char;
+	int objectId = 0, objectSize = 0;
+
+	while (inputTU.read(instruction, sizeof(char)))
+	{
+		outputTU << *instruction << " ";
+		if (*instruction == 'A')
+		{
+			inputTU.read((char*)(&objectId), sizeof(int));
+			inputTU.read((char*)(&objectSize), sizeof(int));
+			outputTU << " " << objectId << " " << objectSize << "\n";
+		}
+		else
+		{
+			inputTU.read((char*)(&objectId), sizeof(int));
+			outputTU << " " << objectId << "\n";
+		}
+	}
+
+	inputTU.close();
+	outputTU.close();
 }
 
 
