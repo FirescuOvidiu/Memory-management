@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+const int GenerateTestUnits::numberObjectsAllocated = 10;
+
 /*
 	Method used to generate test units based on a distribution
 	How we generate the test units:
@@ -79,19 +81,18 @@ void GenerateTestUnits::generateTU()
 void GenerateTestUnits::loadTU()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
-	std::string aux;
 	int objectId = 0, objectSize = 0;
-	char* instruction = new char;
-	char** test = new char* [numberObjectsAllocated];
+	char instruction;
+	char* test[numberObjectsAllocated];
 
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		test[it] = nullptr;
 	}
 
-	while (inputTU.read(instruction, sizeof(char)))
+	while (inputTU.read(&instruction, sizeof(char)))
 	{
-		if (*instruction == 'A')
+		if (instruction == 'A')
 		{
 			// Allocate new object
 			inputTU.read((char*)(&objectId), sizeof(int));
@@ -106,8 +107,6 @@ void GenerateTestUnits::loadTU()
 		}
 	}
 
-	delete instruction;
-	delete[] test;
 	inputTU.close();
 }
 
@@ -119,13 +118,13 @@ void GenerateTestUnits::convertBinaryFile()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
-	char* instruction = new char;
 	int objectId = 0, objectSize = 0;
+	char instruction;
 
-	while (inputTU.read(instruction, sizeof(char)))
+	while (inputTU.read(&instruction, sizeof(char)))
 	{
-		outputTU << *instruction << " ";
-		if (*instruction == 'A')
+		outputTU << instruction << " ";
+		if (instruction == 'A')
 		{
 			inputTU.read((char*)(&objectId), sizeof(int));
 			inputTU.read((char*)(&objectSize), sizeof(int));
