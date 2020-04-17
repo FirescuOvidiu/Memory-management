@@ -60,6 +60,18 @@ void MemoryManagement::evaluateFragmentation()
 }
 
 
+void MemoryManagement::serialization(std::ofstream& output)
+{
+
+}
+
+
+void MemoryManagement::deserialization(std::ifstream& input)
+{
+
+}
+
+
 /*
 	Destructor used to destroy the custom allocator after the application ends
 */

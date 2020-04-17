@@ -36,16 +36,25 @@ void evaluateFragmentationState()
 	(*memoryManagement).evaluateFragmentation();
 }
 
-void serialize()
+void serialization()
 {
 	std::ofstream output("serialization.bin", std::ofstream::out | std::ofstream::binary);
 
 	output.close();
 }
 
-void deserialize()
+void deserialization()
 {
-	std::ifstream input("serialization.bin", std::ifstream::out | std::ifstream::binary);
+	std::ifstream input("serialization.bin", std::ifstream::in | std::ifstream::binary);
+	int context = 0, poolSize = 0, diagTypes = 0;
+
+	delete memoryManagement;
+	input.read(reinterpret_cast<char*>(&context), sizeof(context));
+	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+	input.read(reinterpret_cast<char*>(&diagTypes), sizeof(diagTypes));
+
+	memoryManagement = new MemoryManagement(context, poolSize, static_cast<diagnosticTypes>(diagTypes));
+	(*memoryManagement).deserialization(input);
 
 	input.close();
 }
