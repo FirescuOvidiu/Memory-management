@@ -13,8 +13,10 @@ public:
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);
 
 	void evaluateFragmentation();
+
 	void serialization(std::ofstream& output);
 	void deserialization(std::ifstream& input);
+
 	~MemoryManagement();
 
 private:

@@ -40,20 +40,22 @@ void serialization()
 {
 	std::ofstream output("serialization.bin", std::ofstream::out | std::ofstream::binary);
 
+	(*memoryManagement).serialization(output);
+
 	output.close();
 }
 
 void deserialization()
 {
 	std::ifstream input("serialization.bin", std::ifstream::in | std::ifstream::binary);
-	int context = 0, poolSize = 0, diagTypes = 0;
+	int context = 0, poolSize = 0, diagType = 0;
 
 	delete memoryManagement;
 	input.read(reinterpret_cast<char*>(&context), sizeof(context));
 	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
-	input.read(reinterpret_cast<char*>(&diagTypes), sizeof(diagTypes));
+	input.read(reinterpret_cast<char*>(&diagType), sizeof(diagType));
 
-	memoryManagement = new MemoryManagement(context, poolSize, static_cast<diagnosticTypes>(diagTypes));
+	memoryManagement = new MemoryManagement(context, poolSize, static_cast<diagnosticTypes>(diagType));
 	(*memoryManagement).deserialization(input);
 
 	input.close();

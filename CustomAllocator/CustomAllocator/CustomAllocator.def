@@ -5,3 +5,5 @@ EXPORTS
   CustomAllocator_Malloc
   CustomAllocator_Free
   evaluateFragmentationState
+  serialization
+  deserialization
