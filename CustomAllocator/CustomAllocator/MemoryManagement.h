@@ -19,5 +19,5 @@ public:
 private:
 	Strategy* customAllocator;
 	DiagnosticTools* diagTools;
-	int context;
+	int context, poolSize;
 };
