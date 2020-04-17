@@ -97,6 +97,17 @@ std::pair<int, int> WorstFit::getCurrentState() const
 }
 
 
+void WorstFit::serialization(std::ofstream& output)
+{
+
+}
+
+void WorstFit::deserialization(std::ifstream& input)
+{
+
+}
+
+
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

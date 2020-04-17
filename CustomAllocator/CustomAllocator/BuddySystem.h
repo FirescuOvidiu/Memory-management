@@ -14,6 +14,9 @@ public:
 
 	std::pair<int, int> getCurrentState() const;
 
+	void serialization(std::ofstream& output);
+	void deserialization(std::ifstream& input);
+
 	~BuddySystem();
 
 private:

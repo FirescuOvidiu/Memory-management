@@ -108,6 +108,18 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 }
 
 
+void BuddySystem::serialization(std::ofstream& output)
+{
+
+}
+
+
+void BuddySystem::deserialization(std::ifstream& input)
+{
+
+}
+
+
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

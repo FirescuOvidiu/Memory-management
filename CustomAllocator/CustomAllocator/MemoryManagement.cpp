@@ -65,12 +65,14 @@ void MemoryManagement::serialization(std::ofstream& output)
 	output.write(reinterpret_cast<const char*>(&context), sizeof(context));
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
 	output.write(reinterpret_cast<const char*>(static_cast<int>(diagType)), sizeof(int));
+
+	(*customAllocator).serialization(output);
 }
 
 
 void MemoryManagement::deserialization(std::ifstream& input)
 {
-	input.close();
+	(*customAllocator).deserialization(input);
 }
 
 
