@@ -61,7 +61,7 @@ void MemoryManagement::evaluateFragmentation()
 }
 
 
-void MemoryManagement::serialization(std::ofstream& output)
+void MemoryManagement::serializationMemoryManagement(std::ofstream& output)
 {
 	int currDiagType = static_cast<int>(diagType);
 
@@ -69,17 +69,17 @@ void MemoryManagement::serialization(std::ofstream& output)
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
 	output.write(reinterpret_cast<const char*>(&currDiagType), sizeof(int));
 
-	(*customAllocator).serialization(output);
+	(*customAllocator).serializationStrategy(output);
 }
 
 
-void MemoryManagement::deserialization(std::ifstream& input)
+void MemoryManagement::deserializationMemoryManagement(std::ifstream& input)
 {
 	input.read(reinterpret_cast<char*>(&context), sizeof(context));
 	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
 	input.read(reinterpret_cast<char*>(&diagType), sizeof(diagType));
 
-	(*customAllocator).deserialization(input);
+	(*customAllocator).deserializationStrategy(input);
 }
 
 

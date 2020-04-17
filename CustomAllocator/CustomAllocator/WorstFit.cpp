@@ -97,15 +97,16 @@ std::pair<int, int> WorstFit::getCurrentState() const
 }
 
 
-//void WorstFit::serialization(std::ofstream& output)
-//{
-//
-//}
-//
-//void WorstFit::deserialization(std::ifstream& input)
-//{
-//
-//}
+void WorstFit::serializationStrategy(std::ofstream& output)
+{
+	output.close();
+}
+
+
+void WorstFit::deserializationStrategy(std::ifstream& input)
+{
+	input.close();
+}
 
 
 /*

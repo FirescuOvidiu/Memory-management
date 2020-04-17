@@ -19,3 +19,15 @@ void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
 	// default CRT implementation
 	_free_dbg(aBlock, aBlockUse);
 }
+
+
+void Strategy::serializationStrategy(std::ofstream& output)
+{
+	output.close();
+}
+
+
+void Strategy::deserializationStrategy(std::ifstream& input)
+{
+	input.close();
+}

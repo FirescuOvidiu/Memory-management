@@ -40,7 +40,7 @@ void serialization()
 {
 	std::ofstream output("serialization.bin", std::ofstream::out | std::ofstream::binary);
 
-	(*memoryManagement).serialization(output);
+	(*memoryManagement).serializationMemoryManagement(output);
 
 	output.close();
 }
@@ -52,7 +52,7 @@ void deserialization()
 	delete memoryManagement;
 
 	memoryManagement = new MemoryManagement;
-	(*memoryManagement).deserialization(input);
+	(*memoryManagement).deserializationMemoryManagement(input);
 
 	input.close();
 }
