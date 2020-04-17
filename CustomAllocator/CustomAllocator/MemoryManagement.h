@@ -7,7 +7,7 @@
 class MemoryManagement
 {
 public:
-	MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic);
+	MemoryManagement(const int context = 0, const int poolSize = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic);
 
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);

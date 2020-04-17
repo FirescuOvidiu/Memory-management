@@ -108,16 +108,16 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 }
 
 
-void BuddySystem::serialization(std::ofstream& output)
-{
-
-}
-
-
-void BuddySystem::deserialization(std::ifstream& input)
-{
-
-}
+//void BuddySystem::serialization(std::ofstream& output)
+//{
+//
+//}
+//
+//
+//void BuddySystem::deserialization(std::ifstream& input)
+//{
+//
+//}
 
 
 /*

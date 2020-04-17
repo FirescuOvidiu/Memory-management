@@ -16,6 +16,9 @@ void __cdecl   CustomAllocator_Free  (void * aBlock, int aBlockUse, char const *
 
 void evaluateFragmentationState();
 
+void serialization();
+void deserialization();
+
 //----------------------------------------------------------------------------
 
 #endif  // _CUSTOM_ALLOCATOR_H_

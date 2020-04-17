@@ -4,7 +4,8 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : context(context), poolSize(poolSize), diagType(diagType), diagTools(nullptr)
+MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : 
+	context(context), poolSize(poolSize), diagType(diagType), diagTools(nullptr)
 {
 	switch (context)
 	{
@@ -62,9 +63,11 @@ void MemoryManagement::evaluateFragmentation()
 
 void MemoryManagement::serialization(std::ofstream& output)
 {
+	int currDiagType = static_cast<int>(diagType);
+
 	output.write(reinterpret_cast<const char*>(&context), sizeof(context));
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
-	output.write(reinterpret_cast<const char*>(static_cast<int>(diagType)), sizeof(int));
+	output.write(reinterpret_cast<const char*>(&currDiagType), sizeof(int));
 
 	(*customAllocator).serialization(output);
 }
@@ -72,6 +75,10 @@ void MemoryManagement::serialization(std::ofstream& output)
 
 void MemoryManagement::deserialization(std::ifstream& input)
 {
+	input.read(reinterpret_cast<char*>(&context), sizeof(context));
+	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+	input.read(reinterpret_cast<char*>(&diagType), sizeof(diagType));
+
 	(*customAllocator).deserialization(input);
 }
 
