@@ -4,7 +4,7 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : context(context), poolSize(poolSize), diagTools(nullptr)
+MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : context(context), poolSize(poolSize), diagType(diagType), diagTools(nullptr)
 {
 	switch (context)
 	{

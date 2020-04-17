@@ -15,11 +15,11 @@ public:
 	void evaluateFragmentation();
 	void serialization(std::ofstream& output);
 	void deserialization(std::ifstream& input);
-
 	~MemoryManagement();
 
 private:
 	Strategy* customAllocator;
 	DiagnosticTools* diagTools;
+	diagnosticTypes diagType;
 	int context, poolSize;
 };
