@@ -22,7 +22,11 @@ bool PoolElement::operator<(const PoolElement& poolElement) const
 
 void PoolElement::serializationPoolElement(std::ofstream& output) const
 {
-	output.close();
+	int lengthAddress = strlen(address);
+
+	output.write(reinterpret_cast<const char*>(&lengthAddress), sizeof(lengthAddress));
+	output.write(reinterpret_cast<const char*>(address), lengthAddress);
+	output.write(reinterpret_cast<const char*>(&size), sizeof(size));
 }
 
 
