@@ -110,11 +110,34 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 
 void BuddySystem::serializationStrategy(std::ofstream& output)
 {
-	int lengthStartAddress = strlen(startAddress);
+	size_t lengthStartAddress = strlen(startAddress), lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
 
+	//
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
+	
+	//
 	output.write(reinterpret_cast<const char*>(&lengthStartAddress), sizeof(lengthStartAddress));
 	output.write(reinterpret_cast<const char*>(startAddress), lengthStartAddress);
+
+	//
+	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	for (const auto& itMemoryAvailable : mAvailable)
+	{
+		lengthMAvailable = itMemoryAvailable.size();
+		output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+
+		for (const auto& currAvailableBlock : itMemoryAvailable)
+		{
+			currAvailableBlock.serializationPoolElement(output);
+		}
+	}
+
+	//
+	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	for (const auto& currAllocatedBlock : mAllocated)
+	{
+		currAllocatedBlock.serializationPoolElement(output);
+	}
 
 	output.close();
 }
