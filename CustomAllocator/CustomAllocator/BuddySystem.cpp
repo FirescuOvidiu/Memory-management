@@ -138,14 +138,46 @@ void BuddySystem::serializationStrategy(std::ofstream& output)
 	{
 		currAllocatedBlock.serializationPoolElement(output);
 	}
-
-	output.close();
 }
 
 
 void BuddySystem::deserializationStrategy(std::ifstream& input)
 {
-	input.close();
+	std::set<PoolElement> aux;
+	PoolElement poolElement;
+	size_t lengthStartAddress = 0, lengthMAvailable = 0, lengthMAllocated = 0;
+
+	//
+	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+
+	//
+	input.read(reinterpret_cast<char*>(&lengthStartAddress), sizeof(lengthStartAddress));
+	input.read(reinterpret_cast<char*>(startAddress), lengthStartAddress);
+
+	//
+	mAvailable.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	mAvailable.resize(lengthMAvailable);
+	for (auto& itMemoryAvailable : mAvailable)
+	{
+		input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+		for (int it = 0; it < lengthMAvailable; it++)
+		{
+			poolElement.deserializationPoolElement(input);
+			aux.insert(poolElement);
+		}
+		itMemoryAvailable = aux;
+		aux.clear();
+	}
+
+	//
+	mAllocated.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	for (int it = 0; it < lengthMAllocated; it++)
+	{
+		poolElement.deserializationPoolElement(input);
+		mAllocated.insert(poolElement);
+	}
 }
 
 

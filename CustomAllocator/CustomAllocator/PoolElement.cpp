@@ -32,7 +32,7 @@ void PoolElement::serializationPoolElement(std::ofstream& output) const
 
 void PoolElement::deserializationPoolElement(std::ifstream& input)
 {
-	int lengthAddress = 0;
+	size_t lengthAddress = 0;
 
 	input.read(reinterpret_cast<char*>(&lengthAddress), sizeof(lengthAddress));
 	input.read(reinterpret_cast<char*>(address), lengthAddress);
