@@ -61,7 +61,7 @@ void MemoryManagement::evaluateFragmentation()
 }
 
 
-void MemoryManagement::serializationMemoryManagement(std::ofstream& output)
+void MemoryManagement::serializationMemoryManagement(std::ofstream& output) const
 {
 	int currDiagType = static_cast<int>(diagType);
 

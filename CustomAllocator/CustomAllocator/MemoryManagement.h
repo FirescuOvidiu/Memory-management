@@ -14,7 +14,7 @@ public:
 
 	void evaluateFragmentation();
 
-	void serializationMemoryManagement(std::ofstream& output);
+	void serializationMemoryManagement(std::ofstream& output) const;
 	void deserializationMemoryManagement(std::ifstream& input);
 
 	~MemoryManagement();
