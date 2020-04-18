@@ -14,6 +14,8 @@ public:
 	void updateElement(char* _address, size_t _size);
 
 	bool operator<(const PoolElement& poolElement) const;
+	void serializationPoolElement(std::ofstream& output) const;
+	void deserializationPoolElement(std::ifstream& input);
 
 public:
 	char* address;	// Start address of the block of memory (allocated/unallocated)

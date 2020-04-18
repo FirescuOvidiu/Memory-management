@@ -18,3 +18,15 @@ bool PoolElement::operator<(const PoolElement& poolElement) const
 {
 	return this->address < poolElement.address;
 }
+
+
+void PoolElement::serializationPoolElement(std::ofstream& output) const
+{
+	output.close();
+}
+
+
+void PoolElement::deserializationPoolElement(std::ifstream& input)
+{
+	input.close();
+}
