@@ -20,21 +20,20 @@ bool PoolElement::operator<(const PoolElement& poolElement) const
 }
 
 
-void PoolElement::serializationPoolElement(std::ofstream& output) const
+void PoolElement::serializationPoolElement(std::ofstream& output, char* startAddress) const
 {
-	size_t lengthAddress = strlen(address);
+	size_t currAddress =  address - startAddress;
 
-	output.write(reinterpret_cast<const char*>(&lengthAddress), sizeof(lengthAddress));
-	output.write(reinterpret_cast<const char*>(address), lengthAddress);
+	output.write(reinterpret_cast<const char*>(&currAddress), sizeof(currAddress));
 	output.write(reinterpret_cast<const char*>(&size), sizeof(size));
 }
 
 
-void PoolElement::deserializationPoolElement(std::ifstream& input)
+void PoolElement::deserializationPoolElement(std::ifstream& input, char* startAddress)
 {
-	size_t lengthAddress = 0;
+	size_t currAddress = 0;
 
-	input.read(reinterpret_cast<char*>(&lengthAddress), sizeof(lengthAddress));
-	input.read(reinterpret_cast<char*>(address), lengthAddress);
+	input.read(reinterpret_cast<char*>(&currAddress), sizeof(currAddress));
+	address = startAddress + currAddress;
 	input.read(reinterpret_cast<char*>(&size), sizeof(size));
 }

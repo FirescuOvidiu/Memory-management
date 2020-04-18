@@ -75,13 +75,6 @@ void MemoryManagement::serializationMemoryManagement(std::ofstream& output) cons
 
 void MemoryManagement::deserializationMemoryManagement(std::ifstream& input)
 {
-	int currDiagType = 0;
-
-	input.read(reinterpret_cast<char*>(&context), sizeof(context));
-	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
-	input.read(reinterpret_cast<char*>(&currDiagType), sizeof(int));
-	diagType = static_cast<diagnosticTypes>(currDiagType);
-
 	(*customAllocator).deserializationStrategy(input);
 }
 

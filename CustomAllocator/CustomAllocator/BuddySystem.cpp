@@ -110,14 +110,12 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 
 void BuddySystem::serializationStrategy(std::ofstream& output)
 {
-	size_t lengthStartAddress = strlen(startAddress), lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
+	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
 
 	//
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
 	
 	//
-	output.write(reinterpret_cast<const char*>(&lengthStartAddress), sizeof(lengthStartAddress));
-	output.write(reinterpret_cast<const char*>(startAddress), lengthStartAddress);
 
 	//
 	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
@@ -128,31 +126,30 @@ void BuddySystem::serializationStrategy(std::ofstream& output)
 
 		for (const auto& currAvailableBlock : itMemoryAvailable)
 		{
-			currAvailableBlock.serializationPoolElement(output);
+			currAvailableBlock.serializationPoolElement(output, startAddress);
 		}
 	}
 
 	//
-	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
 	for (const auto& currAllocatedBlock : mAllocated)
 	{
-		currAllocatedBlock.serializationPoolElement(output);
+		currAllocatedBlock.serializationPoolElement(output, startAddress);
 	}
 }
 
 
 void BuddySystem::deserializationStrategy(std::ifstream& input)
 {
+	size_t lengthMAvailable = 0, lengthMAllocated = 0;
 	std::set<PoolElement> aux;
 	PoolElement poolElement;
-	size_t lengthStartAddress = 0, lengthMAvailable = 0, lengthMAllocated = 0;
 
 	//
 	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
 
 	//
-	input.read(reinterpret_cast<char*>(&lengthStartAddress), sizeof(lengthStartAddress));
-	input.read(reinterpret_cast<char*>(startAddress), lengthStartAddress);
+	startAddress = new char[this->poolSize];
 
 	//
 	mAvailable.clear();
@@ -163,7 +160,7 @@ void BuddySystem::deserializationStrategy(std::ifstream& input)
 		input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
 		for (int it = 0; it < lengthMAvailable; it++)
 		{
-			poolElement.deserializationPoolElement(input);
+			poolElement.deserializationPoolElement(input, startAddress);
 			aux.insert(poolElement);
 		}
 		itMemoryAvailable = aux;
@@ -175,7 +172,7 @@ void BuddySystem::deserializationStrategy(std::ifstream& input)
 	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
 	for (int it = 0; it < lengthMAllocated; it++)
 	{
-		poolElement.deserializationPoolElement(input);
+		poolElement.deserializationPoolElement(input, startAddress);
 		mAllocated.insert(poolElement);
 	}
 }
