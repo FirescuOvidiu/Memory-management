@@ -14,6 +14,18 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 }
 
 
+std::ostream& WorstFit::write(std::ostream& output) const
+{
+	return output;
+}
+
+
+std::istream& WorstFit::read(std::istream& input)
+{
+	return input;
+}
+
+
 /*
 	Function used to allocate memory for the user
 	Returns an address to an open block of memory of size aSize in our memory pool
