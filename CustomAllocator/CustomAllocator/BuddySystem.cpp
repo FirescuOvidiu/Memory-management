@@ -152,7 +152,12 @@ std::istream& BuddySystem::read(std::istream& input)
 	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
 
 	//
+	if (startAddress != nullptr)
+	{
+		delete startAddress;
+	}
 	startAddress = new char[this->poolSize];
+	PoolElement::setStartAddress(startAddress);
 
 	//
 	mAvailable.clear();
@@ -161,13 +166,16 @@ std::istream& BuddySystem::read(std::istream& input)
 	for (auto& itMemoryAvailable : mAvailable)
 	{
 		input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-		for (int it = 0; it < lengthMAvailable; it++)
+		if (lengthMAvailable > 0)
 		{
-			input >> poolElement;
-			aux.insert(poolElement);
+			for (int it = 0; it < lengthMAvailable; it++)
+			{
+				input >> poolElement;
+				aux.insert(poolElement);
+			}
+			itMemoryAvailable = aux;
+			aux.clear();
 		}
-		itMemoryAvailable = aux;
-		aux.clear();
 	}
 
 	//

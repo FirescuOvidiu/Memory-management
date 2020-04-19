@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement* memoryManagement = new MemoryManagement(2, 4096, diagnosticTypes::Console_Diagnostic);
+MemoryManagement* memoryManagement = new MemoryManagement(1, 4096, diagnosticTypes::Console_Diagnostic);
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {

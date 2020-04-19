@@ -16,12 +16,64 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 
 std::ostream& WorstFit::write(std::ostream& output) const
 {
+	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
+
+	//
+	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
+
+	//
+
+	//
+	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	for (const auto& currAvailableBlock : mAvailable)
+	{
+		output << currAvailableBlock;
+	}
+
+	//
+	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	for (const auto& currAllocatedBlock : mAllocated)
+	{
+		output << currAllocatedBlock;
+	}
 	return output;
 }
 
 
 std::istream& WorstFit::read(std::istream& input)
 {
+	size_t lengthMAvailable = 0, lengthMAllocated = 0;
+	std::set<PoolElement> aux;
+	PoolElement poolElement;
+
+	//
+	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+
+	//
+	if (startAddress != nullptr)
+	{
+		delete startAddress;
+	}
+	startAddress = new char[this->poolSize];
+	PoolElement::setStartAddress(startAddress);
+
+	//
+	mAvailable.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	mAvailable.resize(lengthMAvailable);
+	for (auto& currAvailableBlock : mAvailable)
+	{
+		input >> currAvailableBlock;
+	}
+
+	//
+	mAllocated.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	for (int it = 0; it < lengthMAllocated; it++)
+	{
+		input >> poolElement;
+		mAllocated.insert(poolElement);
+	}
 	return input;
 }
 
