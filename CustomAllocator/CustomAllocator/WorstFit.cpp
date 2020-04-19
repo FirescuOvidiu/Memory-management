@@ -97,18 +97,6 @@ std::pair<int, int> WorstFit::getCurrentState() const
 }
 
 
-void WorstFit::serializationStrategy(std::ofstream& output)
-{
-	output.close();
-}
-
-
-void WorstFit::deserializationStrategy(std::ifstream& input)
-{
-	input.close();
-}
-
-
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

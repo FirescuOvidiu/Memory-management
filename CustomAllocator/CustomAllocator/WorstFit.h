@@ -15,9 +15,6 @@ public:
 
 	std::pair<int, int> getCurrentState() const;
 
-	void serializationStrategy(std::ofstream& output) override;
-	void deserializationStrategy(std::ifstream& input) override;
-
 	~WorstFit();
 
 private:

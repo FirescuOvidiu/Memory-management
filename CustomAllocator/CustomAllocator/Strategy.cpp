@@ -21,13 +21,25 @@ void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
 }
 
 
-void Strategy::serializationStrategy(std::ofstream& output)
+std::ostream& Strategy::write(std::ostream& output) const
 {
-	output.close();
+	return output;
 }
 
 
-void Strategy::deserializationStrategy(std::ifstream& input)
+std::istream& Strategy::read(std::istream& input)
 {
-	input.close();
+	return input;
+}
+
+
+std::ostream& operator<<(std::ostream& output, const Strategy& customAllocator)
+{
+	return customAllocator.write(output);
+}
+
+
+std::istream& operator>>(std::istream& input, Strategy& customAllocator)
+{
+	return customAllocator.read(input);
 }

@@ -9,13 +9,13 @@ class BuddySystem : public Strategy
 public:
 	BuddySystem(size_t poolSize);
 
+	std::ostream& write(std::ostream& output) const override;
+	std::istream& read(std::istream& input) override;
+
 	void* __cdecl allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/) override;
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
 
 	std::pair<int, int> getCurrentState() const;
-
-	void serializationStrategy(std::ofstream& output) override;
-	void deserializationStrategy(std::ifstream& input) override;
 
 	~BuddySystem();
 

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+char* PoolElement::startAddress = nullptr;
 
 /*
 	Function used to update an element
@@ -20,20 +21,30 @@ bool PoolElement::operator<(const PoolElement& poolElement) const
 }
 
 
-void PoolElement::serializationPoolElement(std::ofstream& output, char* startAddress) const
+void PoolElement::setStartAddress(char* startAddresss)
 {
-	size_t currAddress =  address - startAddress;
-
-	output.write(reinterpret_cast<const char*>(&currAddress), sizeof(currAddress));
-	output.write(reinterpret_cast<const char*>(&size), sizeof(size));
+	startAddress = startAddresss;
 }
 
 
-void PoolElement::deserializationPoolElement(std::ifstream& input, char* startAddress)
+std::ostream& operator<<(std::ostream& output, const PoolElement& poolElement)
+{
+	size_t currAddress = poolElement.address - PoolElement::startAddress;
+
+	output.write(reinterpret_cast<const char*>(&currAddress), sizeof(currAddress));
+	output.write(reinterpret_cast<const char*>(&poolElement.size), sizeof(poolElement.size));
+
+	return output;
+}
+
+
+std::istream& operator>>(std::istream& input, PoolElement& poolElement)
 {
 	size_t currAddress = 0;
 
 	input.read(reinterpret_cast<char*>(&currAddress), sizeof(currAddress));
-	address = startAddress + currAddress;
-	input.read(reinterpret_cast<char*>(&size), sizeof(size));
+	poolElement.address = PoolElement::startAddress + currAddress;
+	input.read(reinterpret_cast<char*>(&poolElement.size), sizeof(poolElement.size));
+
+	return input;
 }

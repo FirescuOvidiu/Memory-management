@@ -8,14 +8,13 @@ class MemoryManagement
 {
 public:
 	MemoryManagement(const int context = 0, const int poolSize = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic);
+	friend std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement);
+	friend std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement);
 
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);
 
 	void evaluateFragmentation();
-
-	void serializationMemoryManagement(std::ofstream& output) const;
-	void deserializationMemoryManagement(std::ifstream& input);
 
 	~MemoryManagement();
 

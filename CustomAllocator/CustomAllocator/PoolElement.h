@@ -11,13 +11,15 @@ class PoolElement
 {
 public:
 	PoolElement(char* address = {}, size_t size = {}) : address(address), size(size) {}
-	void updateElement(char* _address, size_t _size);
-
 	bool operator<(const PoolElement& poolElement) const;
-	void serializationPoolElement(std::ofstream& output, char* startAddress) const;
-	void deserializationPoolElement(std::ifstream& input, char* startAddress);
+	friend std::ostream& operator<<(std::ostream& output, const PoolElement& poolElement);
+	friend std::istream& operator>>(std::istream& input, PoolElement& poolElement);
+
+	void updateElement(char* _address, size_t _size);
+	static void setStartAddress(char* startAddresss);
 
 public:
+	static char* startAddress;
 	char* address;	// Start address of the block of memory (allocated/unallocated)
 	size_t size;	// Size of the block of memory (allocated/unallocated)
 };

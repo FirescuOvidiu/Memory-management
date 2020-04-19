@@ -20,6 +20,8 @@ public:
 	// Method used to evaluate the fragmentation state of the custom allocators
 	virtual void evaluateFragmentation(const std::pair<int,int>& currentState) = 0;
 
+	virtual ~DiagnosticTools() {}
+
 protected:
 	// Method used to display the fragmentation state of the custom allocators
 	void showFragmentationState(double fragmentationState);
