@@ -19,7 +19,9 @@ public:
 	static void setStartAddress(char* startAddresss);
 
 public:
-	static char* startAddress;
 	char* address;	// Start address of the block of memory (allocated/unallocated)
 	size_t size;	// Size of the block of memory (allocated/unallocated)
+
+private:
+	static char* startAddress;
 };
