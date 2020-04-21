@@ -22,6 +22,101 @@ BuddySystem::BuddySystem(size_t poolSize)
 
 
 /*
+	Method used to serialize an object
+*/
+std::ostream& BuddySystem::write(std::ostream& output) const
+{
+	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
+
+	// Serialize the data members by writing their content in the output file
+	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
+
+	// Write the length of the vector
+	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	// Parse the vector
+	for (const auto& itMemoryAvailable : mAvailable)
+	{
+		// Write the length of the set
+		lengthMAvailable = itMemoryAvailable.size();
+		output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+
+		// Parse the set and write it's content into the output file
+		for (const auto& currAvailableBlock : itMemoryAvailable)
+		{
+			output << currAvailableBlock;
+		}
+	}
+
+	// Write the length of the set
+	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	// Parse the set and write it's content into the output file
+	for (const auto& currAllocatedBlock : mAllocated)
+	{
+		output << currAllocatedBlock;
+	}
+
+	return output;
+}
+
+
+/*
+	Method used to deserialize an object
+*/
+std::istream& BuddySystem::read(std::istream& input)
+{
+	size_t lengthMAvailable = 0, lengthMAllocated = 0;
+	std::set<PoolElement> aux;
+	PoolElement poolElement;
+
+	// Deserialize data members by reading their content from the input file
+	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+
+	// Delete the current allocated objects and allocate and initialize them 
+	if (startAddress != nullptr)
+	{
+		delete startAddress;
+	}
+	startAddress = new char[this->poolSize];
+	PoolElement::setStartAddress(startAddress);
+
+	// Delete the vector, and read it's length from the input file
+	mAvailable.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	mAvailable.resize(lengthMAvailable);
+
+	// Parse the vector
+	for (auto& itMemoryAvailable : mAvailable)
+	{
+		// Read length of the set
+		input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+		if (lengthMAvailable > 0)
+		{
+			// Insert into the set the elements read from the file
+			for (int it = 0; it < lengthMAvailable; it++)
+			{
+				input >> poolElement;
+				aux.insert(poolElement);
+			}
+			itMemoryAvailable = aux;
+			aux.clear();
+		}
+	}
+
+	// Delete the set and read it's length
+	mAllocated.clear();
+	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	// Insert into the set the elements from the file
+	for (int it = 0; it < lengthMAllocated; it++)
+	{
+		input >> poolElement;
+		mAllocated.insert(poolElement);
+	}
+
+	return input;
+}
+
+
+/*
 	Function used to allocate memory
 	Returns an address to an open block of memory of size:
 	first number that is a power of 2 and is bigger or equal with the aSize
@@ -106,88 +201,6 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 	memoryAllocated = (int)poolSize - memoryAvailable;
 
 	return std::make_pair(memoryAllocated, memoryRequested);
-}
-
-
-std::ostream& BuddySystem::write(std::ostream& output) const
-{
-	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
-
-	//
-	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
-
-	//
-
-	//
-	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-	for (const auto& itMemoryAvailable : mAvailable)
-	{
-		lengthMAvailable = itMemoryAvailable.size();
-		output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-
-		for (const auto& currAvailableBlock : itMemoryAvailable)
-		{
-			output << currAvailableBlock;
-		}
-	}
-
-	//
-	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
-	for (const auto& currAllocatedBlock : mAllocated)
-	{
-		output << currAllocatedBlock;
-	}
-
-	return output;
-}
-
-
-std::istream& BuddySystem::read(std::istream& input)
-{
-	size_t lengthMAvailable = 0, lengthMAllocated = 0;
-	std::set<PoolElement> aux;
-	PoolElement poolElement;
-
-	//
-	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
-
-	//
-	if (startAddress != nullptr)
-	{
-		delete startAddress;
-	}
-	startAddress = new char[this->poolSize];
-	PoolElement::setStartAddress(startAddress);
-
-	//
-	mAvailable.clear();
-	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-	mAvailable.resize(lengthMAvailable);
-	for (auto& itMemoryAvailable : mAvailable)
-	{
-		input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-		if (lengthMAvailable > 0)
-		{
-			for (int it = 0; it < lengthMAvailable; it++)
-			{
-				input >> poolElement;
-				aux.insert(poolElement);
-			}
-			itMemoryAvailable = aux;
-			aux.clear();
-		}
-	}
-
-	//
-	mAllocated.clear();
-	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
-	for (int it = 0; it < lengthMAllocated; it++)
-	{
-		input >> poolElement;
-		mAllocated.insert(poolElement);
-	}
-
-	return input;
 }
 
 

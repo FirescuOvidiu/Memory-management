@@ -14,42 +14,49 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 }
 
 
+/*
+	Method used to serialize an object
+*/
 std::ostream& WorstFit::write(std::ostream& output) const
 {
 	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
 
-	//
+	// Serialize the data members by writing their content in the output file
 	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
 
-	//
-
-	//
+	// Write the length of the list
 	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
+	// Parse the list and write it's content into the output file
 	for (const auto& currAvailableBlock : mAvailable)
 	{
 		output << currAvailableBlock;
 	}
 
-	//
+	// Write the length of the set
 	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	// Parse the set and write it's content into the output file
 	for (const auto& currAllocatedBlock : mAllocated)
 	{
 		output << currAllocatedBlock;
 	}
+
 	return output;
 }
 
 
+/*
+	Method used to deserialize an object
+*/
 std::istream& WorstFit::read(std::istream& input)
 {
 	size_t lengthMAvailable = 0, lengthMAllocated = 0;
 	std::set<PoolElement> aux;
 	PoolElement poolElement;
 
-	//
+	// Deserialize data members by reading their content from the input file
 	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
 
-	//
+	// Delete the current allocated objects and allocate and initialize them 
 	if (startAddress != nullptr)
 	{
 		delete startAddress;
@@ -57,23 +64,26 @@ std::istream& WorstFit::read(std::istream& input)
 	startAddress = new char[this->poolSize];
 	PoolElement::setStartAddress(startAddress);
 
-	//
+	// Delete the list, and read it's length from the input file
 	mAvailable.clear();
 	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
 	mAvailable.resize(lengthMAvailable);
+	// Parse the vector and read it's content from the input file
 	for (auto& currAvailableBlock : mAvailable)
 	{
 		input >> currAvailableBlock;
 	}
 
-	//
+	// Delete the set and read it's length
 	mAllocated.clear();
 	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
+	// Insert into the set the elements read from the file
 	for (int it = 0; it < lengthMAllocated; it++)
 	{
 		input >> poolElement;
 		mAllocated.insert(poolElement);
 	}
+
 	return input;
 }
 

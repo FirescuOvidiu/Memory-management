@@ -21,24 +21,38 @@ void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
 }
 
 
+/*
+	Virtual function used to serialize an object will be implemented in the derived classes
+*/
 std::ostream& Strategy::write(std::ostream& output) const
 {
 	return output;
 }
 
 
+/*
+	Virtual function used to deserialize an object will be implemented in the derived classes
+*/
 std::istream& Strategy::read(std::istream& input)
 {
 	return input;
 }
 
 
+/*
+		Method used to serialize an object by overloading the operator<<
+		Calls `write` method because we need a virtual function to serialize
+*/
 std::ostream& operator<<(std::ostream& output, const Strategy& customAllocator)
 {
 	return customAllocator.write(output);
 }
 
 
+/*
+	Method used to deserialize an object by overloading operator>>
+    Calls `read` method because we need a virtual function to deserialize
+*/
 std::istream& operator>>(std::istream& input, Strategy& customAllocator)
 {
 	return customAllocator.read(input);
