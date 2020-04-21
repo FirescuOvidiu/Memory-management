@@ -3,41 +3,6 @@
 
 
 /*
-	Constructor used to open the file log and initialize data members
-*/
-Logger::Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100)
-{
-	m_loggerFile.open("LogFile.log", std::ofstream::out);
-
-	m_logLevels.resize(3);
-	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
-
-	m_logType = LogType::File_Log;
-
-	if (m_logType == LogType::No_Log)
-	{
-		return;
-	}
-
-	switch (m_logType)
-	{
-	case LogType::File_Log:
-		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	case LogType::Console_Log:
-		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	default:
-		break;
-	}
-
-	outputMessages.resize(3);
-}
-
-
-/*
 	Method used to update the log depending on the log level
 */
 void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
@@ -79,6 +44,32 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 */
 void Logger::initLogger(size_t poolSize, char* startAddress)
 {
+	if (m_logType == LogType::No_Log)
+	{
+		return;
+	}
+
+	m_loggerFile.open("LogFile.log", std::ofstream::out);
+
+	switch (m_logType)
+	{
+	case LogType::File_Log:
+		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
+		break;
+	case LogType::Console_Log:
+		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
+		break;
+	default:
+		break;
+	}
+
+	m_logLevels.resize(3);
+
+	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
+	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
+
+	outputMessages.resize(3);
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
 	totalMemory = totalMemoryAvailable = (int)poolSize;
@@ -128,6 +119,11 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 */
 void Logger::increaseAllocOrDealloc(const int size)
 {
+	if (m_logType == LogType::No_Log)
+	{
+		return;
+	}
+
 	if (size < 0)
 	{
 		numberAllocations++;
@@ -213,6 +209,6 @@ Logger::~Logger()
 		default:
 			break;
 		}
+		m_loggerFile.close();
 	}
-	m_loggerFile.close();
 }

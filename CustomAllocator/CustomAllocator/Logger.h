@@ -32,7 +32,7 @@ typedef enum class Log_Types
 class Logger
 {
 public:
-	Logger();
+	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100), m_logType(LogType::File_Log) {}
 
 	void initLogger(size_t poolSize, char* startAddresss);
 	void updateWarningLog(size_t poolSize);

@@ -2,22 +2,22 @@
 
 
 /*
-	Method using the default allocator to allocate memory in case a custom allocator wasn't choosed
+		Method used to serialize an object by overloading the operator<<
+		Calls `write` method because we need a virtual function to serialize
 */
-void* __cdecl Strategy::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
+std::ostream& operator<<(std::ostream& output, const Strategy& customAllocator)
 {
-	// default CRT implementation
-	return _malloc_dbg(aSize, aBlockUse, aFileName, aLineNumber);
+	return customAllocator.write(output);
 }
 
 
 /*
-	Method using the default deallocator to deallocate memory in case a custom deallocator wasn't choosed
+	Method used to deserialize an object by overloading operator>>
+	Calls `read` method because we need a virtual function to deserialize
 */
-void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
+std::istream& operator>>(std::istream& input, Strategy& customAllocator)
 {
-	// default CRT implementation
-	_free_dbg(aBlock, aBlockUse);
+	return customAllocator.read(input);
 }
 
 
@@ -40,20 +40,20 @@ std::istream& Strategy::read(std::istream& input)
 
 
 /*
-		Method used to serialize an object by overloading the operator<<
-		Calls `write` method because we need a virtual function to serialize
+	Method using the default allocator to allocate memory in case a custom allocator wasn't choosed
 */
-std::ostream& operator<<(std::ostream& output, const Strategy& customAllocator)
+void* __cdecl Strategy::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	return customAllocator.write(output);
+	// default CRT implementation
+	return _malloc_dbg(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
 /*
-	Method used to deserialize an object by overloading operator>>
-    Calls `read` method because we need a virtual function to deserialize
+	Method using the default deallocator to deallocate memory in case a custom deallocator wasn't choosed
 */
-std::istream& operator>>(std::istream& input, Strategy& customAllocator)
+void __cdecl Strategy::freeMemory(void* aBlock, int aBlockUse)
 {
-	return customAllocator.read(input);
+	// default CRT implementation
+	_free_dbg(aBlock, aBlockUse);
 }

@@ -133,5 +133,12 @@ void MemoryManagement::evaluateFragmentation()
 */
 MemoryManagement::~MemoryManagement()
 {
-	delete customAllocator;
+	if (customAllocator != nullptr)
+	{
+		delete customAllocator;
+	}
+	if (diagTools != nullptr)
+	{
+		delete diagTools;
+	}
 }
