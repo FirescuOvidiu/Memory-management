@@ -12,6 +12,7 @@ public:
 	~BenchMarking();
 
 private:
+	std::ofstream benchmarkFile;
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTimePoint;
 	long long totalTime;
 };

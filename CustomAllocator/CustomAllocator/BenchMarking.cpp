@@ -20,5 +20,14 @@ void BenchMarking::stopTimer()
 
 BenchMarking::~BenchMarking()
 {
-	std::cout << "test" << totalTime << " ";
+	if (totalTime != 0)
+	{
+		benchmarkFile.open("benchmark.txt", std::ofstream::out);
+
+		benchmarkFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- BENCHMARKING ----------------------->" << "\n\n";
+		benchmarkFile << "\tTotal time: " << totalTime << "\n\n";
+		benchmarkFile << "\t" << "<----------------------- END ----------------------->";
+
+		benchmarkFile.close();
+	}
 }

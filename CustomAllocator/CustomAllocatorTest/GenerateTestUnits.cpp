@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 const int GenerateTestUnits::numberObjectsAllocated = 10;
-const int GenerateTestUnits::numberAllocations = 200;
+const int GenerateTestUnits::numberAllocations = 100;
 
 /*
 	Method used to generate test units based on a distribution
@@ -81,41 +81,76 @@ void GenerateTestUnits::generateTU()
 */
 void GenerateTestUnits::loadTU()
 {
-	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
-	const int fileLength = numberAllocations * 9 + numberAllocations * 5;
-	int objectId = 0, objectSize = 0, offset = 0;
-	char instruction, buffer[fileLength];
-	char* test[numberObjectsAllocated];
+	//inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 
-	inputTU.seekg(0, inputTU.beg);
-	inputTU.read(buffer, fileLength);
-	inputTU.close();
+	//const int fileLength = numberAllocations * 9 + numberAllocations * 5;
+	//int objectId = 0, objectSize = 0, offset = 0;
+	//char instruction, buffer[fileLength];
+	//char* test[numberObjectsAllocated];
+
+	//inputTU.seekg(0, inputTU.beg);
+	//inputTU.read(buffer, fileLength);
+	//inputTU.close();
+
+	//for (int it = 0; it < numberObjectsAllocated; it++)
+	//{
+	//	test[it] = nullptr;
+	//}
+
+	//while (offset < fileLength)
+	//{
+	//	instruction = *reinterpret_cast<char*>(buffer + offset);
+	//	offset += 1;
+	//	if (instruction == 'A')
+	//	{
+	//		// Allocate new object
+	//		objectId = *reinterpret_cast<int*>(buffer + offset);
+	//		offset += 4;
+	//		objectSize = *reinterpret_cast<int*>(buffer + offset);
+	//		test[objectId] = new char[objectSize];
+	//	}
+	//	else
+	//	{
+	//		// Deallocate object
+	//		objectId = *reinterpret_cast<int*>(buffer + offset);
+	//		delete[] test[objectId];
+	//	}
+	//	offset += 4;
+	//}
+
+	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
+
+	int objectId = 0, objectSize = 0, countInstructions = 0, instructionNumber = numberAllocations * 2;
+	char* test[numberObjectsAllocated];
+	char instruction;
 
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		test[it] = nullptr;
 	}
 
-	while (offset < fileLength)
+	while (countInstructions < instructionNumber)
 	{
-		instruction = *reinterpret_cast<char*>(buffer + offset);
-		offset += 1;
+		inputTU.read(reinterpret_cast<char*>(&instruction), sizeof(instruction));
+
 		if (instruction == 'A')
 		{
 			// Allocate new object
-			objectId = *reinterpret_cast<int*>(buffer + offset);
-			offset += 4;
-			objectSize = *reinterpret_cast<int*>(buffer + offset);
+			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
+			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
 			test[objectId] = new char[objectSize];
 		}
 		else
 		{
 			// Deallocate object
-			objectId = *reinterpret_cast<int*>(buffer + offset);
+			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
 			delete[] test[objectId];
 		}
-		offset += 4;
+
+		countInstructions++;
 	}
+
+	inputTU.close();
 }
 
 

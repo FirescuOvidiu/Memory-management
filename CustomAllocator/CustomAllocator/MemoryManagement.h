@@ -21,7 +21,7 @@ public:
 private:
 	Strategy* customAllocator;
 	DiagnosticTools* diagTools;
-	BenchMarking timer;
 	diagnosticTypes diagType;
+	BenchMarking timer;
 	int context, poolSize;
 };
