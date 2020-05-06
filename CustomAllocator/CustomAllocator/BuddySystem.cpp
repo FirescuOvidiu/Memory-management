@@ -92,7 +92,7 @@ std::istream& BuddySystem::read(std::istream& input)
 		if (lengthMAvailable > 0)
 		{
 			// Insert into the set the elements read from the file
-			for (int it = 0; it < lengthMAvailable; it++)
+			for (int it = 0; it < (int)lengthMAvailable; it++)
 			{
 				input >> poolElement;
 				aux.insert(poolElement);
@@ -106,7 +106,7 @@ std::istream& BuddySystem::read(std::istream& input)
 	mAllocated.clear();
 	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
 	// Insert into the set the elements from the file
-	for (int it = 0; it < lengthMAllocated; it++)
+	for (int it = 0; it < (int)lengthMAllocated; it++)
 	{
 		input >> poolElement;
 		mAllocated.insert(poolElement);
@@ -128,7 +128,7 @@ void* __cdecl BuddySystem::allocMemory(size_t aSize, int /*aBlockUse*/, char con
 
 	// We parse memory available and search for a block of memory that is 
 	// bigger or equal to aSize
-	while ((position < mAvailable.size()) && (mAvailable[position].empty()))
+	while ((position < (int)mAvailable.size()) && (mAvailable[position].empty()))
 	{
 		position++;
 	}
@@ -211,11 +211,11 @@ bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
 {
 	// If we don't have enough memory available or 
 	// The biggest contiguous memory is smaller than the memory requested
-	if (position >= mAvailable.size())
+	if (position >= (int)mAvailable.size())
 	{
 		// Find the biggest continuous memory available
 		position = (int)std::ceil(log2(aSize));
-		if (position >= mAvailable.size())
+		if (position >= (int)mAvailable.size())
 		{
 			position = (int)mAvailable.size() - 1;
 		}

@@ -156,7 +156,7 @@ std::string Logger::getCurrentTime()
 */
 void Logger::writingToFile()
 {
-	for (int currLevel = 0; currLevel < outputMessages.size(); currLevel++)
+	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
 	{
 		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
@@ -173,7 +173,7 @@ void Logger::writingToFile()
 */
 void Logger::writingToConsole()
 {
-	for (int currLevel = 0; currLevel < outputMessages.size(); currLevel++)
+	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
 	{
 		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{

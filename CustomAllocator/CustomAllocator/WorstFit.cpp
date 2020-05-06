@@ -78,7 +78,7 @@ std::istream& WorstFit::read(std::istream& input)
 	mAllocated.clear();
 	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
 	// Insert into the set the elements read from the file
-	for (int it = 0; it < lengthMAllocated; it++)
+	for (int it = 0; it < (int)lengthMAllocated; it++)
 	{
 		input >> poolElement;
 		mAllocated.insert(poolElement);

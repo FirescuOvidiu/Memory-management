@@ -183,6 +183,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BenchMarking.h" />
     <ClInclude Include="BuddySystem.h" />
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="DiagnoseExternalFragmentation.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BenchMarking.cpp" />
     <ClCompile Include="BuddySystem.cpp" />
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="DiagnoseExternalFragmentation.cpp" />

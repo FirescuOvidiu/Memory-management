@@ -97,7 +97,13 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 */
 void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	timer.startTimer();
+	void * address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	timer.stopTimer();
+
+	return address;
+
+	// return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
@@ -106,7 +112,9 @@ void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char co
 */
 void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 {
+	timer.startTimer();
 	customAllocator->freeMemory(aBlock, aBlockUse);
+	timer.stopTimer();
 }
 
 
