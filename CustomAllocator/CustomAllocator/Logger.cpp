@@ -7,7 +7,7 @@
 */
 void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 {
-	if ((m_logType == LogType::No_Log) || (!m_logLevels[(int)LogLevel]) || (message == ""))
+	if ((logType == LogType::No_Log) || (!logLevels[(int)LogLevel]) || (message == ""))
 	{
 		return;
 	}
@@ -44,17 +44,17 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 */
 void Logger::initLogger(size_t poolSize, char* startAddress)
 {
-	if (m_logType == LogType::No_Log)
+	if (logType == LogType::No_Log)
 	{
 		return;
 	}
 
-	m_loggerFile.open("LogFile.log", std::ofstream::out);
+	loggerFile.open("LogFile.log", std::ofstream::out);
 
-	switch (m_logType)
+	switch (logType)
 	{
 	case LogType::File_Log:
-		m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
+		loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
 		break;
 	case LogType::Console_Log:
 		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
@@ -63,11 +63,11 @@ void Logger::initLogger(size_t poolSize, char* startAddress)
 		break;
 	}
 
-	m_logLevels.resize(3);
+	logLevels.resize(3);
 
-	m_logLevels[(int)Log_Levels::Log_Level_Info] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Warning] = true;
-	m_logLevels[(int)Log_Levels::Log_Level_Error] = true;
+	logLevels[(int)Log_Levels::Log_Level_Info] = true;
+	logLevels[(int)Log_Levels::Log_Level_Warning] = true;
+	logLevels[(int)Log_Levels::Log_Level_Error] = true;
 
 	outputMessages.resize(3);
 
@@ -119,7 +119,7 @@ void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggest
 */
 void Logger::increaseAllocOrDealloc(const int size)
 {
-	if (m_logType == LogType::No_Log)
+	if (logType == LogType::No_Log)
 	{
 		return;
 	}
@@ -127,7 +127,8 @@ void Logger::increaseAllocOrDealloc(const int size)
 	if (size < 0)
 	{
 		numberAllocations++;
-		countBlocksAllocated[(-size) * 100 / totalMemory]++;
+		//countBlocksAllocated[(-size) * 100 / totalMemory]++;
+
 	}
 	else
 	{
@@ -158,13 +159,13 @@ void Logger::writingToFile()
 {
 	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
 	{
-		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
+		if ((logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
-			m_loggerFile << outputMessages[currLevel] << "\n\n\n";
+			loggerFile << outputMessages[currLevel] << "\n\n\n";
 		}
 	}
 
-	m_loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
+	loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 }
 
 
@@ -175,7 +176,7 @@ void Logger::writingToConsole()
 {
 	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
 	{
-		if ((m_logLevels[currLevel]) && (outputMessages[currLevel] != ""))
+		if ((logLevels[currLevel]) && (outputMessages[currLevel] != ""))
 		{
 			std::cout << outputMessages[currLevel] << "\n\n\n";
 		}
@@ -190,13 +191,13 @@ void Logger::writingToConsole()
 */
 Logger::~Logger()
 {
-	if (m_logType != LogType::No_Log)
+	if (logType != LogType::No_Log)
 	{
 		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations), LogLevel::Log_Level_Info);
 		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations), LogLevel::Log_Level_Info);
 
 
-		switch (m_logType)
+		switch (logType)
 		{
 		case LogType::File_Log:
 			writingToFile();
@@ -209,6 +210,6 @@ Logger::~Logger()
 		default:
 			break;
 		}
-		m_loggerFile.close();
+		loggerFile.close();
 	}
 }

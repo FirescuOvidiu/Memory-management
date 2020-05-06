@@ -32,7 +32,7 @@ typedef enum class Log_Types
 class Logger
 {
 public:
-	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100), m_logType(LogType::File_Log) {}
+	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100), logType(LogType::File_Log) {}
 
 	void initLogger(size_t poolSize, char* startAddresss);
 	void updateWarningLog(size_t poolSize);
@@ -49,9 +49,9 @@ private:
 	static std::string getCurrentTime();
 
 private:
-	std::ofstream m_loggerFile;
-	std::vector<bool> m_logLevels;
-	LogType m_logType;
+	std::ofstream loggerFile;
+	std::vector<bool> logLevels;
+	LogType logType;
 
 	std::vector<std::string> outputMessages;
 	std::vector<int> countBlocksAllocated;
