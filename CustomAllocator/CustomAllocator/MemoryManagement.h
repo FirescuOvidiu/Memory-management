@@ -7,7 +7,7 @@
 class MemoryManagement
 {
 public:
-	MemoryManagement(const int context = 0, const int poolSize = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic);
+	MemoryManagement(const int context = 0, const int poolSize = 0, const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic, const benchMarkingTypes benchmarkType = benchMarkingTypes::No_BenchMark);
 	friend std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement);
 	friend std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement);
 
@@ -23,5 +23,6 @@ private:
 	DiagnosticTools* diagTools;
 	diagnosticTypes diagType;
 	BenchMarking timer;
+	benchMarkingTypes benchmarkType;
 	int context, poolSize;
 };

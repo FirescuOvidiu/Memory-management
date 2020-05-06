@@ -4,8 +4,8 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType) : 
-	context(context), poolSize(poolSize), diagType(diagType), diagTools(nullptr)
+MemoryManagement::MemoryManagement(const int context, const int poolSize, const diagnosticTypes diagType, const benchMarkingTypes benchmarkType) :
+	context(context), poolSize(poolSize), diagType(diagType), benchmarkType(benchmarkType), diagTools(nullptr)
 {
 	switch (context)
 	{
@@ -97,13 +97,21 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 */
 void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	//timer.startTimer();
-	//void * address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
-	//timer.stopTimer();
+	if (benchmarkType != BenchMarking_Types::No_BenchMark)
+	{
+		return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	}
+	else
+	{
+		if (benchmarkType != BenchMarking_Types::Deallocation_BenchMark)
+		{
+			timer.startTimer();
+			void* address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+			timer.stopTimer();
 
-	//return address;
-
-	return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+			return address;
+		}
+	}
 }
 
 
@@ -112,11 +120,19 @@ void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char co
 */
 void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 {
-	//timer.startTimer();
-	//customAllocator->freeMemory(aBlock, aBlockUse);
-	//timer.stopTimer();
-
-	customAllocator->freeMemory(aBlock, aBlockUse);
+	if (benchmarkType != BenchMarking_Types::No_BenchMark)
+	{
+		customAllocator->freeMemory(aBlock, aBlockUse);
+	}
+	else
+	{
+		if (benchmarkType != BenchMarking_Types::Allocation_BenchMark)
+		{
+			timer.startTimer();
+			customAllocator->freeMemory(aBlock, aBlockUse);
+			timer.stopTimer();
+		}
+	}
 }
 
 

@@ -1,6 +1,15 @@
 #pragma once
 
 
+typedef enum class BenchMarking_Types
+{
+	No_BenchMark = 1,
+	Allocation_BenchMark = 2,
+	Deallocation_BenchMark = 3,
+	AllocationAndDeallocation_BenchMark = 4
+}benchMarkingTypes;
+
+
 class BenchMarking
 {
 public:

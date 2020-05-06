@@ -26,6 +26,9 @@ void BenchMarking::stopTimer()
 }
 
 
+/*
+	Destructor used to write into a file the results of the benchmarking
+*/
 BenchMarking::~BenchMarking()
 {
 	if (totalTime != 0)
