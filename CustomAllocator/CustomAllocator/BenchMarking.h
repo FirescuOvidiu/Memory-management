@@ -10,6 +10,7 @@ public:
 	void stopTimer();
 
 	~BenchMarking();
+
 private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> startTimePoint;
 	long long totalTime;
