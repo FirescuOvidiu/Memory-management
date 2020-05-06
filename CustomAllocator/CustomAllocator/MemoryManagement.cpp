@@ -97,20 +97,17 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 */
 void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	if (benchmarkType != BenchMarking_Types::No_BenchMark)
+	if ((benchmarkType == BenchMarking_Types::No_BenchMark) || (benchmarkType == BenchMarking_Types::Deallocation_BenchMark))
 	{
 		return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 	}
 	else
 	{
-		if (benchmarkType != BenchMarking_Types::Deallocation_BenchMark)
-		{
-			timer.startTimer();
-			void* address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
-			timer.stopTimer();
+		timer.startTimer();
+		void* address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+		timer.stopTimer();
 
-			return address;
-		}
+		return address;
 	}
 }
 
@@ -120,18 +117,15 @@ void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char co
 */
 void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 {
-	if (benchmarkType != BenchMarking_Types::No_BenchMark)
+	if ((benchmarkType == BenchMarking_Types::No_BenchMark) || (benchmarkType == BenchMarking_Types::Allocation_BenchMark))
 	{
 		customAllocator->freeMemory(aBlock, aBlockUse);
 	}
 	else
 	{
-		if (benchmarkType != BenchMarking_Types::Allocation_BenchMark)
-		{
-			timer.startTimer();
-			customAllocator->freeMemory(aBlock, aBlockUse);
-			timer.stopTimer();
-		}
+		timer.startTimer();
+		customAllocator->freeMemory(aBlock, aBlockUse);
+		timer.stopTimer();
 	}
 }
 
