@@ -171,6 +171,33 @@ std::pair<int, int> WorstFit::getCurrentState() const
 }
 
 
+void WorstFit::showCurrentState() const
+{
+	std::ofstream excelGraphs("worstFitState.txt", std::ofstream::out);
+	std::list<PoolElement> auxMAvailable = mAvailable;
+	PoolElement previousBlock(startAddress, 0);
+
+	auxMAvailable.sort();
+
+	for (const auto& currAvailableBlock : auxMAvailable)
+	{
+		if (currAvailableBlock.address != startAddress)
+		{
+			excelGraphs << currAvailableBlock.address - previousBlock.address + previousBlock.size << "\n";
+		}
+		excelGraphs << currAvailableBlock.size << "\n";
+		previousBlock = currAvailableBlock;
+	}
+
+	if ((!auxMAvailable.empty()) && (auxMAvailable.back().address + auxMAvailable.back().size != startAddress + poolSize))
+	{
+		excelGraphs << startAddress + poolSize - auxMAvailable.back().address + auxMAvailable.back().size << "\n";
+	}
+
+	excelGraphs.close();
+}
+
+
 /*
 	Check if we can't allocate memory for the user because different reasons
 */

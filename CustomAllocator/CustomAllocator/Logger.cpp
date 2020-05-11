@@ -50,6 +50,7 @@ void Logger::initLogger(size_t poolSize, char* startAddress)
 	}
 
 	loggerFile.open("LogFile.log", std::ofstream::out);
+	excelGraphs.open("excelGraphs.txt", std::ofstream::out);
 
 	switch (logType)
 	{
@@ -127,6 +128,7 @@ void Logger::increaseAllocOrDealloc(const int size)
 	if (size < 0)
 	{
 		numberAllocations++;
+		excelGraphs << -size << "\n";
 		//countBlocksAllocated[(-size) * 100 / totalMemory]++;
 
 	}
@@ -211,5 +213,6 @@ Logger::~Logger()
 			break;
 		}
 		loggerFile.close();
+		excelGraphs.close();
 	}
 }

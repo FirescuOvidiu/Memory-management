@@ -145,6 +145,7 @@ void MemoryManagement::evaluateFragmentation()
 		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(customAllocator)->getCurrentState());
 		break;
 	}
+	static_cast<WorstFit*>(customAllocator)->showCurrentState();
 }
 
 
