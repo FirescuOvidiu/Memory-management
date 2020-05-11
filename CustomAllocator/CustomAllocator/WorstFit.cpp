@@ -173,7 +173,7 @@ std::pair<int, int> WorstFit::getCurrentState() const
 
 void WorstFit::showCurrentState() const
 {
-	std::ofstream excelGraphs("worstFitState.txt", std::ofstream::out);
+	std::ofstream output("worstFitState.txt", std::ofstream::out);
 	std::list<PoolElement> auxMAvailable = mAvailable;
 	PoolElement previousBlock(startAddress, 0);
 
@@ -183,18 +183,18 @@ void WorstFit::showCurrentState() const
 	{
 		if (currAvailableBlock.address != startAddress)
 		{
-			excelGraphs << currAvailableBlock.address - previousBlock.address + previousBlock.size << "\n";
+			output << currAvailableBlock.address - previousBlock.address + previousBlock.size << "\n";
 		}
-		excelGraphs << currAvailableBlock.size << "\n";
+		output << currAvailableBlock.size << "\n";
 		previousBlock = currAvailableBlock;
 	}
 
 	if ((!auxMAvailable.empty()) && (auxMAvailable.back().address + auxMAvailable.back().size != startAddress + poolSize))
 	{
-		excelGraphs << startAddress + poolSize - auxMAvailable.back().address + auxMAvailable.back().size << "\n";
+		output << startAddress + poolSize - auxMAvailable.back().address + auxMAvailable.back().size << "\n";
 	}
 
-	excelGraphs.close();
+	output.close();
 }
 
 

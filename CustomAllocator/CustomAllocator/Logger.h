@@ -49,7 +49,7 @@ private:
 	static std::string getCurrentTime();
 
 private:
-	std::ofstream excelGraphs;
+	std::ofstream sizeAllocations;
 	std::ofstream loggerFile;
 	std::vector<bool> logLevels;
 	LogType logType;
