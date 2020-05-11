@@ -171,26 +171,45 @@ std::pair<int, int> WorstFit::getCurrentState() const
 }
 
 
+/*
+	Methods used to store into a file the state of the memory file
+	The file will be imported into excel and make a chart with the information present
+*/
 void WorstFit::showCurrentState() const
 {
 	std::ofstream output("worstFitState.txt", std::ofstream::out);
 	std::list<PoolElement> auxMAvailable = mAvailable;
 	PoolElement previousBlock(startAddress, 0);
 
+	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
+	/*
+		Parse the memory available
+		The memory available is continuous that means we cant have in the list mAvailable 
+		2 consecutive blocks of memory available because they would be merged
+		Because of this we always have 1 block available, 1 block allocated, 1 block available, 1 block allocated and so on
+	 */
 	for (const auto& currAvailableBlock : auxMAvailable)
 	{
+		// Write the allocated memory size
+		// Checking if the block of memory at the start address is allocated/available
 		if (currAvailableBlock.address != startAddress)
 		{
+			// The size of the allocated block is the current available block - previous available block + previous available block size
 			output << currAvailableBlock.address - previousBlock.address + previousBlock.size << "\n";
 		}
+
+		// Write the available memory size
 		output << currAvailableBlock.size << "\n";
 		previousBlock = currAvailableBlock;
 	}
 
+	// Checking if the last block of memory is allocated
 	if ((!auxMAvailable.empty()) && (auxMAvailable.back().address + auxMAvailable.back().size != startAddress + poolSize))
 	{
+		// Same principle as above only change is that the currAvailableBlock is startAddress + poolSize
+		// and in this case the previousBlock is auxMAvailable.back()
 		output << startAddress + poolSize - auxMAvailable.back().address + auxMAvailable.back().size << "\n";
 	}
 
