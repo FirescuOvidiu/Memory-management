@@ -23,16 +23,18 @@ typedef enum class Log_Types
 /*
 	This class is used to store informations about the T.U. and allocator. 
 	The Logger stores information based on the level of the log:
-		For Log_Level_Info stores information about: the size of the memory pool, start address, numar of allocation/deallocations
-		For Log_Level_warning stores informations about: deallocating invalid addresses, memory leaks
-		For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc
+		For Log_Level_Info stores information about: the size of the memory pool, numar of allocation and deallocations,
+		memory available at a time, allocations size
+		For Log_Level_warning stores informations about memory leaks
+		For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc and 
+		cases when the program fails due to user trying to deallocate an invalid addresses
 
-	At the end of the program all the informations will be written into a file LogFile.log
+	At the end of the program all the informations will be written into a file LogFile.log or written on screen
 */
 class Logger
 {
 public:
-	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100), logType(LogType::File_Log) {}
+	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), logType(LogType::File_Log) {}
 
 	void initLogger(size_t poolSize);
 	void updateWarningLog(size_t poolSize);
@@ -55,7 +57,6 @@ private:
 	LogType logType;
 
 	std::vector<std::string> outputMessages;
-	std::vector<int> countBlocksAllocated;
 
 	int numberAllocations;
 	int numberDeallocations;

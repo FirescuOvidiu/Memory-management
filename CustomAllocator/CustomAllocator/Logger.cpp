@@ -125,8 +125,6 @@ void Logger::increaseAllocOrDealloc(const int size)
 	{
 		numberAllocations++;
 		allocationsSizeFile << -size << "\n";
-		//countBlocksAllocated[(-size) * 100 / totalMemory]++;
-
 	}
 	else
 	{
