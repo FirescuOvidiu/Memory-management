@@ -3,17 +3,20 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManagement(1, 4096, diagnosticTypes::Console_Diagnostic, BenchMarking_Types::Allocation_BenchMark);
+MemoryManagement memoryManagement(1, 4096, diagnosticTypes::Console_Diagnostic, benchMarkingTypes::AllocationAndDeallocation_BenchMark);
+
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
 	return CustomAllocator_Malloc(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
+
 void __cdecl CustomAllocator_Delete(void * aBlock, int aBlockUse, char const * aFileName, int aLineNumber) noexcept
 {
 	CustomAllocator_Free(aBlock, aBlockUse, aFileName, aLineNumber);
 }
+
 
 void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
@@ -23,6 +26,7 @@ void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * 
 	return memoryManagement.allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
+
 void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*aFileName*/, int /*aLineNumber*/)
 {
 	// default CRT implementation
@@ -31,10 +35,12 @@ void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*a
 	memoryManagement.freeMemory(aBlock, aBlockUse);
 }
 
+
 void evaluateFragmentationState()
 {
 	memoryManagement.evaluateFragmentation();
 }
+
 
 void serialization()
 {
@@ -44,6 +50,7 @@ void serialization()
 
 	output.close();
 }
+
 
 void deserialization()
 {
