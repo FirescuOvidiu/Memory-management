@@ -10,7 +10,7 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
 	// Initialize data members of logger
-	log.initLogger(poolSize, startAddress);
+	log.initLogger(poolSize);
 }
 
 

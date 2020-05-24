@@ -17,7 +17,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
 
 	// Initialize data members of logger
-	log.initLogger(poolSize, startAddress);
+	log.initLogger(poolSize);
 }
 
 

@@ -42,7 +42,7 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 /*
 	Method used to initialize the log
 */
-void Logger::initLogger(size_t poolSize, char* startAddress)
+void Logger::initLogger(size_t poolSize)
 {
 	if (logType == LogType::No_Log)
 	{
@@ -74,10 +74,6 @@ void Logger::initLogger(size_t poolSize, char* startAddress)
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
 	totalMemory = totalMemoryAvailable = (int)poolSize;
-
-	std::stringstream ss;
-	ss << static_cast<void*>(startAddress);
-	updateLog("Start address: " + ss.str(), LogLevel::Log_Level_Info);
 }
 
 

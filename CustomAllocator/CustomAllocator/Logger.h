@@ -34,7 +34,7 @@ class Logger
 public:
 	Logger() : numberAllocations(0), numberDeallocations(0), totalMemory(0), totalMemoryAvailable(0), countBlocksAllocated(100), logType(LogType::File_Log) {}
 
-	void initLogger(size_t poolSize, char* startAddresss);
+	void initLogger(size_t poolSize);
 	void updateWarningLog(size_t poolSize);
 	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
 
