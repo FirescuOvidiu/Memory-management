@@ -2,7 +2,7 @@
 
 
 /*
-	Class used to implement a custom allocator that uses the buddy system algorithm to allocate/deallocate memory
+	Class used to implement a custom allocator that uses the buddy system algorithm to allocate and deallocate memory
 */
 class BuddySystem : public Strategy
 {
@@ -30,7 +30,7 @@ private:
 
 private:
 	char* startAddress;					// Start address of the memory pool
-	std::vector<std::set<PoolElement>> mAvailable; 	// Stores the memory unallocated sorted ascending by the size
+	std::vector<std::set<PoolElement>> mAvailable; 	// Stores the memory unallocated sorted ascending by the address
 	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
 	std::size_t poolSize;				// The size of the memory pool
 };
