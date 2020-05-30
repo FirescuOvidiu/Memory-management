@@ -31,11 +31,12 @@ MemoryManagement::MemoryManagement(const strategyType context, const int poolSiz
 std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement)
 {
 	int diagType = static_cast<int>(memoryManagement.diagType);
+	int strategyType = static_cast<int>(memoryManagement.context);
 
 	// Serialize the data members by writing their content in the output file
-	output.write(reinterpret_cast<const char*>(&memoryManagement.context), sizeof(memoryManagement.context));
+	output.write(reinterpret_cast<const char*>(&strategyType), sizeof(strategyType));
 	output.write(reinterpret_cast<const char*>(&memoryManagement.poolSize), sizeof(memoryManagement.poolSize));
-	output.write(reinterpret_cast<const char*>(&diagType), sizeof(int));
+	output.write(reinterpret_cast<const char*>(&diagType), sizeof(diagType));
 
 	// Serialize the objects present in this class
 	output << (*memoryManagement.customAllocator);
@@ -49,17 +50,16 @@ std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryMan
 */
 std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement)
 {
-	int diagType = 0;
+	int newStrategyType = 0, newDiagType = 0;
 
 	// Deserialize data members by reading their content from the input file
-	input.read(reinterpret_cast<char*>(&memoryManagement.context), sizeof(memoryManagement.context));
+	input.read(reinterpret_cast<char*>(&newStrategyType), sizeof(newStrategyType));
 	input.read(reinterpret_cast<char*>(&memoryManagement.poolSize), sizeof(memoryManagement.poolSize));
-	input.read(reinterpret_cast<char*>(&diagType), sizeof(int));
+	input.read(reinterpret_cast<char*>(&newDiagType), sizeof(newDiagType));
 
-	memoryManagement.diagType = static_cast<diagnosticType>(diagType);
-
-	// Delete the current allocated objects and allocate and initialize them 
-	// based on the data from the input file
+	memoryManagement.diagType = static_cast<diagnosticType>(newDiagType);
+	memoryManagement.context = static_cast<strategyType>(newStrategyType);
+	// Delete the current allocated objects. After deleting, allocate and initialize them based on the data from the input file
 	if (memoryManagement.customAllocator != nullptr)
 	{
 		delete memoryManagement.customAllocator;
