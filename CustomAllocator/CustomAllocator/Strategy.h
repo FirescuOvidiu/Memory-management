@@ -2,6 +2,13 @@
 #include "stdafx.h"
 
 
+typedef enum class Strategy_Types
+{
+	WorstFit,
+	BuddySystem
+}strategyType;
+
+
 /*
 	Represents the base class for all the custom allocators
 */
