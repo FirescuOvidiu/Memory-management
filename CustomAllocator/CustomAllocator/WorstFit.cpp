@@ -165,7 +165,10 @@ std::pair<int, int> WorstFit::getCurrentState() const
 	}
 
 	memoryAvailable = (int)poolSize - memoryAllocated;
-	biggestContMemory = (int)(*(mAvailable.begin())).size;
+	if (!mAvailable.empty())
+	{
+		biggestContMemory = (int)(*(mAvailable.begin())).size;
+	}
 
 	return std::make_pair(biggestContMemory, memoryAvailable);
 }

@@ -8,7 +8,11 @@ void DiagnoseExternalFragmentation::evaluateFragmentation(const std::pair<int, i
 {
 	int biggestContMemory = currentState.first;
 	int memoryAvailable = currentState.second;
-	double fragmentationState = (1 - (double)biggestContMemory / memoryAvailable) * totalMemory;
+	double fragmentationState = 1;
 
+	if (memoryAvailable > 0)
+	{
+		fragmentationState = (1 - (double)biggestContMemory / memoryAvailable) * totalMemory;
+	}
 	showFragmentationState(fragmentationState);
 }
