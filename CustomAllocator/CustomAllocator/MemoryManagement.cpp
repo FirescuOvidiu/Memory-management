@@ -4,7 +4,7 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const strategyType context, const int poolSize, const diagnosticTypes diagType, const benchMarkingTypes benchmarkType) :
+MemoryManagement::MemoryManagement(const strategyType context, const int poolSize, const diagnosticType diagType, const benchMarkingType benchmarkType) :
 	context(context), poolSize(poolSize), diagType(diagType), benchmarkType(benchmarkType), diagTools(nullptr)
 {
 	switch (context)
@@ -56,7 +56,7 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 	input.read(reinterpret_cast<char*>(&memoryManagement.poolSize), sizeof(memoryManagement.poolSize));
 	input.read(reinterpret_cast<char*>(&diagType), sizeof(int));
 
-	memoryManagement.diagType = static_cast<diagnosticTypes>(diagType);
+	memoryManagement.diagType = static_cast<diagnosticType>(diagType);
 
 	// Delete the current allocated objects and allocate and initialize them 
 	// based on the data from the input file

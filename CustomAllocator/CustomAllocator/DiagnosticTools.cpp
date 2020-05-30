@@ -9,7 +9,7 @@ void DiagnosticTools::showFragmentationState(double fragmentationState)
 {
 	switch (diagType)
 	{
-	case diagnosticTypes::File_Diagnostic:
+	case diagnosticType::File_Diagnostic:
 		diagFile.open("diagInternalFrag.diag", std::ofstream::out);
 
 		diagFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- EVALUATE FRAGMENTATION ----------------------->" << "\n\n";
@@ -21,7 +21,7 @@ void DiagnosticTools::showFragmentationState(double fragmentationState)
 		diagFile.close();
 		break;
 
-	case diagnosticTypes::Console_Diagnostic:
+	case diagnosticType::Console_Diagnostic:
 		std::cout << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- EVALUATE FRAGMENTATION ----------------------->" << "\n\n";
 		std::cout << "\tTotal memory allocated by the memory pool: " << totalMemory << " bytes.\n\n";
 		std::cout << "\tThe number of bytes wasted at this point is: " << fragmentationState << " bytes.\n";

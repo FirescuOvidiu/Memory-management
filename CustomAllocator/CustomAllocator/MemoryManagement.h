@@ -8,7 +8,7 @@ class MemoryManagement
 {
 public:
 	MemoryManagement(const strategyType context = strategyType::WorstFit, const int poolSize = 0, 
-		const diagnosticTypes diagType = diagnosticTypes::No_Diagnostic, const benchMarkingTypes benchmarkType = benchMarkingTypes::No_BenchMark);
+		const diagnosticType diagType = diagnosticType::No_Diagnostic, const benchMarkingType benchmarkType = benchMarkingType::No_BenchMark);
 	friend std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement);
 	friend std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement);
 
@@ -23,8 +23,8 @@ private:
 	Strategy* customAllocator;
 	strategyType context;
 	DiagnosticTools* diagTools;
-	diagnosticTypes diagType;
+	diagnosticType diagType;
 	BenchMarking timer;
-	benchMarkingTypes benchmarkType;
+	benchMarkingType benchmarkType;
 	int poolSize;
 };

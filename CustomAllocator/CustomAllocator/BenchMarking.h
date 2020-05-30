@@ -7,7 +7,7 @@ typedef enum class BenchMarking_Types
 	Allocation_BenchMark = 2,
 	Deallocation_BenchMark = 3,
 	AllocationAndDeallocation_BenchMark = 4
-}benchMarkingTypes;
+}benchMarkingType;
 
 
 class BenchMarking
