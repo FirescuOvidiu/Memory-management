@@ -16,6 +16,7 @@ public:
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
 
 	std::pair<int, int> getCurrentState() const;
+	void showCurrentState() const;
 
 	~BuddySystem();
 

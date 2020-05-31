@@ -205,6 +205,16 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 
 
 /*
+	Methods used to store into a file the state of the memory
+	The file will be imported into excel and make a chart with the information present
+*/
+void BuddySystem::showCurrentState() const
+{
+
+}
+
+
+/*
 	Check if we can't allocate memory for the user because different reasons
 */
 bool BuddySystem::checkBadAlloc(size_t aSize, int& position)
