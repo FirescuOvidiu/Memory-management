@@ -36,7 +36,7 @@ BenchMarking::~BenchMarking()
 		benchmarkFile.open("benchmark.txt", std::ofstream::out);
 
 		benchmarkFile << std::setprecision(2) << std::fixed << "\n\n\t" << "<----------------------- BENCHMARKING ----------------------->" << "\n\n";
-		benchmarkFile << "\tTotal time: " << totalTime << " microseconds ("<< totalTime*00.1<<" milliseconds).\n\n";
+		benchmarkFile << "\tTotal time: " << totalTime << " microseconds (" << totalTime * 0.001 << " milliseconds).\n\n";
 		benchmarkFile << "\t" << "<----------------------- END ----------------------->";
 
 		benchmarkFile.close();
