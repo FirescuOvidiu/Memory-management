@@ -224,28 +224,27 @@ void BuddySystem::showCurrentState() const
 	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
+	// Merge adjacent blocks of memory available
 	auto firstBlock = auxMAvailable.begin(), secondBlock = auxMAvailable.begin();
 	while (firstBlock != auxMAvailable.end())
 	{
 		secondBlock = std::next(firstBlock, 1);
-		while (secondBlock != auxMAvailable.end())
+		while (secondBlock != auxMAvailable.end() && (firstBlock->address + firstBlock->size == secondBlock->address))
 		{
-			if (firstBlock->address + firstBlock->size != secondBlock->address)
-			{
-				firstBlock->size += secondBlock->size;
-				secondBlock = auxMAvailable.erase(secondBlock);
-				continue;
-			}
-			secondBlock++;
+			firstBlock->size += secondBlock->size;
+			secondBlock = auxMAvailable.erase(secondBlock);
+			continue;
 		}
 		firstBlock++;
 	}
 
+	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
+	std::set<PoolElement>::const_iterator currAllocatedBlock = mAllocated.cbegin();
 
-	std::list<PoolElement>::iterator currAvailableBlock = auxMAvailable.begin();
-	std::set<PoolElement>::iterator currAllocatedBlock = mAllocated.begin();
-
-	while (currAvailableBlock != auxMAvailable.end() && currAllocatedBlock != mAllocated.end())
+	// We have two structures sorted by address and we need to write 
+	// into a file the elements from the both structures sorted by address
+	// We parse the structures simultaneous and compare the elements
+	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != mAllocated.cend())
 	{
 		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
 		{
@@ -262,11 +261,11 @@ void BuddySystem::showCurrentState() const
 		currAllocatedBlock++;
 	}
 
-	if (currAvailableBlock != auxMAvailable.end())
+	if (currAvailableBlock != auxMAvailable.cend())
 	{
 		output << currAvailableBlock->size << "\n";
 	}
-	if (currAllocatedBlock != mAllocated.end())
+	if (currAllocatedBlock != mAllocated.cend())
 	{
 		output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
 	}
