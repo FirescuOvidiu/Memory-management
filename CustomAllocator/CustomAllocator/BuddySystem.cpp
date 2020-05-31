@@ -210,7 +210,68 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 */
 void BuddySystem::showCurrentState() const
 {
+	std::ofstream output("memoryState.txt", std::ofstream::out);
+	std::list<PoolElement> auxMAvailable;
 
+	for (const auto& currAvailableBlocks : mAvailable)
+	{
+		for (const auto& availableBlock : currAvailableBlocks)
+		{
+			auxMAvailable.push_back(availableBlock);
+		}
+	}
+
+	// Sorting the list of memory available by address
+	auxMAvailable.sort();
+
+	auto firstBlock = auxMAvailable.begin(), secondBlock = auxMAvailable.begin();
+	while (firstBlock != auxMAvailable.end())
+	{
+		secondBlock = std::next(firstBlock, 1);
+		while (secondBlock != auxMAvailable.end())
+		{
+			if (firstBlock->address + firstBlock->size != secondBlock->address)
+			{
+				firstBlock->size += secondBlock->size;
+				secondBlock = auxMAvailable.erase(secondBlock);
+				continue;
+			}
+			secondBlock++;
+		}
+		firstBlock++;
+	}
+
+
+	std::list<PoolElement>::iterator currAvailableBlock = auxMAvailable.begin();
+	std::set<PoolElement>::iterator currAllocatedBlock = mAllocated.begin();
+
+	while (currAvailableBlock != auxMAvailable.end() && currAllocatedBlock != mAllocated.end())
+	{
+		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
+		{
+			output << currAvailableBlock->size << "\n";
+			output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+		}
+		else
+		{
+			output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+			output << currAvailableBlock->size << "\n";
+		}
+
+		currAvailableBlock++;
+		currAllocatedBlock++;
+	}
+
+	if (currAvailableBlock != auxMAvailable.end())
+	{
+		output << currAvailableBlock->size << "\n";
+	}
+	if (currAllocatedBlock != mAllocated.end())
+	{
+		output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+	}
+
+	output.close();
 }
 
 
