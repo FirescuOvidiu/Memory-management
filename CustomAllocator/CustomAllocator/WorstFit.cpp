@@ -180,40 +180,39 @@ std::pair<int, int> WorstFit::getCurrentState() const
 */
 void WorstFit::showCurrentState() const
 {
-	std::ofstream output("worstFitState.txt", std::ofstream::out);
+	std::ofstream output("memoryState.txt", std::ofstream::out);
 	std::list<PoolElement> auxMAvailable = mAvailable;
-	PoolElement previousBlock(startAddress, 0);
 
 	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
-	/*
-		Parse the memory available
-		The memory available is continuous that means we cant have in the list mAvailable 
-		2 consecutive blocks of memory available because they would be merged
-		Because of this we always have 1 block available, 1 block allocated, 1 block available, 1 block allocated and so on
-	 */
-	for (const auto& currAvailableBlock : auxMAvailable)
+	std::list<PoolElement>::iterator currAvailableBlock = auxMAvailable.begin();
+	std::set<PoolElement>::iterator currAllocatedBlock = mAllocated.begin();
+
+	while (currAvailableBlock != auxMAvailable.end() && currAllocatedBlock != mAllocated.end())
 	{
-		// Write the allocated memory size
-		// Checking if the block of memory at the start address is allocated/available
-		if (currAvailableBlock.address != startAddress)
+		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
 		{
-			// The size of the allocated block is the current available block - previous available block + previous available block size
-			output << currAvailableBlock.address - previousBlock.address + previousBlock.size << "\n";
+			output << currAvailableBlock->size << "\n";
+			output << currAllocatedBlock->size << "\n";
+		}
+		else
+		{
+			output << currAllocatedBlock->size << "\n";
+			output << currAvailableBlock->size << "\n";
 		}
 
-		// Write the available memory size
-		output << currAvailableBlock.size << "\n";
-		previousBlock = currAvailableBlock;
+		currAvailableBlock++;
+		currAllocatedBlock++;
 	}
 
-	// Checking if the last block of memory is allocated
-	if ((!auxMAvailable.empty()) && (auxMAvailable.back().address + auxMAvailable.back().size != startAddress + poolSize))
+	if (currAvailableBlock != auxMAvailable.end())
 	{
-		// Same principle as above only change is that the currAvailableBlock is startAddress + poolSize
-		// and in this case the previousBlock is auxMAvailable.back()
-		output << startAddress + poolSize - auxMAvailable.back().address + auxMAvailable.back().size << "\n";
+		output << currAvailableBlock->size << "\n";
+	}
+	if (currAllocatedBlock != mAllocated.end())
+	{
+		output << currAllocatedBlock->size << "\n";
 	}
 
 	output.close();

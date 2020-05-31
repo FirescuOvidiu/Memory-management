@@ -139,13 +139,14 @@ void MemoryManagement::evaluateFragmentation()
 	{
 	case strategyType::WorstFit:
 		diagTools->evaluateFragmentation(static_cast<WorstFit*>(customAllocator)->getCurrentState());
+		static_cast<WorstFit*>(customAllocator)->showCurrentState();
 		break;
 
 	case strategyType::BuddySystem:
 		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(customAllocator)->getCurrentState());
+		static_cast<BuddySystem*>(customAllocator)->showCurrentState();
 		break;
 	}
-	static_cast<WorstFit*>(customAllocator)->showCurrentState();
 }
 
 
