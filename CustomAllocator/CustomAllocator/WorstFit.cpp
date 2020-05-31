@@ -186,10 +186,13 @@ void WorstFit::showCurrentState() const
 	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
-	std::list<PoolElement>::iterator currAvailableBlock = auxMAvailable.begin();
-	std::set<PoolElement>::iterator currAllocatedBlock = mAllocated.begin();
+	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
+	std::set<PoolElement>::const_iterator currAllocatedBlock = mAllocated.cbegin();
 
-	while (currAvailableBlock != auxMAvailable.end() && currAllocatedBlock != mAllocated.end())
+	// We have two structures sorted by address and we need to write 
+	// into a file the elements from the both structures sorted by address
+	// We parse the structures simultaneous and compare the elements
+	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != mAllocated.cend())
 	{
 		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
 		{
@@ -206,11 +209,11 @@ void WorstFit::showCurrentState() const
 		currAllocatedBlock++;
 	}
 
-	if (currAvailableBlock != auxMAvailable.end())
+	if (currAvailableBlock != auxMAvailable.cend())
 	{
 		output << currAvailableBlock->size << "\n";
 	}
-	if (currAllocatedBlock != mAllocated.end())
+	if (currAllocatedBlock != mAllocated.cend())
 	{
 		output << currAllocatedBlock->size << "\n";
 	}
