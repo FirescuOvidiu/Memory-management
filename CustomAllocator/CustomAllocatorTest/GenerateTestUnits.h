@@ -3,8 +3,8 @@
 class GenerateTestUnits
 {
 public:
-	GenerateTestUnits(int poolSize,  std::pair<int, int> ObjectSize, std::pair<int, int> rangeNumberDeallocations) :
-		poolSize(poolSize), rangeObjectSize(ObjectSize), rangeNumberDeallocations(rangeNumberDeallocations) {}
+	GenerateTestUnits(int poolSize, int numberAllocations, std::pair<int, int> ObjectSize, std::pair<int, int> rangeNumberDeallocations) :
+		poolSize(poolSize), numberAllocations(numberAllocations), rangeObjectSize(ObjectSize), rangeNumberDeallocations(rangeNumberDeallocations) {}
 
 	void generateTU();
 	void loadTU();
@@ -15,7 +15,7 @@ private:
 
 private:
 	static const int numberObjectsAllocated;
-	static const int numberAllocations;
+	int numberAllocations;
 
 	std::ofstream outputTU;
 	std::ifstream inputTU;

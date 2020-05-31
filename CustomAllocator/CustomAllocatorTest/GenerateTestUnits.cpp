@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
-const int GenerateTestUnits::numberObjectsAllocated = 10;
-const int GenerateTestUnits::numberAllocations = 100;
+const int GenerateTestUnits::numberObjectsAllocated = 50;
 
 /*
 	Method used to generate test units based on a distribution
@@ -36,13 +35,16 @@ void GenerateTestUnits::generateTU()
 	std::set<int> storeObjectId;
 	int countAllocations = 0, generatedNumber;
 
+	// Write the number of allocations
+	outputTU.write(reinterpret_cast<const char*>(&numberAllocations), sizeof(numberAllocations));
+
 	// Allocate X objects
 	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
 	{
 		generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
 		outputTU.write("A", sizeof(char));
-		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(int));
-		outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(int));
+		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
+		outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
 		countAllocations++;
 	}
 
@@ -57,8 +59,8 @@ void GenerateTestUnits::generateTU()
 		{
 			generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
 			outputTU.write("A", 1);
-			outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(int));
-			outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(int));
+			outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
+			outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
 			countAllocations++;
 		}
 
@@ -69,7 +71,7 @@ void GenerateTestUnits::generateTU()
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		outputTU.write("D", sizeof(char));
-		outputTU.write(reinterpret_cast<const char*>(&it), sizeof(int));
+		outputTU.write(reinterpret_cast<const char*>(&it), sizeof(it));
 	}
 
 	outputTU.close();
@@ -120,14 +122,18 @@ void GenerateTestUnits::loadTU()
 
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 
-	int objectId = 0, objectSize = 0, countInstructions = 0, instructionNumber = numberAllocations * 2;
+	int objectId = 0, objectSize = 0, auxNumberAllocations = 0;
 	char* test[numberObjectsAllocated];
-	char instruction;
+	char instruction = {};
 
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		test[it] = nullptr;
 	}
+
+	inputTU.read(reinterpret_cast<char*>(&auxNumberAllocations), sizeof(auxNumberAllocations));
+
+	int countInstructions = 0, instructionNumber = auxNumberAllocations * 2;
 
 	while (countInstructions < instructionNumber)
 	{
@@ -161,23 +167,32 @@ void GenerateTestUnits::convertBinaryFile()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
-	int objectId = 0, objectSize = 0;
-	char instruction;
+	int objectId = 0, objectSize = 0, auxNumberAllocations = 0;
+	char instruction = {};
 
-	while (inputTU.read(&instruction, sizeof(char)))
+	inputTU.read((char*)(&auxNumberAllocations), sizeof(auxNumberAllocations));
+	outputTU << auxNumberAllocations << "\n";
+
+	int  countInstructions = 0, instructionNumber = auxNumberAllocations * 2;
+
+	while (countInstructions < instructionNumber)
 	{
+		inputTU.read(reinterpret_cast<char*>(&instruction), sizeof(instruction));
 		outputTU << instruction << " ";
+
 		if (instruction == 'A')
 		{
-			inputTU.read((char*)(&objectId), sizeof(int));
-			inputTU.read((char*)(&objectSize), sizeof(int));
+			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
+			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
 			outputTU << " " << objectId << " " << objectSize << "\n";
 		}
 		else
 		{
-			inputTU.read((char*)(&objectId), sizeof(int));
+			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
 			outputTU << " " << objectId << "\n";
 		}
+
+		countInstructions++;
 	}
 
 	inputTU.close();
@@ -206,7 +221,7 @@ void GenerateTestUnits::deallocateObjects(const int countAllocations, std::set<i
 		} while ((storeObjectId.find(objectId) != storeObjectId.end()));
 
 		outputTU.write("D", sizeof(char));
-		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(int));
+		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
 		storeObjectId.insert(objectId);
 	}
 }
