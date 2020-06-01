@@ -14,6 +14,11 @@ MemoryManagement::MemoryManagement(const strategyType context, const int poolSiz
 		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagType);
 		break;
 
+	case strategyType::BestFit:
+		customAllocator = new BestFit(poolSize);
+		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagType);
+		break;
+
 	case strategyType::BuddySystem:
 		customAllocator = new BuddySystem(poolSize);
 		diagTools = new DiagnoseInternalFragmentation((int)poolSize, diagType);
@@ -73,6 +78,11 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 	{
 	case strategyType::WorstFit:
 		memoryManagement.customAllocator = new WorstFit(memoryManagement.poolSize);
+		memoryManagement.diagTools = new DiagnoseExternalFragmentation((int)memoryManagement.poolSize, memoryManagement.diagType);
+		break;
+
+	case strategyType::BestFit:
+		memoryManagement.customAllocator = new BestFit(memoryManagement.poolSize);
 		memoryManagement.diagTools = new DiagnoseExternalFragmentation((int)memoryManagement.poolSize, memoryManagement.diagType);
 		break;
 
@@ -140,6 +150,11 @@ void MemoryManagement::evaluateFragmentation()
 	case strategyType::WorstFit:
 		diagTools->evaluateFragmentation(static_cast<WorstFit*>(customAllocator)->getCurrentState());
 		static_cast<WorstFit*>(customAllocator)->showCurrentState();
+		break;
+
+	case strategyType::BestFit:
+		diagTools->evaluateFragmentation(static_cast<BestFit*>(customAllocator)->getCurrentState());
+		static_cast<BestFit*>(customAllocator)->showCurrentState();
 		break;
 
 	case strategyType::BuddySystem:
