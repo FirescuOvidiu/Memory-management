@@ -298,17 +298,17 @@ void WorstFit::maintainListSorted(std::list<PoolElement>::iterator& element)
 
 
 /*
-	Insert the address that was removed from the allocated block into the unallocated list (mAvailable)
+	Insert the block of memory that was removed from the allocated set (mAllocated) into the unallocated list (mAvailable)
 */
 void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
 {
-
+	// newPosition will memorate the position where the block will fit if it doesn't merge with other blocks
+	// leftBlock will memorate the left block with which the deallocated block will merge
+	// rightBlock will memorate the right block with which the deallocated block will merge
 	std::list<PoolElement>::iterator newPosition = mAvailable.begin();
 	std::list<PoolElement>::iterator leftBlock = mAvailable.end(), rightBlock = mAvailable.end();
 
-	// We parse the list with the available blocks and do two things
-	// - check if the deleted block can be merged with another block of memory from the available memory (we have 3 cases here)
-	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
+	// We parse the list and find newPosition, leftBlock and rightBlock
 	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
 	{
 		if (newPosition->size > deallocatedMemory.size)
@@ -335,8 +335,8 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
 	}
 	else
 	{
-		// Merge the deleted block with a left block and a right block
-		// The right block is deleted and only the left block will remain with the size of all 3 blocks
+		// Merge the deallocated block with a left block and a right block
+		// The right block is deleted and only the left block will remain with the size equal to sum of all 3 blocks
 		if ((leftBlock != mAvailable.end()) && (rightBlock != mAvailable.end()))
 		{
 			leftBlock->size = leftBlock->size + rightBlock->size + deallocatedMemory.size;
@@ -346,7 +346,7 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
 		}
 		else
 		{
-			// Merge the deleted block with the a left block
+			// Merge the deallocated block with the a left block
 			if (leftBlock != mAvailable.end())
 			{
 				leftBlock->size = leftBlock->size + deallocatedMemory.size;
@@ -354,7 +354,7 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
 				WorstFit::maintainListSorted(leftBlock);
 			}
 
-			// Merge the deleted block with a right block
+			// Merge the deallocated block with a right block
 			if (rightBlock != mAvailable.end())
 			{
 				rightBlock->address = deallocatedMemory.address;
