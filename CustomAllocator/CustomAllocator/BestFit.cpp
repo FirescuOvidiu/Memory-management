@@ -103,9 +103,29 @@ void __cdecl BestFit::freeMemory(void* aBlock, int)
 }
 
 
+/*
+	The method returns a pair with biggest contiguous memory and
+	total memory available used to evaluate the fragmentation state of the custom allocator
+*/
 std::pair<int, int> BestFit::getCurrentState() const
 {
-	return std::pair<int, int>();
+	int biggestContMemory = 0, memoryAvailable = 0, memoryAllocated = 0;
+
+	for (const auto& itMemoryAllocated : mAllocated)
+	{
+		memoryAllocated += (int)itMemoryAllocated.size;
+	}
+
+	memoryAvailable = (int)poolSize - memoryAllocated;
+	for (const auto& currBlockAvailable : mAvailable)
+	{
+		if (biggestContMemory < currBlockAvailable.size)
+		{
+			biggestContMemory = currBlockAvailable.size;
+		}
+	}
+
+	return std::make_pair(biggestContMemory, memoryAvailable);
 }
 
 
