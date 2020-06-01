@@ -3,7 +3,7 @@
 
 
 /*
-	Class used to implement a custom allocator that uses the worst fit algorithm to allocate and deallocate memory
+	Class used to implement a custom allocator that uses the Worst Fit algorithm to allocate and deallocate memory
 */
 class WorstFit : public Strategy
 {

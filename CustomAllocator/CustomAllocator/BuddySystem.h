@@ -2,7 +2,7 @@
 
 
 /*
-	Class used to implement a custom allocator that uses the buddy system algorithm to allocate and deallocate memory
+	Class used to implement a custom allocator that uses the Buddy System algorithm to allocate and deallocate memory
 */
 class BuddySystem : public Strategy
 {
