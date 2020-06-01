@@ -174,9 +174,16 @@ bool BestFit::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::ite
 }
 
 
+/*
+	Methods used to check if the application has memory leaks
+*/
 void BestFit::checkMemoryLeaks()
 {
-
+	if (!mAllocated.empty())
+	{
+		// Update log
+		log.updateWarningLog(poolSize);
+	}
 }
 
 
