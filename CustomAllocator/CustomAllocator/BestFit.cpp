@@ -73,9 +73,31 @@ void* __cdecl BestFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* 
 }
 
 
+/*
+	Function used to deallocate memory. Does two things:
+	- removes the address from the mAllocated (mAllocated contains the blocks allocated)
+	- inserts the address into the mAvailable (mAvailable contains the blocks unallocated)
+*/
 void __cdecl BestFit::freeMemory(void* aBlock, int)
 {
+	// Search the address that the user wants to delete in mAllocated
+	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
+	if (checkInvalidAddress(aBlock, it))
+	{
+		std::abort();
+	}
+
+	PoolElement deallocatedMemory = *it;
+
+	// Remove the adress from the allocated block
+	mAllocated.erase(it);
+
+	// Insert the address into the unallocated list (mAvailable)
+	insertIntoAvailableMemory(deallocatedMemory);
+
+	// Update Logger
+	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
 }
 
 
@@ -134,8 +156,20 @@ bool BestFit::checkBadAlloc(size_t aSize, std::list<PoolElement>::iterator& curr
 }
 
 
+/*
+	Method used to check if the user tried to deallocate a block of memory which is not allocated
+*/
 bool BestFit::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it)
 {
+	if (it == mAllocated.end())
+	{
+		// Update log
+		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
+		log.~Logger();
+
+		return true;
+	}
+
 	return false;
 }
 
@@ -143,4 +177,62 @@ bool BestFit::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::ite
 void BestFit::checkMemoryLeaks()
 {
 
+}
+
+
+/*
+	Insert the block of memory that was removed from the allocated set (mAllocated) into the unallocated list (mAvailable)
+*/
+void BestFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
+{
+	// leftBlock will memorate the left block with which the deallocated block will merge
+	// rightBlock will memorate the right block with which the deallocated block will merge
+	std::list<PoolElement>::iterator leftBlock = mAvailable.end(), rightBlock = mAvailable.end();
+
+	// We parse the list with the available blocks and check if the deallocated block 
+	// can be merged with another block of memory from the available memory
+	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
+	{
+		if (currElement->address + currElement->size == deallocatedMemory.address)
+		{
+			leftBlock = currElement;
+		}
+
+		if (deallocatedMemory.address + deallocatedMemory.size == currElement->address)
+		{
+			rightBlock = currElement;
+		}
+	}
+
+	// If it doesn't merge with other blocks (to make a bigger continuous memory block)
+	// we simply insert it at the end of list
+	if ((leftBlock == mAvailable.end()) && (rightBlock == mAvailable.end()))
+	{
+		mAvailable.push_back(deallocatedMemory);
+	}
+	else
+	{
+		// Merge the deallocated block with a left block and a right block
+		// The right block is deleted and only the left block will remain with the size equal to sum of all 3 blocks
+		if ((leftBlock != mAvailable.end()) && (rightBlock != mAvailable.end()))
+		{
+			leftBlock->size = leftBlock->size + rightBlock->size + deallocatedMemory.size;
+			mAvailable.erase(rightBlock);
+		}
+		else
+		{
+			// Merge the deallocated block with the a left block
+			if (leftBlock != mAvailable.end())
+			{
+				leftBlock->size = leftBlock->size + deallocatedMemory.size;
+			}
+
+			// Merge the deallocated block with a right block
+			if (rightBlock != mAvailable.end())
+			{
+				rightBlock->address = deallocatedMemory.address;
+				rightBlock->size = rightBlock->size + deallocatedMemory.size;
+			}
+		}
+	}
 }

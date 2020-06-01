@@ -23,6 +23,8 @@ private:
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
 	void checkMemoryLeaks();
 
+	void insertIntoAvailableMemory(const PoolElement& deallocatedMemory);
+
 private:
 	char* startAddress;					// Start address of the memory pool
 	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
