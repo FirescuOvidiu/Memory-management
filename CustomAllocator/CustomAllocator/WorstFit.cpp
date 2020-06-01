@@ -110,13 +110,19 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 
 	// Update the block with the new address and size and mantain the list sorted 
 	mAvailable.front().updateElement(currBlock->address + aSize, currBlock->size - aSize);
-	while ((std::next(currBlock) != mAvailable.end()) && (currBlock->size < std::next(currBlock)->size))
+	if (mAvailable.front().size == 0)
 	{
-		std::swap(currBlock->address, std::next(currBlock)->address);
-		std::swap(currBlock->size, std::next(currBlock)->size);
-		currBlock++;
+		mAvailable.erase(mAvailable.begin());
 	}
-
+	else
+	{
+		while ((std::next(currBlock) != mAvailable.end()) && (currBlock->size < std::next(currBlock)->size))
+		{
+			std::swap(currBlock->address, std::next(currBlock)->address);
+			std::swap(currBlock->size, std::next(currBlock)->size);
+			currBlock++;
+		}
+	}
 	// Update logger
 	log.increaseAllocOrDealloc(-(int)aSize);
 
