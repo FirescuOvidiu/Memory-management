@@ -1,9 +1,17 @@
 #include "stdafx.h"
 
 
-BestFit::BestFit(size_t poolSize)
+/*
+	Constructor used to allocate the memory pool, initialize data members and
+	save the start address to deallocate the memory pool and check for memory leaks after the T.U. is finished
+ */
+BestFit::BestFit(size_t poolSize) : poolSize(poolSize)
 {
+	startAddress = new char[poolSize];
+	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
+	// Initialize data members of logger
+	log.initLogger(poolSize);
 }
 
 
