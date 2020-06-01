@@ -182,7 +182,7 @@ void BestFit::checkMemoryLeaks()
 	if (!mAllocated.empty())
 	{
 		// Update log
-		log.updateWarningLog(poolSize);
+		log.updateWarningLog();
 	}
 }
 
