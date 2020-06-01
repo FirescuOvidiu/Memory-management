@@ -160,8 +160,8 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 
 
 /*
-	Method used to get the memory allocated and memory requested by the user at this point
-	This variables are used to evaluate the fragmentation state of the custom allocator
+	The method returns a pair with biggest contiguous memory and
+	total memory available used to evaluate the fragmentation state of the custom allocator
 */
 std::pair<int, int> WorstFit::getCurrentState() const
 {
