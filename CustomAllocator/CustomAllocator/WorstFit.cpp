@@ -2,12 +2,13 @@
 
 /*
 	Constructor used to allocate the memory pool, initialize data members and
-	save the first address for deallocation after the T.U. is finished in case of memory leaks
+	save the start address to deallocate the memory pool and check for memory leaks after the T.U. is finished
  */
 WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 {
 	startAddress = new char[poolSize];
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
+	PoolElement::setStartAddress(startAddress);
 
 	// Initialize data members of logger
 	log.initLogger(poolSize);

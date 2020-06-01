@@ -9,6 +9,7 @@ BestFit::BestFit(size_t poolSize) : poolSize(poolSize)
 {
 	startAddress = new char[poolSize];
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
+	PoolElement::setStartAddress(startAddress);
 
 	// Initialize data members of logger
 	log.initLogger(poolSize);

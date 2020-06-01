@@ -3,7 +3,7 @@
 
 /*
 	Constructor used to allocate the memory pool, initialize data members and
-	save the first address for deallocation after the T.U. is finished in case of memory leaks
+	save the start address to deallocate the memory pool and check for memory leaks after the T.U. is finished
  */
 BuddySystem::BuddySystem(size_t poolSize)
 {
