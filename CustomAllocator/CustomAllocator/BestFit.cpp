@@ -19,12 +19,14 @@ BestFit::BestFit(size_t poolSize) : poolSize(poolSize)
 std::ostream& BestFit::write(std::ostream& output) const
 {
 	// TODO: insert return statement here
+	return output;
 }
 
 
 std::istream& BestFit::read(std::istream& input)
 {
 	// TODO: insert return statement here
+	return input;
 }
 
 
@@ -107,9 +109,51 @@ std::pair<int, int> BestFit::getCurrentState() const
 }
 
 
+/*
+	Methods used to store into a file the state of the memory file
+	The file will be imported into excel and make a chart with the information present
+*/
 void BestFit::showCurrentState() const
 {
+	std::ofstream output("memoryState.txt", std::ofstream::out);
+	std::list<PoolElement> auxMAvailable = mAvailable;
 
+	// Sorting the list of memory available by address
+	auxMAvailable.sort();
+
+	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
+	std::set<PoolElement>::const_iterator currAllocatedBlock = mAllocated.cbegin();
+
+	// We have two structures sorted by address and we need to write 
+	// into a file the elements from the both structures sorted by address
+	// We parse the structures simultaneous and compare the elements
+	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != mAllocated.cend())
+	{
+		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
+		{
+			output << currAvailableBlock->size << "\n";
+			output << currAllocatedBlock->size << "\n";
+		}
+		else
+		{
+			output << currAllocatedBlock->size << "\n";
+			output << currAvailableBlock->size << "\n";
+		}
+
+		currAvailableBlock++;
+		currAllocatedBlock++;
+	}
+
+	if (currAvailableBlock != auxMAvailable.cend())
+	{
+		output << currAvailableBlock->size << "\n";
+	}
+	if (currAllocatedBlock != mAllocated.cend())
+	{
+		output << currAllocatedBlock->size << "\n";
+	}
+
+	output.close();
 }
 
 
