@@ -51,7 +51,6 @@ std::ostream& WorstFit::write(std::ostream& output) const
 std::istream& WorstFit::read(std::istream& input)
 {
 	size_t lengthMAvailable = 0, lengthMAllocated = 0;
-	std::set<PoolElement> aux;
 	PoolElement poolElement;
 
 	// Deserialize data members by reading their content from the input file
