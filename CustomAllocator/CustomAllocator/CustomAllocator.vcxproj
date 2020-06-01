@@ -184,6 +184,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="BenchMarking.h" />
+    <ClInclude Include="BestFit.h" />
     <ClInclude Include="BuddySystem.h" />
     <ClInclude Include="CustomAllocator.h" />
     <ClInclude Include="DiagnoseExternalFragmentation.h" />
@@ -199,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BenchMarking.cpp" />
+    <ClCompile Include="BestFit.cpp" />
     <ClCompile Include="BuddySystem.cpp" />
     <ClCompile Include="CustomAllocator.cpp" />
     <ClCompile Include="DiagnoseExternalFragmentation.cpp" />

@@ -91,36 +91,36 @@ std::istream& BestFit::read(std::istream& input)
 */
 void* __cdecl BestFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	std::list<PoolElement>::iterator currBlockAvailable = mAvailable.begin();
+	std::list<PoolElement>::iterator bestBlockAvailable = mAvailable.begin();
 
-	while (currBlockAvailable != mAvailable.end() && currBlockAvailable->size - aSize <= 0)
+	while (bestBlockAvailable != mAvailable.end() && bestBlockAvailable->size - aSize <= 0)
 	{
-		currBlockAvailable++;
+		bestBlockAvailable++;
 	}
 	
-	if (checkBadAlloc(aSize,currBlockAvailable))
+	if (checkBadAlloc(aSize,bestBlockAvailable))
 	{
 		std::bad_alloc exception;
 		throw exception;
 	}
 
-	for (auto nextBlockAvailable = std::next(currBlockAvailable, 1); nextBlockAvailable != mAvailable.end(); nextBlockAvailable++)
+	for (auto currAvailableBlock = std::next(bestBlockAvailable, 1); currAvailableBlock != mAvailable.end(); currAvailableBlock++)
 	{
-		if (currBlockAvailable->size - aSize <= nextBlockAvailable->size - aSize)
+		if ((bestBlockAvailable->size - aSize >= currAvailableBlock->size - aSize) && (currAvailableBlock->size - aSize >= 0))
 		{
-			currBlockAvailable = nextBlockAvailable;
+			bestBlockAvailable = currAvailableBlock;
 		}
 	}
 
-	void* block = static_cast<void*>(currBlockAvailable->address);
+	void* block = static_cast<void*>(bestBlockAvailable->address);
 
 	// Insert the address and the size of the block in the memory allocated
-	mAllocated.insert(PoolElement(currBlockAvailable->address, aSize));
+	mAllocated.insert(PoolElement(bestBlockAvailable->address, aSize));
 
-	currBlockAvailable->updateElement(currBlockAvailable->address + aSize, currBlockAvailable->size - aSize);
-	if (currBlockAvailable->size == 0)
+	bestBlockAvailable->updateElement(bestBlockAvailable->address + aSize, bestBlockAvailable->size - aSize);
+	if (bestBlockAvailable->size == 0)
 	{
-		mAvailable.erase(currBlockAvailable);
+		mAvailable.erase(bestBlockAvailable);
 	}
 
 	// Update logger
@@ -176,7 +176,7 @@ std::pair<int, int> BestFit::getCurrentState() const
 	{
 		if (biggestContMemory < currBlockAvailable.size)
 		{
-			biggestContMemory = currBlockAvailable.size;
+			biggestContMemory = (int)currBlockAvailable.size;
 		}
 	}
 
@@ -260,7 +260,7 @@ bool BestFit::checkBadAlloc(size_t aSize, std::list<PoolElement>::iterator& curr
 		{
 			if (biggestContiguousMemory < blockAvailable.size)
 			{
-				biggestContiguousMemory = blockAvailable.size;
+				biggestContiguousMemory = (int)blockAvailable.size;
 			}
 		}
 

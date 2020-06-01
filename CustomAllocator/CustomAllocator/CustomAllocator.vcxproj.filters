@@ -51,6 +51,9 @@
     <ClInclude Include="BenchMarking.h">
       <Filter>Diagnostic Tools</Filter>
     </ClInclude>
+    <ClInclude Include="BestFit.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="BenchMarking.cpp">
       <Filter>Diagnostic Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="BestFit.cpp">
+      <Filter>Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
