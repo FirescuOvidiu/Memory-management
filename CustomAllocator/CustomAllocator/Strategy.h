@@ -5,7 +5,8 @@
 typedef enum class Strategy_Types
 {
 	WorstFit = 1,
-	BuddySystem = 2
+	BuddySystem = 2,
+	BestFit = 3
 }strategyType;
 
 
