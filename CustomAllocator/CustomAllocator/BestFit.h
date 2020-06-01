@@ -19,7 +19,7 @@ public:
 	~BestFit();
 
 private:
-	bool checkBadAlloc(size_t aSize);
+	bool checkBadAlloc(size_t aSize, std::list<PoolElement>::iterator& currBlockAvailable);
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
 	void checkMemoryLeaks();
 
