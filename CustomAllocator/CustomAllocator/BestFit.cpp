@@ -57,14 +57,14 @@ void* __cdecl BestFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* 
 
 	void* block = static_cast<void*>(currBlockAvailable->address);
 
+	// Insert the address and the size of the block in the memory allocated
+	mAllocated.insert(PoolElement(currBlockAvailable->address, aSize));
+
 	currBlockAvailable->updateElement(currBlockAvailable->address + aSize, currBlockAvailable->size - aSize);
 	if (currBlockAvailable->size == 0)
 	{
 		mAvailable.erase(currBlockAvailable);
 	}
-
-	// Insert the address and the size of the block in the memory allocated
-	mAllocated.insert(PoolElement(currBlockAvailable->address, aSize));
 
 	// Update logger
 	log.increaseAllocOrDealloc(-(int)aSize);

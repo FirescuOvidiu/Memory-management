@@ -102,27 +102,28 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 		throw exception;
 	}
 
-	auto currBlock = mAvailable.begin();
-	void* block = static_cast<void*>(currBlock->address);
+	auto currBlockAvailable = mAvailable.begin();
+	void* block = static_cast<void*>(currBlockAvailable->address);
 
 	// Insert the address and the size of the block in the memory allocated
-	mAllocated.insert(PoolElement(currBlock->address, aSize));
+	mAllocated.insert(PoolElement(currBlockAvailable->address, aSize));
 
 	// Update the block with the new address and size and mantain the list sorted 
-	mAvailable.front().updateElement(currBlock->address + aSize, currBlock->size - aSize);
+	mAvailable.front().updateElement(currBlockAvailable->address + aSize, currBlockAvailable->size - aSize);
 	if (mAvailable.front().size == 0)
 	{
 		mAvailable.erase(mAvailable.begin());
 	}
 	else
 	{
-		while ((std::next(currBlock) != mAvailable.end()) && (currBlock->size < std::next(currBlock)->size))
+		while ((std::next(currBlockAvailable) != mAvailable.end()) && (currBlockAvailable->size < std::next(currBlockAvailable)->size))
 		{
-			std::swap(currBlock->address, std::next(currBlock)->address);
-			std::swap(currBlock->size, std::next(currBlock)->size);
-			currBlock++;
+			std::swap(currBlockAvailable->address, std::next(currBlockAvailable)->address);
+			std::swap(currBlockAvailable->size, std::next(currBlockAvailable)->size);
+			currBlockAvailable++;
 		}
 	}
+
 	// Update logger
 	log.increaseAllocOrDealloc(-(int)aSize);
 
