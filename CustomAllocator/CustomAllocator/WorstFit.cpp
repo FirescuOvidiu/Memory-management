@@ -300,7 +300,7 @@ void WorstFit::maintainListSorted(std::list<PoolElement>::iterator& element)
 /*
 	Insert the address that was removed from the allocated block into the unallocated list (mAvailable)
 */
-void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
+void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
 {
 
 	std::list<PoolElement>::iterator newPosition = mAvailable.begin();
@@ -311,17 +311,17 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 	// - memorate the position where the block will fit if it doesn't need to merge with other blocks
 	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
 	{
-		if (newPosition->size > deletedMemory.size)
+		if (newPosition->size > deallocatedMemory.size)
 		{
 			newPosition++;
 		}
 
-		if (currElement->address + currElement->size == deletedMemory.address)
+		if (currElement->address + currElement->size == deallocatedMemory.address)
 		{
 			leftBlock = currElement;
 		}
 
-		if (deletedMemory.address + deletedMemory.size == currElement->address)
+		if (deallocatedMemory.address + deallocatedMemory.size == currElement->address)
 		{
 			rightBlock = currElement;
 		}
@@ -331,7 +331,7 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 	// we simply insert it so that the lists is mantained sorted
 	if ((leftBlock == mAvailable.end()) && (rightBlock == mAvailable.end()))
 	{
-		mAvailable.insert(newPosition, deletedMemory);
+		mAvailable.insert(newPosition, deallocatedMemory);
 	}
 	else
 	{
@@ -339,7 +339,7 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 		// The right block is deleted and only the left block will remain with the size of all 3 blocks
 		if ((leftBlock != mAvailable.end()) && (rightBlock != mAvailable.end()))
 		{
-			leftBlock->size = leftBlock->size + rightBlock->size + deletedMemory.size;
+			leftBlock->size = leftBlock->size + rightBlock->size + deallocatedMemory.size;
 			mAvailable.erase(rightBlock);
 
 			WorstFit::maintainListSorted(leftBlock);
@@ -349,7 +349,7 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 			// Merge the deleted block with the a left block
 			if (leftBlock != mAvailable.end())
 			{
-				leftBlock->size = leftBlock->size + deletedMemory.size;
+				leftBlock->size = leftBlock->size + deallocatedMemory.size;
 
 				WorstFit::maintainListSorted(leftBlock);
 			}
@@ -357,8 +357,8 @@ void WorstFit::insertIntoAvailableMemory(const PoolElement& deletedMemory)
 			// Merge the deleted block with a right block
 			if (rightBlock != mAvailable.end())
 			{
-				rightBlock->address = deletedMemory.address;
-				rightBlock->size = rightBlock->size + deletedMemory.size;
+				rightBlock->address = deallocatedMemory.address;
+				rightBlock->size = rightBlock->size + deallocatedMemory.size;
 
 				WorstFit::maintainListSorted(rightBlock);
 			}

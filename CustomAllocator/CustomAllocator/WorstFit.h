@@ -27,7 +27,7 @@ private:
 	void checkMemoryLeaks();
 
 	void maintainListSorted(std::list<PoolElement>::iterator& element);
-	void insertIntoAvailableMemory(const PoolElement& deletedMemory);
+	void insertIntoAvailableMemory(const PoolElement& deallocatedMemory);
 
 private:
 	char* startAddress;					// Start address of the memory pool
