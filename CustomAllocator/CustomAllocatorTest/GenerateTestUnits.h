@@ -15,7 +15,8 @@ public:
 	void convertBinaryFile();
 
 private:
-	void deallocateObjects(const int countAllocations, std::set<int>& storeObjectId);
+	void deallocateRandomObjects(const int countAllocations, std::set<int>& storeObjectId);
+	void readGeneratedTest();
 
 private:
 	static const int numberObjectsAllocated;

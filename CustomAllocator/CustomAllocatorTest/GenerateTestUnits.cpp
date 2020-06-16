@@ -1,7 +1,9 @@
 #include "stdafx.h"
 
+
 const int GenerateTestUnits::numberObjectsAllocated = 50;
 const char GenerateTestUnits::allocationNotation = 'A', GenerateTestUnits::deallocationNotation = 'D';
+
 
 /*
 	Method used to generate test units based on a distribution
@@ -52,7 +54,7 @@ void GenerateTestUnits::generateTU()
 	while (countAllocations < numberAllocations)
 	{
 		// Deallocate Y random objects
-		deallocateObjects(countAllocations, storeObjectId);
+		deallocateRandomObjects(countAllocations, storeObjectId);
 
 		// Allocate Y random objects
 		for (const auto& objectId : storeObjectId)
@@ -89,16 +91,14 @@ void GenerateTestUnits::loadTU()
 
 	int objectId = 0, objectSize = 0, offset = 0;
 	char instruction = {};
-	char* test[numberObjectsAllocated];
-
-	inputTU.seekg(0, inputTU.beg);
-	inputTU.read(buffer, fileLength);
-	inputTU.close();
+	char* objects[numberObjectsAllocated];
 
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
-		test[it] = nullptr;
+		objects[it] = nullptr;
 	}
+
+	readGeneratedTest();
 
 	while (offset < fileLength)
 	{
@@ -110,13 +110,13 @@ void GenerateTestUnits::loadTU()
 			objectId = *reinterpret_cast<int*>(buffer + offset);
 			offset += 4;
 			objectSize = *reinterpret_cast<int*>(buffer + offset);
-			test[objectId] = new char[objectSize];
+			objects[objectId] = new char[objectSize];
 		}
 		else
 		{
 			// Deallocate object
 			objectId = *reinterpret_cast<int*>(buffer + offset);
-			delete[] test[objectId];
+			delete[] objects[objectId];
 		}
 		offset += 4;
 	}
@@ -161,7 +161,7 @@ void GenerateTestUnits::convertBinaryFile()
 /*
 	Method used to deallocate Y random objects (Y is decided by us)
 */
-void GenerateTestUnits::deallocateObjects(const int countAllocations, std::set<int>& storeObjectId)
+void GenerateTestUnits::deallocateRandomObjects(const int countAllocations, std::set<int>& storeObjectId)
 {
 	std::random_device rd;
 	std::uniform_int_distribution<int> getNumberDealloc(rangeNumberDeallocations.first, rangeNumberDeallocations.second);
@@ -183,4 +183,15 @@ void GenerateTestUnits::deallocateObjects(const int countAllocations, std::set<i
 		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
 		storeObjectId.insert(objectId);
 	}
+}
+
+
+/*
+	Method used to read from file the generated test unit and save it into the buffer
+*/
+void GenerateTestUnits::readGeneratedTest()
+{
+	inputTU.seekg(0, inputTU.beg);
+	inputTU.read(buffer, fileLength);
+	inputTU.close();
 }
