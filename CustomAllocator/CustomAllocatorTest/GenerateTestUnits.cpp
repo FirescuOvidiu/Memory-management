@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 const int GenerateTestUnits::numberObjectsAllocated = 50;
+const char GenerateTestUnits::allocationNotation = 'A', GenerateTestUnits::deallocationNotation = 'D';
 
 /*
 	Method used to generate test units based on a distribution
@@ -39,9 +40,11 @@ void GenerateTestUnits::generateTU()
 	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
 	{
 		generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
-		outputTU.write("A", sizeof(char));
+
+		outputTU.write(reinterpret_cast<const char*>(&allocationNotation), sizeof(allocationNotation));
 		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
 		outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
+
 		countAllocations++;
 	}
 
@@ -55,9 +58,11 @@ void GenerateTestUnits::generateTU()
 		for (const auto& objectId : storeObjectId)
 		{
 			generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
-			outputTU.write("A", 1);
+
+			outputTU.write(reinterpret_cast<const char*>(&allocationNotation), sizeof(allocationNotation));
 			outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
 			outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
+
 			countAllocations++;
 		}
 
@@ -67,7 +72,7 @@ void GenerateTestUnits::generateTU()
 	// Deallocate all objects
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
-		outputTU.write("D", sizeof(char));
+		outputTU.write(reinterpret_cast<const char*>(&deallocationNotation), sizeof(deallocationNotation));
 		outputTU.write(reinterpret_cast<const char*>(&it), sizeof(it));
 	}
 
@@ -99,7 +104,7 @@ void GenerateTestUnits::loadTU()
 	{
 		instruction = *reinterpret_cast<char*>(buffer + offset);
 		offset += 1;
-		if (instruction == 'A')
+		if (instruction == allocationNotation)
 		{
 			// Allocate new object
 			objectId = *reinterpret_cast<int*>(buffer + offset);
@@ -125,16 +130,15 @@ void GenerateTestUnits::convertBinaryFile()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
-	int objectId = 0, objectSize = 0;
+	int objectId = 0, objectSize = 0, countInstructions = 0, instructionNumber = numberAllocations * 2;
 	char instruction = {};
-	int  countInstructions = 0, instructionNumber = numberAllocations * 2;
 
 	while (countInstructions < instructionNumber)
 	{
 		inputTU.read(reinterpret_cast<char*>(&instruction), sizeof(instruction));
 		outputTU << instruction << " ";
 
-		if (instruction == 'A')
+		if (instruction == allocationNotation)
 		{
 			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
 			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
@@ -175,7 +179,7 @@ void GenerateTestUnits::deallocateObjects(const int countAllocations, std::set<i
 			objectId = getObjectId(rd);
 		} while ((storeObjectId.find(objectId) != storeObjectId.end()));
 
-		outputTU.write("D", sizeof(char));
+		outputTU.write(reinterpret_cast<const char*>(&deallocationNotation), sizeof(deallocationNotation));
 		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
 		storeObjectId.insert(objectId);
 	}
