@@ -11,7 +11,7 @@ const int GenerateTestUnits::numberObjectsAllocated = 50;
 			- allocate   Y random objects
 		- deallocate all objects
 
-	The llocation and deallocation format used in file is:
+	The allocation and deallocation format used in file is:
 	Allocation   format: A objectId objectSize
 	Deallocation format: D objectId
 
@@ -34,9 +34,6 @@ void GenerateTestUnits::generateTU()
 
 	std::set<int> storeObjectId;
 	int countAllocations = 0, generatedNumber;
-
-	// Write the number of allocations
-	outputTU.write(reinterpret_cast<const char*>(&numberAllocations), sizeof(numberAllocations));
 
 	// Allocate X objects
 	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
@@ -83,80 +80,41 @@ void GenerateTestUnits::generateTU()
 */
 void GenerateTestUnits::loadTU()
 {
-	//inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
-
-	//const int fileLength = numberAllocations * 9 + numberAllocations * 5;
-	//int objectId = 0, objectSize = 0, offset = 0;
-	//char instruction, buffer[fileLength];
-	//char* test[numberObjectsAllocated];
-
-	//inputTU.seekg(0, inputTU.beg);
-	//inputTU.read(buffer, fileLength);
-	//inputTU.close();
-
-	//for (int it = 0; it < numberObjectsAllocated; it++)
-	//{
-	//	test[it] = nullptr;
-	//}
-
-	//while (offset < fileLength)
-	//{
-	//	instruction = *reinterpret_cast<char*>(buffer + offset);
-	//	offset += 1;
-	//	if (instruction == 'A')
-	//	{
-	//		// Allocate new object
-	//		objectId = *reinterpret_cast<int*>(buffer + offset);
-	//		offset += 4;
-	//		objectSize = *reinterpret_cast<int*>(buffer + offset);
-	//		test[objectId] = new char[objectSize];
-	//	}
-	//	else
-	//	{
-	//		// Deallocate object
-	//		objectId = *reinterpret_cast<int*>(buffer + offset);
-	//		delete[] test[objectId];
-	//	}
-	//	offset += 4;
-	//}
-
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 
-	int objectId = 0, objectSize = 0, auxNumberAllocations = 0;
-	char* test[numberObjectsAllocated];
+	int objectId = 0, objectSize = 0, offset = 0;
 	char instruction = {};
+	char* test[numberObjectsAllocated];
+
+	inputTU.seekg(0, inputTU.beg);
+	inputTU.read(buffer, fileLength);
+	inputTU.close();
 
 	for (int it = 0; it < numberObjectsAllocated; it++)
 	{
 		test[it] = nullptr;
 	}
 
-	inputTU.read(reinterpret_cast<char*>(&auxNumberAllocations), sizeof(auxNumberAllocations));
-
-	int countInstructions = 0, instructionNumber = auxNumberAllocations * 2;
-
-	while (countInstructions < instructionNumber)
+	while (offset < fileLength)
 	{
-		inputTU.read(reinterpret_cast<char*>(&instruction), sizeof(instruction));
-
+		instruction = *reinterpret_cast<char*>(buffer + offset);
+		offset += 1;
 		if (instruction == 'A')
 		{
 			// Allocate new object
-			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
-			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
+			objectId = *reinterpret_cast<int*>(buffer + offset);
+			offset += 4;
+			objectSize = *reinterpret_cast<int*>(buffer + offset);
 			test[objectId] = new char[objectSize];
 		}
 		else
 		{
 			// Deallocate object
-			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
+			objectId = *reinterpret_cast<int*>(buffer + offset);
 			delete[] test[objectId];
 		}
-
-		countInstructions++;
+		offset += 4;
 	}
-
-	inputTU.close();
 }
 
 
@@ -167,13 +125,9 @@ void GenerateTestUnits::convertBinaryFile()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
-	int objectId = 0, objectSize = 0, auxNumberAllocations = 0;
+	int objectId = 0, objectSize = 0;
 	char instruction = {};
-
-	inputTU.read((char*)(&auxNumberAllocations), sizeof(auxNumberAllocations));
-	outputTU << auxNumberAllocations << "\n";
-
-	int  countInstructions = 0, instructionNumber = auxNumberAllocations * 2;
+	int  countInstructions = 0, instructionNumber = numberAllocations * 2;
 
 	while (countInstructions < instructionNumber)
 	{
@@ -208,6 +162,7 @@ void GenerateTestUnits::deallocateObjects(const int countAllocations, std::set<i
 	std::random_device rd;
 	std::uniform_int_distribution<int> getNumberDealloc(rangeNumberDeallocations.first, rangeNumberDeallocations.second);
 	std::uniform_int_distribution<int> getObjectId(0, numberObjectsAllocated - 1);
+
 	// Generate the number of deallocations (Y)
 	int numberDeallocations = std::min(getNumberDealloc(rd), numberAllocations - countAllocations);
 	int objectId = 0;

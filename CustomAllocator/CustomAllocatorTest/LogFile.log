@@ -1,12 +1,16 @@
-2020-05-06 19:40:06	[INFO]	<----------------------- START OF APPLICATION ----------------------->
+2020-06-16 23:08:48	[INFO]	<----------------------- START OF APPLICATION ----------------------->
 
 
 
-2020-05-06 19:40:06	[INFO]	Size of the memory pool: 4096 bytes.
-2020-05-06 19:40:06	[INFO]	Start address: 000001CE8B08FB00
-2020-05-06 19:40:06	[INFO]	Number of allocations during application: 792
-2020-05-06 19:40:06	[INFO]	Number of deallocations during application: 792
+2020-06-16 23:08:48	[INFO]	Size of the memory pool: 4096 bytes.
+2020-06-16 23:08:48	[INFO]	Number of allocations during application: 10012
+2020-06-16 23:08:48	[INFO]	Number of deallocations during application: 10011
 
 
 
-2020-05-06 19:40:06	[INFO]	<----------------------- END OF APPLICATION ----------------------->
+2020-06-16 23:08:48	[WARNINIG]	The application has memory leaks !!
+2020-06-16 23:08:48	[WARNINIG]	The size of the memory allocated that wasn't deallocated: 40 bytes.
+
+
+
+2020-06-16 23:08:48	[INFO]	<----------------------- END OF APPLICATION ----------------------->
