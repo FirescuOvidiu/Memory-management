@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-const int GenerateTestUnits::numberObjectsAllocated = 50;
+const int GenerateTestUnits::numberObjectsAllocated = 100;
 const char GenerateTestUnits::allocationNotation = 'A', GenerateTestUnits::deallocationNotation = 'D';
 
 
@@ -119,6 +119,10 @@ void GenerateTestUnits::loadTU()
 			delete[] objects[objectId];
 		}
 		offset += 4;
+		if (offset == fileLength - 5 * numberObjectsAllocated)
+		{
+			evaluateFragmentationState();
+		}
 	}
 }
 
@@ -142,12 +146,12 @@ void GenerateTestUnits::convertBinaryFile()
 		{
 			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
 			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
-			outputTU << " " << objectId << " " << objectSize << "\n";
+			outputTU << objectId << " " << objectSize << "\n";
 		}
 		else
 		{
 			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
-			outputTU << " " << objectId << "\n";
+			outputTU << objectId << "\n";
 		}
 
 		countInstructions++;

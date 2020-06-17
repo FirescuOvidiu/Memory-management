@@ -188,18 +188,44 @@ std::pair<int, int> WorstFit::getCurrentState() const
 void WorstFit::showCurrentState() const
 {
 	std::ofstream output("memoryState.txt", std::ofstream::out);
-	std::list<PoolElement> auxMAvailable = mAvailable;
+	std::list<PoolElement> auxMAvailable = mAvailable, auxMAllocated;
+
+	for (const auto& currBlockAllocated : mAllocated)
+	{
+		auxMAllocated.push_back(currBlockAllocated);
+	}
+
+	for (auto currAllocatedBlock = auxMAllocated.begin(); std::next(currAllocatedBlock) != auxMAllocated.end();)
+	{
+		if (currAllocatedBlock->address + currAllocatedBlock->size == std::next(currAllocatedBlock)->address)
+		{
+			std::next(currAllocatedBlock)->updateElement(currAllocatedBlock->address, currAllocatedBlock->size + std::next(currAllocatedBlock)->size);
+			currAllocatedBlock = auxMAllocated.erase(currAllocatedBlock);
+		}
+		else
+		{
+			currAllocatedBlock++;
+		}
+	}
 
 	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
 	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
-	std::set<PoolElement>::const_iterator currAllocatedBlock = mAllocated.cbegin();
+	std::list<PoolElement>::const_iterator currAllocatedBlock = auxMAllocated.cbegin();
+
+	if (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
+	{
+		if (currAvailableBlock->address - startAddress > currAllocatedBlock->address - startAddress)
+		{
+			output << 0 << "\n";
+		}
+	}
 
 	// We have two structures sorted by address and we need to write 
 	// into a file the elements from the both structures sorted by address
 	// We parse the structures simultaneous and compare the elements
-	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != mAllocated.cend())
+	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
 	{
 		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
 		{
@@ -220,7 +246,7 @@ void WorstFit::showCurrentState() const
 	{
 		output << currAvailableBlock->size << "\n";
 	}
-	if (currAllocatedBlock != mAllocated.cend())
+	if (currAllocatedBlock != auxMAllocated.cend())
 	{
 		output << currAllocatedBlock->size << "\n";
 	}

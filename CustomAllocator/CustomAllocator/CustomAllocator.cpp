@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManagement(strategyType::BestFit, 4096, diagnosticType::Console_Diagnostic, benchMarkingType::No_BenchMark);
+MemoryManagement memoryManagement(strategyType::BuddySystem, 100000000, diagnosticType::Console_Diagnostic, benchMarkingType::No_BenchMark);
 
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)

@@ -211,7 +211,25 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 void BuddySystem::showCurrentState() const
 {
 	std::ofstream output("memoryState.txt", std::ofstream::out);
-	std::list<PoolElement> auxMAvailable;
+	std::list<PoolElement> auxMAvailable, auxMAllocated;
+
+	for (const auto& currBlockAllocated : mAllocated)
+	{
+		auxMAllocated.push_back(PoolElement(currBlockAllocated.address, (int)pow(2, (int)std::ceil(log2(currBlockAllocated.size)))));
+	}
+
+	for (auto currAllocatedBlock = auxMAllocated.begin(); std::next(currAllocatedBlock) != auxMAllocated.end();)
+	{
+		if (currAllocatedBlock->address + currAllocatedBlock->size == std::next(currAllocatedBlock)->address)
+		{
+			std::next(currAllocatedBlock)->updateElement(currAllocatedBlock->address, currAllocatedBlock->size + std::next(currAllocatedBlock)->size);
+			currAllocatedBlock = auxMAllocated.erase(currAllocatedBlock);
+		}
+		else
+		{
+			currAllocatedBlock++;
+		}
+	}
 
 	for (const auto& currAvailableBlocks : mAvailable)
 	{
@@ -225,35 +243,43 @@ void BuddySystem::showCurrentState() const
 	auxMAvailable.sort();
 
 	// Merge adjacent blocks of memory available
-	auto firstBlock = auxMAvailable.begin(), secondBlock = auxMAvailable.begin();
-	while (firstBlock != auxMAvailable.end())
+	for (auto currAvailableBlock = auxMAvailable.begin(); std::next(currAvailableBlock) != auxMAvailable.end();)
 	{
-		secondBlock = std::next(firstBlock, 1);
-		while (secondBlock != auxMAvailable.end() && (firstBlock->address + firstBlock->size == secondBlock->address))
+		if (currAvailableBlock->address + currAvailableBlock->size == std::next(currAvailableBlock)->address)
 		{
-			firstBlock->size += secondBlock->size;
-			secondBlock = auxMAvailable.erase(secondBlock);
-			continue;
+			std::next(currAvailableBlock)->updateElement(currAvailableBlock->address, currAvailableBlock->size + std::next(currAvailableBlock)->size);
+			currAvailableBlock = auxMAllocated.erase(currAvailableBlock);
 		}
-		firstBlock++;
+		else
+		{
+			currAvailableBlock++;
+		}
 	}
 
 	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
-	std::set<PoolElement>::const_iterator currAllocatedBlock = mAllocated.cbegin();
+	std::list<PoolElement>::const_iterator currAllocatedBlock = auxMAllocated.cbegin();
+
+	if (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
+	{
+		if (currAvailableBlock->address - startAddress > currAllocatedBlock->address - startAddress)
+		{
+			output << 0 << "\n";
+		}
+	}
 
 	// We have two structures sorted by address and we need to write 
 	// into a file the elements from the both structures sorted by address
 	// We parse the structures simultaneous and compare the elements
-	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != mAllocated.cend())
+	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
 	{
 		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
 		{
 			output << currAvailableBlock->size << "\n";
-			output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+			output << currAllocatedBlock->size << "\n";
 		}
 		else
 		{
-			output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+			output << currAllocatedBlock->size << "\n";
 			output << currAvailableBlock->size << "\n";
 		}
 
@@ -265,9 +291,9 @@ void BuddySystem::showCurrentState() const
 	{
 		output << currAvailableBlock->size << "\n";
 	}
-	if (currAllocatedBlock != mAllocated.cend())
+	if (currAllocatedBlock != auxMAllocated.cend())
 	{
-		output << (int)pow(2, (int)std::ceil(log2(currAllocatedBlock->size))) << "\n";
+		output << currAllocatedBlock->size << "\n";
 	}
 
 	output.close();
