@@ -106,7 +106,7 @@ void* __cdecl BestFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* 
 
 	for (auto currAvailableBlock = std::next(bestBlockAvailable, 1); currAvailableBlock != mAvailable.end(); currAvailableBlock++)
 	{
-		if ((bestBlockAvailable->size - aSize >= currAvailableBlock->size - aSize) && (currAvailableBlock->size - aSize >= 0))
+		if ((bestBlockAvailable->size >= currAvailableBlock->size) && (currAvailableBlock->size - aSize >= 0))
 		{
 			bestBlockAvailable = currAvailableBlock;
 		}
