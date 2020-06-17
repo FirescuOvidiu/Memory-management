@@ -7,8 +7,8 @@ const int fileLength = numberAllocations * 9 + numberAllocations * 5;
 class GenerateTestUnits
 {
 public:
-	GenerateTestUnits(int poolSize, std::pair<int, int> ObjectSize, std::pair<int, int> rangeNumberDeallocations) :
-		poolSize(poolSize), rangeObjectSize(ObjectSize), rangeNumberDeallocations(rangeNumberDeallocations) {}
+	GenerateTestUnits(std::pair<int, int> ObjectSize, std::pair<int, int> rangeNumberDeallocations) :
+		rangeObjectSize(ObjectSize), rangeNumberDeallocations(rangeNumberDeallocations) {}
 
 	void generateTU();
 	void loadTU();
@@ -25,7 +25,6 @@ private:
 	std::ofstream outputTU;
 	std::ifstream inputTU;
 	char buffer[fileLength];
-	int poolSize;
 	std::pair<int, int> rangeObjectSize;
 	std::pair<int, int> rangeNumberDeallocations;
 };
