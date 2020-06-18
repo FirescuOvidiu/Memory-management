@@ -2,7 +2,6 @@
 
 
 const int GenerateTestUnits::numberObjectsAllocated = 100;
-const char GenerateTestUnits::allocationNotation = 'A', GenerateTestUnits::deallocationNotation = 'D';
 
 
 /*
@@ -36,17 +35,16 @@ void GenerateTestUnits::generateTU()
 	// Add more distributions
 
 	std::set<int> deallocatedObjectsId;
-	int countAllocations = 0, generatedNumber;
+	AllocationObject allocationObject;
+	DeallocationObject deallocationObject;
+	int countAllocations = 0;
+
 
 	// Allocate X objects
-	for (int objectId = 0; objectId < numberObjectsAllocated && countAllocations < numberAllocations; objectId++)
+	for (allocationObject.id = 0; allocationObject.id < numberObjectsAllocated && countAllocations < numberAllocations; allocationObject.id++)
 	{
-		generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
-
-		outputTU.write(reinterpret_cast<const char*>(&allocationNotation), sizeof(allocationNotation));
-		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
-		outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
-
+		allocationObject.size = (int)std::round(distribution(rd)) + rangeObjectSize.first;
+		allocationObject.write(outputTU);
 		countAllocations++;
 	}
 
@@ -59,12 +57,9 @@ void GenerateTestUnits::generateTU()
 		// Allocate Y random objects
 		for (const auto& objectId : deallocatedObjectsId)
 		{
-			generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
-
-			outputTU.write(reinterpret_cast<const char*>(&allocationNotation), sizeof(allocationNotation));
-			outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
-			outputTU.write(reinterpret_cast<const char*>(&generatedNumber), sizeof(generatedNumber));
-
+			allocationObject.id = objectId;
+			allocationObject.size = (int)std::round(distribution(rd)) + rangeObjectSize.first;
+			allocationObject.write(outputTU);
 			countAllocations++;
 		}
 
@@ -72,10 +67,9 @@ void GenerateTestUnits::generateTU()
 	}
 
 	// Deallocate all objects
-	for (int it = 0; it < numberObjectsAllocated; it++)
+	for (deallocationObject.id = 0; deallocationObject.id < numberObjectsAllocated; deallocationObject.id++)
 	{
-		outputTU.write(reinterpret_cast<const char*>(&deallocationNotation), sizeof(deallocationNotation));
-		outputTU.write(reinterpret_cast<const char*>(&it), sizeof(it));
+		deallocationObject.write(outputTU);
 	}
 
 	outputTU.close();
@@ -87,9 +81,11 @@ void GenerateTestUnits::generateTU()
 */
 void GenerateTestUnits::loadTU()
 {
-	int objectId = 0, objectSize = 0, offset = 0;
-	char instruction = {};
 	char* objects[numberObjectsAllocated];
+	DeallocationObject deallocationObject;
+	AllocationObject allocationObject;
+	char instruction = {};
+	int offset = 0;
 
 	initializeObjects(objects);
 	readGeneratedTest();
@@ -98,19 +94,18 @@ void GenerateTestUnits::loadTU()
 	{
 		instruction = *reinterpret_cast<char*>(buffer + offset);
 		offset += 1;
-		if (instruction == allocationNotation)
+
+		if (instruction == allocationObject.notation)
 		{
-			// Allocate new object
-			objectId = *reinterpret_cast<int*>(buffer + offset);
-			offset += 4;
-			objectSize = *reinterpret_cast<int*>(buffer + offset);
-			objects[objectId] = new char[objectSize];
+			// Allocate object
+			allocationObject.get(buffer, offset);
+			objects[allocationObject.id] = new char[allocationObject.size];
 		}
 		else
 		{
 			// Deallocate object
-			objectId = *reinterpret_cast<int*>(buffer + offset);
-			delete[] objects[objectId];
+			deallocationObject.get(buffer, offset);
+			delete[] objects[deallocationObject.id];
 		}
 
 		offset += 4;
@@ -130,7 +125,9 @@ void GenerateTestUnits::convertBinaryFile()
 {
 	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	outputTU.open("generatedTU.txt", std::ofstream::out | std::ofstream::binary);
-	int objectId = 0, objectSize = 0, countInstructions = 0, instructionNumber = numberAllocations * 2;
+	DeallocationObject deallocationObject;
+	AllocationObject allocationObject;
+	int countInstructions = 0, instructionNumber = numberAllocations * 2;
 	char instruction = {};
 
 	while (countInstructions < instructionNumber)
@@ -138,16 +135,15 @@ void GenerateTestUnits::convertBinaryFile()
 		inputTU.read(reinterpret_cast<char*>(&instruction), sizeof(instruction));
 		outputTU << instruction << " ";
 
-		if (instruction == allocationNotation)
+		if (instruction == allocationObject.notation)
 		{
-			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
-			inputTU.read(reinterpret_cast<char*>(&objectSize), sizeof(objectSize));
-			outputTU << objectId << " " << objectSize << "\n";
+			allocationObject.read(inputTU);
+			outputTU << allocationObject.id << " " << allocationObject.size << "\n";
 		}
 		else
 		{
-			inputTU.read(reinterpret_cast<char*>(&objectId), sizeof(objectId));
-			outputTU << objectId << "\n";
+			deallocationObject.read(inputTU);
+			outputTU << deallocationObject.id << "\n";
 		}
 
 		countInstructions++;
@@ -169,19 +165,18 @@ void GenerateTestUnits::deallocateRandomObjects(const int countAllocations, std:
 
 	// Generate the number of deallocations (Y)
 	int numberDeallocations = std::min(getNumberDealloc(rd), numberAllocations - countAllocations);
-	int objectId = 0;
+	DeallocationObject deallocationObject;
 
 	// Deallocate Y objects
 	for (int it = 0; it < numberDeallocations; it++)
 	{
 		do
 		{
-			objectId = getObjectId(rd);
-		} while ((storeObjectId.find(objectId) != storeObjectId.end()));
+			deallocationObject.id = getObjectId(rd);
+		} while ((storeObjectId.find(deallocationObject.id) != storeObjectId.end()));
 
-		outputTU.write(reinterpret_cast<const char*>(&deallocationNotation), sizeof(deallocationNotation));
-		outputTU.write(reinterpret_cast<const char*>(&objectId), sizeof(objectId));
-		storeObjectId.insert(objectId);
+		storeObjectId.insert(deallocationObject.id);
+		deallocationObject.write(outputTU);
 	}
 }
 

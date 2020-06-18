@@ -21,7 +21,6 @@ private:
 
 private:
 	static const int numberObjectsAllocated;
-	static const char allocationNotation, deallocationNotation;
 
 	std::ofstream outputTU;
 	std::ifstream inputTU;
