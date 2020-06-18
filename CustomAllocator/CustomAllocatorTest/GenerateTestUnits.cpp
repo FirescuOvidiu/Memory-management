@@ -29,13 +29,13 @@ void GenerateTestUnits::generateTU()
 	//std::vector<double> weights{ 1,0,1 };
 
 	std::uniform_int_distribution<int> distribution(0, rangeObjectSize.second - rangeObjectSize.first);		// Uniform distribution
-	//std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.5);	   // Bernoulli distribution
+	//std::binomial_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first, 0.6);	   // Bernoulli distribution
 	//std::poisson_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2);			  // Rate-based distribution
 	//std::normal_distribution<> distribution(rangeObjectSize.second - rangeObjectSize.first - (rangeObjectSize.second - rangeObjectSize.first) / 2, 8);			// Normal distribution
 	//std::piecewise_linear_distribution<> distribution(intervals.begin(), intervals.end(), weights.begin());		// Piecewise distribution
 	// Add more distributions
 
-	std::set<int> storeObjectId;
+	std::set<int> deallocatedObjectsId;
 	int countAllocations = 0, generatedNumber;
 
 	// Allocate X objects
@@ -54,10 +54,10 @@ void GenerateTestUnits::generateTU()
 	while (countAllocations < numberAllocations)
 	{
 		// Deallocate Y random objects
-		deallocateRandomObjects(countAllocations, storeObjectId);
+		deallocateRandomObjects(countAllocations, deallocatedObjectsId);
 
 		// Allocate Y random objects
-		for (const auto& objectId : storeObjectId)
+		for (const auto& objectId : deallocatedObjectsId)
 		{
 			generatedNumber = (int)std::round(distribution(rd)) + rangeObjectSize.first;
 
@@ -68,7 +68,7 @@ void GenerateTestUnits::generateTU()
 			countAllocations++;
 		}
 
-		storeObjectId.clear();
+		deallocatedObjectsId.clear();
 	}
 
 	// Deallocate all objects
@@ -87,17 +87,11 @@ void GenerateTestUnits::generateTU()
 */
 void GenerateTestUnits::loadTU()
 {
-	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
-
 	int objectId = 0, objectSize = 0, offset = 0;
 	char instruction = {};
 	char* objects[numberObjectsAllocated];
 
-	for (int it = 0; it < numberObjectsAllocated; it++)
-	{
-		objects[it] = nullptr;
-	}
-
+	initializeObjects(objects);
 	readGeneratedTest();
 
 	while (offset < fileLength)
@@ -118,7 +112,9 @@ void GenerateTestUnits::loadTU()
 			objectId = *reinterpret_cast<int*>(buffer + offset);
 			delete[] objects[objectId];
 		}
+
 		offset += 4;
+
 		if (offset == fileLength - 5 * numberObjectsAllocated)
 		{
 			evaluateFragmentationState();
@@ -195,7 +191,20 @@ void GenerateTestUnits::deallocateRandomObjects(const int countAllocations, std:
 */
 void GenerateTestUnits::readGeneratedTest()
 {
+	inputTU.open("generatedBinaryTU.bin", std::ifstream::in | std::ifstream::binary);
 	inputTU.seekg(0, inputTU.beg);
 	inputTU.read(buffer, fileLength);
 	inputTU.close();
+}
+
+
+/*
+	Method used to initialize objects
+*/
+void GenerateTestUnits::initializeObjects(char* objects[])
+{
+	for (int it = 0; it < numberObjectsAllocated; it++)
+	{
+		objects[it] = nullptr;
+	}
 }

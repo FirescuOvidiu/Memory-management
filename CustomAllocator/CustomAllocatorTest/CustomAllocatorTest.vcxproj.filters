@@ -36,6 +36,12 @@
     <ClInclude Include="GenerateTestUnits.h">
       <Filter>CustomAllocatorTests</Filter>
     </ClInclude>
+    <ClInclude Include="AllocationObject.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
+    <ClInclude Include="DeallocationObject.h">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -53,12 +59,18 @@
     <ClCompile Include="CustomAllocatorTestC.cpp">
       <Filter>CustomAllocatorTests</Filter>
     </ClCompile>
-    <ClCompile Include="CustomAllocatorTest.cpp" />
     <ClCompile Include="CustomAllocatorTestD.cpp">
       <Filter>CustomAllocatorTests</Filter>
     </ClCompile>
     <ClCompile Include="GenerateTestUnits.cpp">
       <Filter>CustomAllocatorTests</Filter>
     </ClCompile>
+    <ClCompile Include="AllocationObject.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="DeallocationObject.cpp">
+      <Filter>CustomAllocatorTests</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomAllocatorTest.cpp" />
   </ItemGroup>
 </Project>

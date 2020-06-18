@@ -17,6 +17,7 @@ public:
 private:
 	void deallocateRandomObjects(const int countAllocations, std::set<int>& storeObjectId);
 	void readGeneratedTest();
+	void initializeObjects(char* objects[]);
 
 private:
 	static const int numberObjectsAllocated;
