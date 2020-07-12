@@ -197,7 +197,7 @@ std::pair<int, int> BuddySystem::getCurrentState() const
 			memoryAvailable += (int)currAvailableBlock.size;
 		}
 	}
-
+	
 	memoryAllocated = (int)poolSize - memoryAvailable;
 
 	return std::make_pair(memoryAllocated, memoryRequested);
@@ -295,7 +295,7 @@ void BuddySystem::showCurrentState() const
 	{
 		output << currAllocatedBlock->size << "\n";
 	}
-
+	
 	output.close();
 }
 

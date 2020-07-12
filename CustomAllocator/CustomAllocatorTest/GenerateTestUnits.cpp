@@ -113,6 +113,7 @@ void GenerateTestUnits::loadTU()
 		if (offset == fileLength - 5 * numberObjectsAllocated)
 		{
 			evaluateFragmentationState();
+			serialization();
 		}
 	}
 }
