@@ -206,7 +206,13 @@ Logger::~Logger()
 		default:
 			break;
 		}
-		loggerFile.close();
-		allocationsSizeFile.close();
+		if (loggerFile.is_open())
+		{
+			loggerFile.close();
+		}
+		if (allocationsSizeFile.is_open())
+		{
+			allocationsSizeFile.close();
+		}
 	}
 }
