@@ -1,16 +1,4 @@
-2020-07-12 19:20:29	[INFO]	<----------------------- START OF APPLICATION ----------------------->
+2020-07-21 14:54:01	[INFO]	<----------------------- START OF APPLICATION ----------------------->
 
 
 
-2020-07-12 19:20:29	[INFO]	Size of the memory pool: 134217728 bytes.
-2020-07-12 19:20:48	[INFO]	Number of allocations during application: 0
-2020-07-12 19:20:48	[INFO]	Number of deallocations during application: 0
-
-
-
-2020-07-12 19:20:39	[WARNINIG]	The application has memory leaks !!
-2020-07-12 19:20:39	[WARNINIG]	The size of the memory allocated that wasn't deallocated: 0 bytes.
-
-
-
-2020-07-12 19:20:48	[INFO]	<----------------------- END OF APPLICATION ----------------------->

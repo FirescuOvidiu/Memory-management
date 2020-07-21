@@ -59,10 +59,11 @@ std::istream& WorstFit::read(std::istream& input)
 	// Delete the current allocated objects and allocate and initialize them 
 	if (startAddress != nullptr)
 	{
-		delete startAddress;
+		delete[] startAddress;
 	}
 	startAddress = new char[this->poolSize];
 	PoolElement::setStartAddress(startAddress);
+	log.setLogType(LogType::No_Log);
 
 	// Delete the list, and read it's length from the input file
 	mAvailable.clear();
@@ -400,5 +401,9 @@ WorstFit::~WorstFit()
 {
 	checkMemoryLeaks();
 
-	delete[] startAddress;
+	if (startAddress != nullptr)
+	{
+		delete[] startAddress;
+		startAddress = nullptr;
+	}
 }

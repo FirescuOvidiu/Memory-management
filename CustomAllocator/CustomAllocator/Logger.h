@@ -41,6 +41,7 @@ public:
 	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
 
 	void increaseAllocOrDealloc(const int size);
+	void setLogType(const LogType& type);
 
 	~Logger();
 

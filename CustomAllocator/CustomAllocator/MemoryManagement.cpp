@@ -4,28 +4,24 @@
 /*
 	Constructor used to choose a custom allocator based on a context
 */
-MemoryManagement::MemoryManagement(const strategyType context, const int poolSize, const diagnosticType diagType, const benchMarkingType benchmarkType) :
-	context(context), poolSize(poolSize), diagType(diagType), benchmarkType(benchmarkType), diagTools(nullptr)
+MemoryManagement::MemoryManagement(const strategyType context, const int poolSize, const diagnosticType diagType) : context(context), poolSize(poolSize), diagType(diagType)
 {
 	switch (context)
 	{
 	case strategyType::WorstFit:
-		customAllocator = new WorstFit(poolSize);
-		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagType);
+		customAllocator = std::make_unique<WorstFit>(poolSize);
+		diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)poolSize, diagType);
 		break;
 
 	case strategyType::BestFit:
-		customAllocator = new BestFit(poolSize);
-		diagTools = new DiagnoseExternalFragmentation((int)poolSize, diagType);
+		customAllocator = std::make_unique<BestFit>(poolSize);
+		diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)poolSize, diagType);
 		break;
 
 	case strategyType::BuddySystem:
-		customAllocator = new BuddySystem(poolSize);
-		diagTools = new DiagnoseInternalFragmentation((int)poolSize, diagType);
+		customAllocator = std::make_unique<BuddySystem>(poolSize);
+		diagTools = std::make_unique<DiagnoseInternalFragmentation>((int)poolSize, diagType);
 		break;
-
-	default:
-		customAllocator = new Strategy;
 	}
 }
 
@@ -65,34 +61,25 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 	memoryManagement.diagType = static_cast<diagnosticType>(newDiagType);
 	memoryManagement.context = static_cast<strategyType>(newStrategyType);
 	// Delete the current allocated objects. After deleting, allocate and initialize them based on the data from the input file
-	if (memoryManagement.customAllocator != nullptr)
-	{
-		delete memoryManagement.customAllocator;
-	}
-	if (memoryManagement.diagTools != nullptr)
-	{
-		delete memoryManagement.diagTools;
-	}
+	memoryManagement.customAllocator.release();
+	memoryManagement.diagTools.release();
 
 	switch (memoryManagement.context)
 	{
 	case strategyType::WorstFit:
-		memoryManagement.customAllocator = new WorstFit(memoryManagement.poolSize);
-		memoryManagement.diagTools = new DiagnoseExternalFragmentation((int)memoryManagement.poolSize, memoryManagement.diagType);
+		memoryManagement.customAllocator = std::make_unique<WorstFit>(memoryManagement.poolSize);
+		memoryManagement.diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)memoryManagement.poolSize, memoryManagement.diagType);
 		break;
 
 	case strategyType::BestFit:
-		memoryManagement.customAllocator = new BestFit(memoryManagement.poolSize);
-		memoryManagement.diagTools = new DiagnoseExternalFragmentation((int)memoryManagement.poolSize, memoryManagement.diagType);
+		memoryManagement.customAllocator = std::make_unique<BestFit>(memoryManagement.poolSize);
+		memoryManagement.diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)memoryManagement.poolSize, memoryManagement.diagType);
 		break;
 
 	case strategyType::BuddySystem:
-		memoryManagement.customAllocator = new BuddySystem(memoryManagement.poolSize);
-		memoryManagement.diagTools = new DiagnoseInternalFragmentation((int)memoryManagement.poolSize, memoryManagement.diagType);
+		memoryManagement.customAllocator = std::make_unique<BuddySystem>(memoryManagement.poolSize);
+		memoryManagement.diagTools = std::make_unique<DiagnoseInternalFragmentation>((int)memoryManagement.poolSize, memoryManagement.diagType);
 		break;
-
-	default:
-		memoryManagement.customAllocator = new Strategy;
 	}
 
 	// Deserialize the objects present in this class
@@ -107,18 +94,7 @@ std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement
 */
 void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber)
 {
-	if ((benchmarkType == BenchMarking_Types::No_BenchMark) || (benchmarkType == BenchMarking_Types::Deallocation_BenchMark))
-	{
-		return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
-	}
-	else
-	{
-		timer.startTimer();
-		void* address = customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
-		timer.stopTimer();
-
-		return address;
-	}
+	return customAllocator->allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
@@ -127,16 +103,7 @@ void* __cdecl MemoryManagement::allocMemory(size_t aSize, int aBlockUse, char co
 */
 void __cdecl MemoryManagement::freeMemory(void* aBlock, int aBlockUse)
 {
-	if ((benchmarkType == BenchMarking_Types::No_BenchMark) || (benchmarkType == BenchMarking_Types::Allocation_BenchMark))
-	{
-		customAllocator->freeMemory(aBlock, aBlockUse);
-	}
-	else
-	{
-		timer.startTimer();
-		customAllocator->freeMemory(aBlock, aBlockUse);
-		timer.stopTimer();
-	}
+	customAllocator->freeMemory(aBlock, aBlockUse);
 }
 
 
@@ -148,34 +115,18 @@ void MemoryManagement::evaluateFragmentation()
 	switch (context)
 	{
 	case strategyType::WorstFit:
-		diagTools->evaluateFragmentation(static_cast<WorstFit*>(customAllocator)->getCurrentState());
-		static_cast<WorstFit*>(customAllocator)->showCurrentState();
+		diagTools->evaluateFragmentation(static_cast<WorstFit*>(customAllocator.get())->getCurrentState());
+		static_cast<WorstFit*>(customAllocator.get())->showCurrentState();
 		break;
 
 	case strategyType::BestFit:
-		diagTools->evaluateFragmentation(static_cast<BestFit*>(customAllocator)->getCurrentState());
-		static_cast<BestFit*>(customAllocator)->showCurrentState();
+		diagTools->evaluateFragmentation(static_cast<BestFit*>(customAllocator.get())->getCurrentState());
+		static_cast<BestFit*>(customAllocator.get())->showCurrentState();
 		break;
 
 	case strategyType::BuddySystem:
-		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(customAllocator)->getCurrentState());
-		static_cast<BuddySystem*>(customAllocator)->showCurrentState();
+		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(customAllocator.get())->getCurrentState());
+		static_cast<BuddySystem*>(customAllocator.get())->showCurrentState();
 		break;
-	}
-}
-
-
-/*
-	Destructor used to destroy the custom allocator after the application ends
-*/
-MemoryManagement::~MemoryManagement()
-{
-	if (customAllocator != nullptr)
-	{
-		delete customAllocator;
-	}
-	if (diagTools != nullptr)
-	{
-		delete diagTools;
 	}
 }

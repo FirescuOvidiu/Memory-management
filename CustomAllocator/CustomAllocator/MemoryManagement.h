@@ -7,8 +7,7 @@
 class MemoryManagement
 {
 public:
-	MemoryManagement(const strategyType context = strategyType::WorstFit, const int poolSize = 0, 
-		const diagnosticType diagType = diagnosticType::No_Diagnostic, const benchMarkingType benchmarkType = benchMarkingType::No_BenchMark);
+	MemoryManagement(const strategyType context = strategyType::WorstFit, const int poolSize = 0, const diagnosticType diagType = diagnosticType::No_Diagnostic);
 	friend std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement);
 	friend std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement);
 
@@ -17,14 +16,10 @@ public:
 
 	void evaluateFragmentation();
 
-	~MemoryManagement();
-
 private:
-	Strategy* customAllocator;
+	std::unique_ptr<Strategy> customAllocator;
 	strategyType context;
-	DiagnosticTools* diagTools;
+	std::unique_ptr<DiagnosticTools> diagTools;
 	diagnosticType diagType;
-	BenchMarking timer;
-	benchMarkingType benchmarkType;
 	int poolSize;
 };

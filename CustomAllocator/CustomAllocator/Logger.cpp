@@ -7,7 +7,7 @@
 */
 void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 {
-	if ((logType == LogType::No_Log) || (!logLevels[(int)LogLevel]) || (message == ""))
+	if ((logType == LogType::No_Log) || (message == ""))
 	{
 		return;
 	}
@@ -64,12 +64,7 @@ void Logger::initLogger(size_t poolSize)
 		break;
 	}
 
-	logLevels.resize(3);
-
-	logLevels[(int)Log_Levels::Log_Level_Info] = true;
-	logLevels[(int)Log_Levels::Log_Level_Warning] = true;
-	logLevels[(int)Log_Levels::Log_Level_Error] = true;
-
+	logLevels.resize(3, true);
 	outputMessages.resize(3);
 
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
@@ -82,6 +77,11 @@ void Logger::initLogger(size_t poolSize)
 */
 void Logger::updateWarningLog()
 {
+	if (logType == LogType::No_Log)
+	{
+		return;
+	}
+
 	updateLog("The application has memory leaks !!", LogLevel::Log_Level_Warning);
 	updateLog("The size of the memory allocated that wasn't deallocated: " + std::to_string(totalMemory - totalMemoryAvailable) + " bytes.", LogLevel::Log_Level_Warning);
 }
@@ -92,6 +92,11 @@ void Logger::updateWarningLog()
 */
 void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation)
 {
+	if (logType == LogType::No_Log)
+	{
+		return;
+	}
+
 	if (situation == "Bad alloc")
 	{
 		updateLog("Bad alloc because the biggest continuous memory is smaller than the memory request.", LogLevel::Log_Level_Error);
@@ -131,6 +136,12 @@ void Logger::increaseAllocOrDealloc(const int size)
 		numberDeallocations++;
 	}
 	totalMemoryAvailable += size;
+}
+
+
+void Logger::setLogType(const LogType& type)
+{
+	this->logType = type;
 }
 
 
@@ -206,6 +217,8 @@ Logger::~Logger()
 		default:
 			break;
 		}
+
+
 		if (loggerFile.is_open())
 		{
 			loggerFile.close();

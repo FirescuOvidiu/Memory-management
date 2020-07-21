@@ -28,5 +28,8 @@ void DiagnosticTools::showFragmentationState(double fragmentationState)
 		std::cout << "\tFragmentation at this point is:" << (fragmentationState * 100) / totalMemory << "%.\n\n";
 		std::cout << "\t" << "<----------------------- END ----------------------->";
 		break;
+
+	default:
+		break;
 	}
 }
