@@ -16,8 +16,8 @@ typedef enum class Strategy_Types
 class Strategy
 {
 public:
-	friend std::ostream& operator<<(std::ostream& output, const Strategy& customAllocator);
-	friend std::istream& operator>>(std::istream& input, Strategy& customAllocator);
+	friend std::ostream& operator<<(std::ostream& output, const Strategy& allocator);
+	friend std::istream& operator>>(std::istream& input, Strategy& allocator);
 
 	virtual std::ostream& write(std::ostream& output) const = 0;
 	virtual std::istream& read(std::istream& input) = 0;

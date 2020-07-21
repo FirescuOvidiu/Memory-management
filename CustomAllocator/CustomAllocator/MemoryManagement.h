@@ -2,12 +2,13 @@
 
 
 /*
-	Used for choosing a custom allocator based on a context
+	Used for choosing a custom allocator based on a allocatorType
 */
 class MemoryManagement
 {
 public:
-	MemoryManagement(const strategyType context = strategyType::WorstFit, const int poolSize = 0, const diagnosticType diagType = diagnosticType::No_Diagnostic);
+	MemoryManagement(const strategyType allocatorType = strategyType::WorstFit, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic);
+
 	friend std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement);
 	friend std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement);
 
@@ -17,8 +18,11 @@ public:
 	void evaluateFragmentation();
 
 private:
-	std::unique_ptr<Strategy> customAllocator;
-	strategyType context;
+	void setAllocatorAndDiagnostic(const strategyType _allocatorType);
+
+private:
+	std::unique_ptr<Strategy> allocator;
+	strategyType allocatorType;
 	std::unique_ptr<DiagnosticTools> diagTools;
 	diagnosticType diagType;
 	int poolSize;
