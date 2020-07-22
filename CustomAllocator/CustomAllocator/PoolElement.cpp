@@ -14,7 +14,7 @@ bool PoolElement::operator<(const PoolElement& poolElement) const
 /*
 	Method used to serialize an object by overloading the operator "<<"
 */
-std::ostream& operator<<(std::ostream& output, const PoolElement& poolElement)
+std::ofstream& operator<<(std::ofstream& output, const PoolElement& poolElement)
 {
 	// We will serialize the current address based on the startAddress
 	size_t currAddress = poolElement.address - PoolElement::startAddress;
@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& output, const PoolElement& poolElement)
 /*
 	Method used to deserialize an object by overloading operator ">>"
 */
-std::istream& operator>>(std::istream& input, PoolElement& poolElement)
+std::ifstream& operator>>(std::ifstream& input, PoolElement& poolElement)
 {
 	size_t currAddress = 0;
 

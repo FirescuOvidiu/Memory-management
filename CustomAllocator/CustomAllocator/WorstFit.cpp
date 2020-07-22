@@ -1,16 +1,11 @@
 #include "stdafx.h"
 
-/*
-	Constructor used to allocate the memory pool, initialize data members and
-	save the start address to deallocate the memory pool and check for memory leaks after the T.U. is finished
- */
-WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
-{
-	startAddress = new char[poolSize];
-	mAvailable.push_back(PoolElement(startAddress, poolSize));
-	PoolElement::setStartAddress(startAddress);
 
-	// Initialize data members of logger
+WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize), startAddress(nullptr)
+{
+	setStartAddress();
+	mAvailable.push_back(PoolElement(startAddress, poolSize));
+
 	log.initLogger(poolSize);
 }
 
@@ -18,28 +13,12 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize)
 /*
 	Method used to serialize an object
 */
-std::ostream& WorstFit::write(std::ostream& output) const
+std::ofstream& WorstFit::write(std::ofstream& output) const
 {
-	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
-
 	// Serialize the data members by writing their content in the output file
-	output.write(reinterpret_cast<const char*>(&poolSize), sizeof(poolSize));
-
-	// Write the length of the list
-	output.write(reinterpret_cast<const char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-	// Parse the list and write it's content into the output file
-	for (const auto& currAvailableBlock : mAvailable)
-	{
-		output << currAvailableBlock;
-	}
-
-	// Write the length of the set
-	output.write(reinterpret_cast<const char*>(&lengthMAllocated), sizeof(lengthMAllocated));
-	// Parse the set and write it's content into the output file
-	for (const auto& currAllocatedBlock : mAllocated)
-	{
-		output << currAllocatedBlock;
-	}
+	Writer::writeVariable(output, poolSize);
+	Writer::writeList(output, mAvailable);
+	Writer::writeSet(output, mAllocated);
 
 	return output;
 }
@@ -48,42 +27,15 @@ std::ostream& WorstFit::write(std::ostream& output) const
 /*
 	Method used to deserialize an object
 */
-std::istream& WorstFit::read(std::istream& input)
+std::ifstream& WorstFit::read(std::ifstream& input)
 {
-	size_t lengthMAvailable = 0, lengthMAllocated = 0;
-	PoolElement poolElement;
-
 	// Deserialize data members by reading their content from the input file
-	input.read(reinterpret_cast<char*>(&poolSize), sizeof(poolSize));
+	poolSize = Reader::readVariable<decltype(poolSize)>(input);
 
-	// Delete the current allocated objects and allocate and initialize them 
-	if (startAddress != nullptr)
-	{
-		delete[] startAddress;
-	}
-	startAddress = new char[this->poolSize];
-	PoolElement::setStartAddress(startAddress);
-	log.setLogType(LogType::No_Log);
+	setStartAddress();
 
-	// Delete the list, and read it's length from the input file
-	mAvailable.clear();
-	input.read(reinterpret_cast<char*>(&lengthMAvailable), sizeof(lengthMAvailable));
-	mAvailable.resize(lengthMAvailable);
-	// Parse the vector and read it's content from the input file
-	for (auto& currAvailableBlock : mAvailable)
-	{
-		input >> currAvailableBlock;
-	}
-
-	// Delete the set and read it's length
-	mAllocated.clear();
-	input.read(reinterpret_cast<char*>(&lengthMAllocated), sizeof(lengthMAllocated));
-	// Insert into the set the elements read from the file
-	for (int it = 0; it < (int)lengthMAllocated; it++)
-	{
-		input >> poolElement;
-		mAllocated.insert(poolElement);
-	}
+	mAvailable = Reader::readList(input);
+	mAllocated = Reader::readSet(input);
 
 	return input;
 }
@@ -306,6 +258,16 @@ void WorstFit::checkMemoryLeaks()
 	}
 }
 
+
+void WorstFit::setStartAddress()
+{
+	if (startAddress != nullptr)
+	{
+		delete[] startAddress;
+	}
+	startAddress = new char[this->poolSize];
+	PoolElement::setStartAddress(startAddress);
+}
 
 /*
 	Function used to maintain the list sorted descending by size

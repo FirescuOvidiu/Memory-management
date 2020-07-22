@@ -16,11 +16,11 @@ typedef enum class Strategy_Types
 class Strategy
 {
 public:
-	friend std::ostream& operator<<(std::ostream& output, const Strategy& allocator);
-	friend std::istream& operator>>(std::istream& input, Strategy& allocator);
+	friend std::ofstream& operator<<(std::ofstream& output, const Strategy& allocator);
+	friend std::ifstream& operator>>(std::ifstream& input, Strategy& allocator);
 
-	virtual std::ostream& write(std::ostream& output) const = 0;
-	virtual std::istream& read(std::istream& input) = 0;
+	virtual std::ofstream& write(std::ofstream& output) const = 0;
+	virtual std::ifstream& read(std::ifstream& input) = 0;
 
 	virtual void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber) = 0;
 	virtual void __cdecl freeMemory(void* aBlock, int aBlockUse) = 0;

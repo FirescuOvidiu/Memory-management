@@ -3,15 +3,15 @@
 
 
 /*
-	Class used to implement a custom allocator that uses the Worst Fit algorithm to allocate and deallocate memory
+	Class used to implement a strategy for the allocator that uses the Worst Fit algorithm to allocate and deallocate memory
 */
 class WorstFit : public Strategy
 {
 public:
 	WorstFit(size_t poolSize);
 
-	std::ostream& write(std::ostream& output) const override;
-	std::istream& read(std::istream& input) override;
+	std::ofstream& write(std::ofstream& output) const override;
+	std::ifstream& read(std::ifstream& input) override;
 
 	void* __cdecl allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/) override;
 	void __cdecl freeMemory(void* aBlock, int /*aBlockUse*/) override;
@@ -26,12 +26,13 @@ private:
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
 	void checkMemoryLeaks();
 
+	void setStartAddress();
 	void maintainListSorted(std::list<PoolElement>::iterator& element);
 	void insertIntoAvailableMemory(const PoolElement& deallocatedMemory);
 
 private:
-	char* startAddress;					// Start address of the memory pool
+	char* startAddress;
 	std::list<PoolElement> mAvailable;	// Stores the memory unallocated sorted descending by the size
-	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
+	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted ascending by the address
 	std::size_t poolSize;				// The size of the memory pool
 };

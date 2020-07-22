@@ -12,8 +12,8 @@ class PoolElement
 public:
 	PoolElement(char* address = {}, size_t size = {}) : address(address), size(size) {}
 	bool operator<(const PoolElement& poolElement) const;
-	friend std::ostream& operator<<(std::ostream& output, const PoolElement& poolElement);
-	friend std::istream& operator>>(std::istream& input, PoolElement& poolElement);
+	friend std::ofstream& operator<<(std::ofstream& output, const PoolElement& poolElement);
+	friend std::ifstream& operator>>(std::ifstream& input, PoolElement& poolElement);
 
 	void updateElement(char* _address, size_t _size);
 	static void setStartAddress(char* startAddresss);

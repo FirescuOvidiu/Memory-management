@@ -10,6 +10,9 @@
     <Filter Include="Memory Management">
       <UniqueIdentifier>{c400d40d-e27d-496b-aea8-0a1b8a0a8385}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manage I/O">
+      <UniqueIdentifier>{c56abfab-825c-43ae-9850-829f02819c62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -52,10 +55,10 @@
       <Filter>Memory Management</Filter>
     </ClInclude>
     <ClInclude Include="Writer.h">
-      <Filter>Memory Management</Filter>
+      <Filter>Manage I/O</Filter>
     </ClInclude>
     <ClInclude Include="Reader.h">
-      <Filter>Memory Management</Filter>
+      <Filter>Manage I/O</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,10 +99,10 @@
       <Filter>Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="Writer.cpp">
-      <Filter>Memory Management</Filter>
+      <Filter>Manage I/O</Filter>
     </ClCompile>
     <ClCompile Include="Reader.cpp">
-      <Filter>Memory Management</Filter>
+      <Filter>Manage I/O</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

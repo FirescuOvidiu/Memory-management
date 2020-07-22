@@ -24,7 +24,7 @@ BuddySystem::BuddySystem(size_t poolSize)
 /*
 	Method used to serialize an object
 */
-std::ostream& BuddySystem::write(std::ostream& output) const
+std::ofstream& BuddySystem::write(std::ofstream& output) const
 {
 	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
 
@@ -62,7 +62,7 @@ std::ostream& BuddySystem::write(std::ostream& output) const
 /*
 	Method used to deserialize an object
 */
-std::istream& BuddySystem::read(std::istream& input)
+std::ifstream& BuddySystem::read(std::ifstream& input)
 {
 	size_t lengthMAvailable = 0, lengthMAllocated = 0;
 	std::set<PoolElement> aux;

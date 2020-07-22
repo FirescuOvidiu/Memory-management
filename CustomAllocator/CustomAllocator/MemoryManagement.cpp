@@ -10,7 +10,7 @@ MemoryManagement::MemoryManagement(const strategyType allocatorType, const int p
 /*
 	Method used to serialize an object by overloading operator<<
 */
-std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement)
+std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManagement)
 {
 	// Serialize data members by writing their content in the output file
 	Writer::writeVariable(output, static_cast<int>(memoryManagement.diagType));
@@ -27,7 +27,7 @@ std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryMan
 /*
 	Method used to deserialize an object by overloading operator>>
 */
-std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement)
+std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManagement)
 {
 	// Release the unique_ptr's 
 	memoryManagement.allocator.release();

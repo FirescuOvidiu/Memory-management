@@ -16,7 +16,7 @@ BestFit::BestFit(size_t poolSize) : poolSize(poolSize)
 }
 
 
-std::ostream& BestFit::write(std::ostream& output) const
+std::ofstream& BestFit::write(std::ofstream& output) const
 {
 	size_t lengthMAvailable = mAvailable.size(), lengthMAllocated = mAllocated.size();
 
@@ -45,7 +45,7 @@ std::ostream& BestFit::write(std::ostream& output) const
 }
 
 
-std::istream& BestFit::read(std::istream& input)
+std::ifstream& BestFit::read(std::ifstream& input)
 {
 	size_t lengthMAvailable = 0, lengthMAllocated = 0;
 	PoolElement poolElement;

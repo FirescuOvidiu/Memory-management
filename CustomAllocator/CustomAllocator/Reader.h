@@ -4,14 +4,17 @@
 class Reader
 {
 public:
+	static std::list<PoolElement> readList(std::ifstream& input);
+	static std::set<PoolElement> readSet(std::ifstream& input);
+
 	template <typename T>
-	static T readVariable(std::istream& input);
+	static T readVariable(std::ifstream& input);
 };
 
 
 
 template<typename T>
-inline T Reader::readVariable(std::istream& input)
+inline T Reader::readVariable(std::ifstream& input)
 {
 	T variable;
 
