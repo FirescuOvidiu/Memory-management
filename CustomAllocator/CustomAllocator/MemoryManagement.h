@@ -7,7 +7,7 @@
 class MemoryManagement
 {
 public:
-	MemoryManagement(const strategyType allocatorType = strategyType::WorstFit, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic);
+	MemoryManagement(const strategyType allocatorType = strategyType::StandardAllocator, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic);
 
 	friend std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManagement);
 	friend std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManagement);

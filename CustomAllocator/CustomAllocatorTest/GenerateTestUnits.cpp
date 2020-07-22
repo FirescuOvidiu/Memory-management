@@ -109,7 +109,6 @@ void GenerateTestUnits::loadTU()
 		}
 
 		offset += 4;
-
 		if (offset == fileLength - 5 * numberObjectsAllocated)
 		{
 			evaluateFragmentationState();

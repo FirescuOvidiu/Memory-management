@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManagement(strategyType::WorstFit, 134217728, diagnosticType::Console_Diagnostic);
+MemoryManagement memoryManagement(strategyType::StandardAllocator, 134217728, diagnosticType::Console_Diagnostic);
 
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
@@ -20,18 +20,12 @@ void __cdecl CustomAllocator_Delete(void * aBlock, int aBlockUse, char const * a
 
 void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
-	// default CRT implementation
-	// return _malloc_dbg(aSize, aBlockUse, aFileName, aLineNumber);
-
 	return memoryManagement.allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
 void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*aFileName*/, int /*aLineNumber*/)
 {
-	// default CRT implementation
-	// _free_dbg(aBlock, aBlockUse);
-
 	memoryManagement.freeMemory(aBlock, aBlockUse);
 }
 

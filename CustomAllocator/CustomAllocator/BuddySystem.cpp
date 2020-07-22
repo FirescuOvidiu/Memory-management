@@ -5,7 +5,7 @@
 	Constructor used to allocate the memory pool, initialize data members and
 	save the start address to deallocate the memory pool and check for memory leaks after the T.U. is finished
  */
-BuddySystem::BuddySystem(size_t poolSize)
+BuddySystem::BuddySystem(size_t poolSize): Strategy(poolSize)
 {
 	// this->poolSize will be the first number that is a power of 2 and is smaller or equal with poolSize
 	// If poolSize is a power of 2 then this->poolSize will be equal with poolSize
@@ -15,9 +15,6 @@ BuddySystem::BuddySystem(size_t poolSize)
 
 	mAvailable.resize((int)(log2(this->poolSize) + 1));
 	mAvailable[mAvailable.size() - 1].insert(PoolElement(startAddress, this->poolSize));
-
-	// Initialize data members of logger
-	log.initLogger(poolSize);
 }
 
 

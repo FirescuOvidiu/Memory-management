@@ -1,12 +1,10 @@
 #include "stdafx.h"
 
 
-WorstFit::WorstFit(const size_t poolSize) : poolSize(poolSize), startAddress(nullptr)
+WorstFit::WorstFit(const size_t poolSize) : Strategy(poolSize), poolSize(poolSize), startAddress(nullptr)
 {
 	allocMemoryPool();
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
-
-	log.initLogger(poolSize);
 }
 
 

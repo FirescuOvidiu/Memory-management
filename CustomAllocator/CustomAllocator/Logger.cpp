@@ -2,6 +2,30 @@
 #pragma warning (disable : 4996)
 
 
+Logger::Logger(const size_t poolSize) : numberAllocations(0), numberDeallocations(0), totalMemory((int)poolSize), totalMemoryAvailable((int)poolSize), logType(LogType::File_Log)
+{
+	loggerFile.open("LogFile.log", std::ofstream::out);
+	allocationsSizeFile.open("sizeAllocations.txt", std::ofstream::out);
+
+	switch (logType)
+	{
+	case LogType::File_Log:
+		loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
+		break;
+	case LogType::Console_Log:
+		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
+		break;
+	default:
+		break;
+	}
+
+	logLevels.resize(3, true);
+	outputMessages.resize(3);
+
+	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
+}
+
+
 /*
 	Method used to update the log depending on the log level
 */
@@ -36,39 +60,6 @@ void Logger::updateLog(const std::string& message, const LogLevel LogLevel)
 	outputMessages[(int)LogLevel] += "\t";
 	outputMessages[(int)LogLevel] += message;
 	outputMessages[(int)LogLevel] += "\n";
-}
-
-
-/*
-	Method used to initialize the log
-*/
-void Logger::initLogger(size_t poolSize)
-{
-	if (logType == LogType::No_Log)
-	{
-		return;
-	}
-
-	loggerFile.open("LogFile.log", std::ofstream::out);
-	allocationsSizeFile.open("sizeAllocations.txt", std::ofstream::out);
-
-	switch (logType)
-	{
-	case LogType::File_Log:
-		loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	case LogType::Console_Log:
-		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	default:
-		break;
-	}
-
-	logLevels.resize(3, true);
-	outputMessages.resize(3);
-
-	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
-	totalMemory = totalMemoryAvailable = (int)poolSize;
 }
 
 

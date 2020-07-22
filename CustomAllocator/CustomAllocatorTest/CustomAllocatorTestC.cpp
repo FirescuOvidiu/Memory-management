@@ -34,7 +34,7 @@ void testC()
 	void* placement1 = p1;
 	new(placement1) int(10);
 	std::cout << *p1;
-	delete p1;
+	//delete p1;
 
 	char memory[sizeof(int)];
 	void* p = memory;

@@ -57,5 +57,4 @@ void testB()
 
 	int* b8 = new int(10);
 	delete b8;
-	delete b8;
 }

@@ -81,6 +81,9 @@ void MemoryManagement::evaluateFragmentation()
 		diagTools->evaluateFragmentation(static_cast<BuddySystem*>(allocator.get())->getCurrentState());
 		static_cast<BuddySystem*>(allocator.get())->showCurrentState();
 		break;
+
+	default:
+		break;
 	}
 }
 
@@ -105,6 +108,10 @@ void MemoryManagement::setAllocatorAndDiagnostic(const strategyType _allocatorTy
 	case strategyType::BuddySystem:
 		allocator = std::make_unique<BuddySystem>(poolSize);
 		diagTools = std::make_unique<DiagnoseInternalFragmentation>((int)poolSize, diagType);
+		break;
+
+	case strategyType::StandardAllocator:
+		allocator = std::make_unique<StandardAllocator>();
 		break;
 	}
 }

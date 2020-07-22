@@ -4,6 +4,7 @@
 
 typedef enum class Strategy_Types
 {
+	StandardAllocator =0,
 	WorstFit = 1,
 	BuddySystem = 2,
 	BestFit = 3
@@ -16,6 +17,8 @@ typedef enum class Strategy_Types
 class Strategy
 {
 public:
+	Strategy(const size_t poolSize = 0) : log(poolSize) {}
+
 	friend std::ofstream& operator<<(std::ofstream& output, const Strategy& allocator);
 	friend std::ifstream& operator>>(std::ifstream& input, Strategy& allocator);
 

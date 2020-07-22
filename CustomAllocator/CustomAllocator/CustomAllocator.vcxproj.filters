@@ -60,6 +60,9 @@
     <ClInclude Include="Reader.h">
       <Filter>Manage I/O</Filter>
     </ClInclude>
+    <ClInclude Include="StandardAllocator.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Reader.cpp">
       <Filter>Manage I/O</Filter>
+    </ClCompile>
+    <ClCompile Include="StandardAllocator.cpp">
+      <Filter>Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
