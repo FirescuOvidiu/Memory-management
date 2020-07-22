@@ -58,7 +58,7 @@ void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const*
 
 	// Update the block with the new address and size and mantain the list sorted 
 	mAvailable.front().updateElement(blockAvailable.address + aSize, blockAvailable.size - aSize);
-	maintainListSorted(mAvailable.begin());
+	maintainListSorted(std::begin(mAvailable));
 
 	// Update logger
 	log.increaseAllocOrDealloc(-(int)aSize);
