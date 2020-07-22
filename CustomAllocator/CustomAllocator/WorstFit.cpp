@@ -1,9 +1,9 @@
 #include "stdafx.h"
 
 
-WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize), startAddress(nullptr)
+WorstFit::WorstFit(const size_t poolSize) : poolSize(poolSize), startAddress(nullptr)
 {
-	setStartAddress();
+	allocMemoryPool();
 	mAvailable.push_back(PoolElement(startAddress, poolSize));
 
 	log.initLogger(poolSize);
@@ -15,7 +15,7 @@ WorstFit::WorstFit(size_t poolSize) : poolSize(poolSize), startAddress(nullptr)
 */
 std::ofstream& WorstFit::write(std::ofstream& output) const
 {
-	// Serialize the data members by writing their content in the output file
+	// Serialize data members by writing their content in the output file
 	Writer::writeVariable(output, poolSize);
 	Writer::writeList(output, mAvailable);
 	Writer::writeSet(output, mAllocated);
@@ -32,7 +32,7 @@ std::ifstream& WorstFit::read(std::ifstream& input)
 	// Deserialize data members by reading their content from the input file
 	poolSize = Reader::readVariable<decltype(poolSize)>(input);
 
-	setStartAddress();
+	allocMemoryPool();
 
 	mAvailable = Reader::readList(input);
 	mAllocated = Reader::readSet(input);
@@ -42,72 +42,54 @@ std::ifstream& WorstFit::read(std::ifstream& input)
 
 
 /*
-	Function used to allocate memory for the user
-	Returns an address to an open block of memory of size aSize in our memory pool
+	Method used to allocate memory
+	Returns an address to an open block of memory of size aSize from our memory pool
 */
 void* __cdecl WorstFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* /*aFileName*/, int /*aLineNumber*/)
 {
-	// Throw exception in case we can't allocate the memory because different reasons (see function)
 	if (checkBadAlloc(aSize))
 	{
 		std::bad_alloc exception;
 		throw exception;
 	}
 
-	auto currBlockAvailable = mAvailable.begin();
-	void* block = static_cast<void*>(currBlockAvailable->address);
+	auto blockAvailable = mAvailable.front();
 
 	// Insert the address and the size of the block in the memory allocated
-	mAllocated.insert(PoolElement(currBlockAvailable->address, aSize));
+	mAllocated.insert(PoolElement(blockAvailable.address, aSize));
 
 	// Update the block with the new address and size and mantain the list sorted 
-	mAvailable.front().updateElement(currBlockAvailable->address + aSize, currBlockAvailable->size - aSize);
-	if (mAvailable.front().size == 0)
-	{
-		mAvailable.erase(mAvailable.begin());
-	}
-	else
-	{
-		while ((std::next(currBlockAvailable) != mAvailable.end()) && (currBlockAvailable->size < std::next(currBlockAvailable)->size))
-		{
-			std::swap(currBlockAvailable->address, std::next(currBlockAvailable)->address);
-			std::swap(currBlockAvailable->size, std::next(currBlockAvailable)->size);
-			currBlockAvailable++;
-		}
-	}
+	mAvailable.front().updateElement(blockAvailable.address + aSize, blockAvailable.size - aSize);
+	maintainListSorted(mAvailable.begin());
 
 	// Update logger
 	log.increaseAllocOrDealloc(-(int)aSize);
 
-	return block;
+	return static_cast<void*>(blockAvailable.address);
 }
 
 
 /*
-	Function used to deallocate memory. Does two things:
-	- removes the address from the mAllocated (mAllocated contains the blocks allocated)
-	- inserts the address into the mAvailable (mAvailable contains the blocks unallocated)
+	Method used to deallocate memory
+	Deallocates a block of memory with the address aBlock from our memory pool allocated previously
 */
 void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 {
-	// Search the address that the user wants to delete in mAllocated
-	auto it = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
+	const auto itBlockToDeallocate = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
 
-	if (checkInvalidAddress(aBlock, it))
+	if (checkInvalidAddress(aBlock, itBlockToDeallocate))
 	{
 		std::abort();
 	}
 
-	PoolElement deallocatedMemory = *it;
-
-	// Remove the adress from the allocated block
-	mAllocated.erase(it);
-
-	// Insert the address into the unallocated list (mAvailable)
-	insertIntoAvailableMemory(deallocatedMemory);
+	// Insert the block in the unallocated list (mAvailable)
+	insertIntoAvailableMemory(itBlockToDeallocate);
 
 	// Update Logger
-	log.increaseAllocOrDealloc((int)deallocatedMemory.size);
+	log.increaseAllocOrDealloc((int)itBlockToDeallocate->size);
+
+	// Remove the block from the allocated set
+	mAllocated.erase(itBlockToDeallocate);
 }
 
 
@@ -117,17 +99,16 @@ void __cdecl WorstFit::freeMemory(void* aBlock, int /*aBlockUse*/)
 */
 std::pair<int, int> WorstFit::getCurrentState() const
 {
-	int biggestContMemory = 0, memoryAvailable = 0, memoryAllocated = 0;
+	int biggestContMemory = 0, memoryAvailable = (int)poolSize;
 
-	for (const auto& itMemoryAllocated : mAllocated)
+	for (const auto& blockAllocated : mAllocated)
 	{
-		memoryAllocated += (int)itMemoryAllocated.size;
+		memoryAvailable -= (int)blockAllocated.size;
 	}
 
-	memoryAvailable = (int)poolSize - memoryAllocated;
 	if (!mAvailable.empty())
 	{
-		biggestContMemory = (int)(*(mAvailable.begin())).size;
+		biggestContMemory = (int)mAvailable.front().size;
 	}
 
 	return std::make_pair(biggestContMemory, memoryAvailable);
@@ -143,81 +124,29 @@ void WorstFit::showCurrentState() const
 	std::ofstream output("memoryState.txt", std::ofstream::out);
 	std::list<PoolElement> auxMAvailable = mAvailable, auxMAllocated;
 
-	for (const auto& currBlockAllocated : mAllocated)
+	for (const auto& blockAllocated : mAllocated)
 	{
-		auxMAllocated.push_back(currBlockAllocated);
+		auxMAllocated.push_back(blockAllocated);
 	}
-
-	for (auto currAllocatedBlock = auxMAllocated.begin(); std::next(currAllocatedBlock) != auxMAllocated.end();)
-	{
-		if (currAllocatedBlock->address + currAllocatedBlock->size == std::next(currAllocatedBlock)->address)
-		{
-			std::next(currAllocatedBlock)->updateElement(currAllocatedBlock->address, currAllocatedBlock->size + std::next(currAllocatedBlock)->size);
-			currAllocatedBlock = auxMAllocated.erase(currAllocatedBlock);
-		}
-		else
-		{
-			currAllocatedBlock++;
-		}
-	}
+	mergeAdjacentBlocks(auxMAllocated);
 
 	// Sorting the list of memory available by address
 	auxMAvailable.sort();
 
-	std::list<PoolElement>::const_iterator currAvailableBlock = auxMAvailable.cbegin();
-	std::list<PoolElement>::const_iterator currAllocatedBlock = auxMAllocated.cbegin();
-
-	if (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
-	{
-		if (currAvailableBlock->address - startAddress > currAllocatedBlock->address - startAddress)
-		{
-			output << 0 << "\n";
-		}
-	}
-
-	// We have two structures sorted by address and we need to write 
-	// into a file the elements from the both structures sorted by address
-	// We parse the structures simultaneous and compare the elements
-	while (currAvailableBlock != auxMAvailable.cend() && currAllocatedBlock != auxMAllocated.cend())
-	{
-		if (currAvailableBlock->address - startAddress < currAllocatedBlock->address - startAddress)
-		{
-			output << currAvailableBlock->size << "\n";
-			output << currAllocatedBlock->size << "\n";
-		}
-		else
-		{
-			output << currAllocatedBlock->size << "\n";
-			output << currAvailableBlock->size << "\n";
-		}
-
-		currAvailableBlock++;
-		currAllocatedBlock++;
-	}
-
-	if (currAvailableBlock != auxMAvailable.cend())
-	{
-		output << currAvailableBlock->size << "\n";
-	}
-	if (currAllocatedBlock != auxMAllocated.cend())
-	{
-		output << currAllocatedBlock->size << "\n";
-	}
+	Writer::writeSortedLists(output, auxMAvailable, auxMAllocated);
 
 	output.close();
 }
 
 
 /*
-	Check if we can't allocate memory for the user because different reasons
+	Method used to check if we can't allocate memory for the user
 */
 bool WorstFit::checkBadAlloc(size_t aSize)
 {
-	// If we don't have enough memory available or 
-	// The biggest contiguous memory is smaller than the memory requested
-	if (mAvailable.empty()|| (aSize > mAvailable.front().size))
+	// If we don't have enough memory available or the biggest contiguous memory is smaller than the memory requested then we can't allocate memory
+	if (mAvailable.empty() || (aSize > mAvailable.front().size))
 	{
-		// Update log
 		log.updateErrorLog(0, aSize, mAvailable.front().size, "Bad alloc");
 		log.~Logger();
 
@@ -229,13 +158,12 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 
 
 /*
-	This function is used to check if the user tried to deallocate a block of memory which is not allocated
+	Method used to check if the user tried to deallocate a block of memory which is not allocated
 */
-bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator& it)
+bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator& itBlockToDeallocate)
 {
-	if (it == mAllocated.end())
+	if (itBlockToDeallocate == std::end(mAllocated))
 	{
-		// Update log
 		log.updateErrorLog(aBlock, 0, 0, "Invalid Address");
 		log.~Logger();
 
@@ -253,13 +181,12 @@ void WorstFit::checkMemoryLeaks()
 {
 	if (!mAllocated.empty())
 	{
-		// Update log
 		log.updateWarningLog();
 	}
 }
 
 
-void WorstFit::setStartAddress()
+void WorstFit::allocMemoryPool()
 {
 	if (startAddress != nullptr)
 	{
@@ -269,18 +196,32 @@ void WorstFit::setStartAddress()
 	PoolElement::setStartAddress(startAddress);
 }
 
+
 /*
 	Function used to maintain the list sorted descending by size
 	We have the list sorted except one element that has the size bigger than the previous elements
 	we try to find its position so that the list is maintained sorted descending by size
 */
-void WorstFit::maintainListSorted(std::list<PoolElement>::iterator& element)
+void WorstFit::maintainListSorted(std::list<PoolElement>::iterator element)
 {
-	while ((element != mAvailable.begin()) && (element->size > std::prev(element)->size))
+	if (element->size == 0)
+	{
+		mAvailable.erase(element);
+		return;
+	}
+
+	while ((element != std::begin(mAvailable)) && (element->size > std::prev(element)->size))
 	{
 		std::swap(element->address, std::prev(element)->address);
 		std::swap(element->size, std::prev(element)->size);
 		element--;
+	}
+
+	while ((std::next(element) != std::end(mAvailable)) && (element->size < std::next(element)->size))
+	{
+		std::swap(element->address, std::next(element)->address);
+		std::swap(element->size, std::next(element)->size);
+		element++;
 	}
 }
 
@@ -288,75 +229,113 @@ void WorstFit::maintainListSorted(std::list<PoolElement>::iterator& element)
 /*
 	Insert the block of memory that was removed from the allocated set (mAllocated) into the unallocated list (mAvailable)
 */
-void WorstFit::insertIntoAvailableMemory(const PoolElement& deallocatedMemory)
+void WorstFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator& deallocatedMemory)
 {
 	// newPosition will memorate the position where the block will fit if it doesn't merge with other blocks
 	// leftBlock will memorate the left block with which the deallocated block will merge
 	// rightBlock will memorate the right block with which the deallocated block will merge
-	std::list<PoolElement>::iterator newPosition = mAvailable.begin();
-	std::list<PoolElement>::iterator leftBlock = mAvailable.end(), rightBlock = mAvailable.end();
 
-	// We parse the list and find newPosition, leftBlock and rightBlock
-	for (std::list<PoolElement>::iterator currElement = mAvailable.begin(); currElement != mAvailable.end(); currElement++)
-	{
-		if (newPosition->size > deallocatedMemory.size)
-		{
-			newPosition++;
-		}
-
-		if (currElement->address + currElement->size == deallocatedMemory.address)
-		{
-			leftBlock = currElement;
-		}
-
-		if (deallocatedMemory.address + deallocatedMemory.size == currElement->address)
-		{
-			rightBlock = currElement;
-		}
-	}
+	auto [newPosition, leftBlock, rightBlock] = findPosAndAdjacentBlocks(deallocatedMemory);
 
 	// If it doesn't merge with other blocks (to make a bigger continuous memory block)
 	// we simply insert it so that the lists is mantained sorted
-	if ((leftBlock == mAvailable.end()) && (rightBlock == mAvailable.end()))
+	if ((leftBlock == std::end(mAvailable)) && (rightBlock == std::end(mAvailable)))
 	{
-		mAvailable.insert(newPosition, deallocatedMemory);
+		mAvailable.insert(newPosition, *deallocatedMemory);
+		return;
+	}
+
+	// Merge the deallocated block with a left block and a right block
+	// The right block is deleted and only the left block will remain with the size equal to sum of all 3 blocks
+	if ((leftBlock != std::end(mAvailable)) && (rightBlock != std::end(mAvailable)))
+	{
+		leftBlock->size = leftBlock->size + rightBlock->size + deallocatedMemory->size;
+		mAvailable.erase(rightBlock);
+
+		maintainListSorted(leftBlock);
 	}
 	else
 	{
-		// Merge the deallocated block with a left block and a right block
-		// The right block is deleted and only the left block will remain with the size equal to sum of all 3 blocks
-		if ((leftBlock != mAvailable.end()) && (rightBlock != mAvailable.end()))
+		// Merge the deallocated block with the a left block
+		if (leftBlock != std::end(mAvailable))
 		{
-			leftBlock->size = leftBlock->size + rightBlock->size + deallocatedMemory.size;
-			mAvailable.erase(rightBlock);
+			leftBlock->size = leftBlock->size + deallocatedMemory->size;
 
-			WorstFit::maintainListSorted(leftBlock);
+			maintainListSorted(leftBlock);
 		}
-		else
+
+		// Merge the deallocated block with a right block
+		if (rightBlock != std::end(mAvailable))
 		{
-			// Merge the deallocated block with the a left block
-			if (leftBlock != mAvailable.end())
-			{
-				leftBlock->size = leftBlock->size + deallocatedMemory.size;
+			rightBlock->address = deallocatedMemory->address;
+			rightBlock->size = rightBlock->size + deallocatedMemory->size;
 
-				WorstFit::maintainListSorted(leftBlock);
-			}
-
-			// Merge the deallocated block with a right block
-			if (rightBlock != mAvailable.end())
-			{
-				rightBlock->address = deallocatedMemory.address;
-				rightBlock->size = rightBlock->size + deallocatedMemory.size;
-
-				WorstFit::maintainListSorted(rightBlock);
-			}
+			maintainListSorted(rightBlock);
 		}
 	}
 }
 
 
 /*
-	Destructor used to deallocated the memory pool, allocated at the start of the program
+	Method used to merge all the adjacent blocks in a sorted list by address
+*/
+void WorstFit::mergeAdjacentBlocks(std::list<PoolElement>& blocks) const
+{
+	if (blocks.empty())
+	{
+		return;
+	}
+
+	auto currBlock = std::begin(blocks);
+
+	while (std::next(currBlock) != std::end(blocks))
+	{
+		if (currBlock->address + currBlock->size == std::next(currBlock)->address)
+		{
+			std::next(currBlock)->updateElement(currBlock->address, currBlock->size + std::next(currBlock)->size);
+			currBlock = blocks.erase(currBlock);
+		}
+		else
+		{
+			currBlock++;
+		}
+	}
+}
+
+
+/*
+	Method used to get the position where the deallocated block will fit
+	Also inside the method we are looking for a left and right block to merge it with the deallocate block
+*/
+std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> 
+	WorstFit::findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator& deallocatedMemory)
+{
+	auto newPosition = std::begin(mAvailable), leftBlock = std::end(mAvailable), rightBlock = std::end(mAvailable);
+
+	for (auto currElement = std::begin(mAvailable); currElement != std::end(mAvailable); currElement++)
+	{
+		if (newPosition->size > deallocatedMemory->size)
+		{
+			newPosition++;
+		}
+
+		if (currElement->address + currElement->size == deallocatedMemory->address)
+		{
+			leftBlock = currElement;
+		}
+
+		if (currElement->address == deallocatedMemory->address + deallocatedMemory->size)
+		{
+			rightBlock = currElement;
+		}
+	}
+
+	return std::make_tuple(newPosition,leftBlock,rightBlock);
+}
+
+
+/*
+	Destructor used to deallocated the memory pool allocated at the start of the program
 	Also we check if the program has memory leaks
 */
 WorstFit::~WorstFit()

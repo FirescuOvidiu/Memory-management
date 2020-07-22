@@ -8,7 +8,7 @@
 class WorstFit : public Strategy
 {
 public:
-	WorstFit(size_t poolSize);
+	WorstFit(const size_t poolSize);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;
@@ -23,12 +23,14 @@ public:
 
 private:
 	bool checkBadAlloc(size_t aSize);
-	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
+	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& itBlockToDeallocate);
 	void checkMemoryLeaks();
 
-	void setStartAddress();
-	void maintainListSorted(std::list<PoolElement>::iterator& element);
-	void insertIntoAvailableMemory(const PoolElement& deallocatedMemory);
+	void allocMemoryPool();
+	void maintainListSorted(std::list<PoolElement>::iterator element);
+	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator& deallocatedMemory);
+	void mergeAdjacentBlocks(std::list<PoolElement>& blocks) const;
+	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator& deallocatedMemory);
 
 private:
 	char* startAddress;
