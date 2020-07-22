@@ -5,7 +5,7 @@
 class BestFit : public Strategy
 {
 public:
-	BestFit(size_t poolSize);
+	BestFit(const size_t poolSize);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;
@@ -23,7 +23,12 @@ private:
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
 	void checkMemoryLeaks();
 
-	void insertIntoAvailableMemory(const PoolElement& deallocatedMemory);
+	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findAdjacentBlocks(const std::set<PoolElement>::iterator& deallocatedMemory);
+	std::list<PoolElement>::iterator findBestBlock(const size_t aSize);
+	int findBiggestContBlock() const;
+	void allocMemoryPool();
+	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator& deallocatedMemory);
+	void mergeAdjacentBlocks(std::list<PoolElement>& blocks) const;
 
 private:
 	char* startAddress;					// Start address of the memory pool

@@ -210,7 +210,10 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />
     <ClCompile Include="Reader.cpp" />
-    <ClCompile Include="StandardAllocator.cpp" />
+    <ClCompile Include="StandardAllocator.cpp">
+      <WarningLevel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Level4</WarningLevel>
+      <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</TreatWarningAsError>
+    </ClCompile>
     <ClCompile Include="WorstFit.cpp" />
     <ClCompile Include="PoolElement.cpp" />
     <ClCompile Include="stdafx.cpp">
