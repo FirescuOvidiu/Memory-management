@@ -1,6 +1,6 @@
 #pragma once
 
-const int numberAllocations = 1000000;
+const int numberAllocations = 1000;
 const int fileLength = numberAllocations * 9 + numberAllocations * 5;
 
 

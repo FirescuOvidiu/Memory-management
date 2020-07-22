@@ -2,7 +2,7 @@
 
 
 /*
-	Used for choosing a custom allocator based on a allocatorType
+	Contains an allocator used to manage the allocations and deallocations, diagnostic tools used to evaluate the allocator, and operator<</operator>> for serialization/deserializaton
 */
 class MemoryManagement
 {

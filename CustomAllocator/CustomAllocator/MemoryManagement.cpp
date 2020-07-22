@@ -12,15 +12,12 @@ MemoryManagement::MemoryManagement(const strategyType allocatorType, const int p
 */
 std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryManagement)
 {
-	int diagType = static_cast<int>(memoryManagement.diagType);
-	int strategyType = static_cast<int>(memoryManagement.allocatorType);
+	// Serialize data members by writing their content in the output file
+	Writer::writeVariable(output, static_cast<int>(memoryManagement.diagType));
+	Writer::writeVariable(output, memoryManagement.poolSize);
+	Writer::writeVariable(output, static_cast<int>(memoryManagement.allocatorType));
 
-	// Serialize the data members by writing their content in the output file
-	output.write(reinterpret_cast<const char*>(&strategyType), sizeof(strategyType));
-	output.write(reinterpret_cast<const char*>(&memoryManagement.poolSize), sizeof(memoryManagement.poolSize));
-	output.write(reinterpret_cast<const char*>(&diagType), sizeof(diagType));
-
-	// Serialize the objects present in this class
+	// Serialize the remaining objects present in the class
 	output << (*memoryManagement.allocator);
 
 	return output;
@@ -32,23 +29,19 @@ std::ostream& operator<<(std::ostream& output, const MemoryManagement& memoryMan
 */
 std::istream& operator>>(std::istream& input, MemoryManagement& memoryManagement)
 {
-	int newStrategyType = 0, newDiagType = 0;
-
-	// Deserialize data members by reading their content from the input file
-	input.read(reinterpret_cast<char*>(&newStrategyType), sizeof(newStrategyType));
-	input.read(reinterpret_cast<char*>(&memoryManagement.poolSize), sizeof(memoryManagement.poolSize));
-	input.read(reinterpret_cast<char*>(&newDiagType), sizeof(newDiagType));
-
-	memoryManagement.diagType = static_cast<diagnosticType>(newDiagType);
-	memoryManagement.allocatorType = static_cast<strategyType>(newStrategyType);
-
-	// Delete the current allocated objects. After deleting, allocate and initialize them based on the data from the input file
+	// Release the unique_ptr's 
 	memoryManagement.allocator.release();
 	memoryManagement.diagTools.release();
 
+	// Deserialize data members by reading their content from the input file
+	memoryManagement.diagType = static_cast<diagnosticType>(Reader::readVariable<int>(input));
+	memoryManagement.poolSize = Reader::readVariable<decltype(memoryManagement.poolSize)>(input);
+	memoryManagement.allocatorType = static_cast<strategyType>(Reader::readVariable<int>(input));
+
+	//Initialaze the allocator and diagnostic tools based on the data members read
 	memoryManagement.setAllocatorAndDiagnostic(memoryManagement.allocatorType);
 
-	// Deserialize the objects present in this class
+	// Deserialize the remaining objects present in the class
 	input >> (*memoryManagement.allocator);
 
 	return input;
@@ -93,7 +86,7 @@ void MemoryManagement::evaluateFragmentation()
 
 
 /*
-	Method used to set a strategy for the custom allocator and diagnostics tools
+	Method used to set a strategy for the allocator and diagnostics tools
 */
 void MemoryManagement::setAllocatorAndDiagnostic(const strategyType _allocatorType)
 {

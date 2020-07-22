@@ -191,11 +191,13 @@
     <ClInclude Include="DiagnosticTools.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="MemoryManagement.h" />
+    <ClInclude Include="Reader.h" />
     <ClInclude Include="WorstFit.h" />
     <ClInclude Include="PoolElement.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Writer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BestFit.cpp" />
@@ -206,6 +208,7 @@
     <ClCompile Include="DiagnosticTools.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="MemoryManagement.cpp" />
+    <ClCompile Include="Reader.cpp" />
     <ClCompile Include="WorstFit.cpp" />
     <ClCompile Include="PoolElement.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -217,6 +220,7 @@
     <ClCompile Include="Strategy.cpp">
       <TreatWarningAsError Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</TreatWarningAsError>
     </ClCompile>
+    <ClCompile Include="Writer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CustomAllocator.def" />

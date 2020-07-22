@@ -51,6 +51,12 @@
     <ClInclude Include="BestFit.h">
       <Filter>Memory Management</Filter>
     </ClInclude>
+    <ClInclude Include="Writer.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
+    <ClInclude Include="Reader.h">
+      <Filter>Memory Management</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -87,6 +93,12 @@
       <Filter>Memory Management</Filter>
     </ClCompile>
     <ClCompile Include="BestFit.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Writer.cpp">
+      <Filter>Memory Management</Filter>
+    </ClCompile>
+    <ClCompile Include="Reader.cpp">
       <Filter>Memory Management</Filter>
     </ClCompile>
   </ItemGroup>
