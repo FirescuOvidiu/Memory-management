@@ -1,62 +1,49 @@
 #include "stdafx.h"
 
+
 char* PoolElement::startAddress = nullptr;
 
-/*
-	Overload operator "<" to compare two objects by their address
-*/
-bool PoolElement::operator<(const PoolElement& poolElement) const
+
+bool PoolElement::operator<(const PoolElement& block) const
 {
-	return this->address < poolElement.address;
+	return this->address < block.address;
 }
 
 
 /*
-	Method used to serialize an object by overloading the operator "<<"
+	Method used to serialize an object by overloading the operator<<
 */
-std::ofstream& operator<<(std::ofstream& output, const PoolElement& poolElement)
+std::ofstream& operator<<(std::ofstream& output, const PoolElement& block)
 {
-	// We will serialize the current address based on the startAddress
-	size_t currAddress = poolElement.address - PoolElement::startAddress;
-
 	// Serialize the data members by writing their content in the output file
-	output.write(reinterpret_cast<const char*>(&currAddress), sizeof(currAddress));
-	output.write(reinterpret_cast<const char*>(&poolElement.size), sizeof(poolElement.size));
+	Writer::writeVariable(output, block.address - PoolElement::startAddress);
+	Writer::writeVariable(output, block.size);
 
 	return output;
 }
 
 
 /*
-	Method used to deserialize an object by overloading operator ">>"
+	Method used to deserialize an object by overloading operator>>
 */
-std::ifstream& operator>>(std::ifstream& input, PoolElement& poolElement)
+std::ifstream& operator>>(std::ifstream& input, PoolElement& block)
 {
-	size_t currAddress = 0;
-
 	// Deserialize data members by reading their content from the input file
-	input.read(reinterpret_cast<char*>(&currAddress), sizeof(currAddress));
-	poolElement.address = PoolElement::startAddress + currAddress;
-	input.read(reinterpret_cast<char*>(&poolElement.size), sizeof(poolElement.size));
+	block.address = PoolElement::startAddress + Reader::readVariable<size_t>(input);
+	block.size = Reader::readVariable<decltype(block.size)>(input);
 
 	return input;
 }
 
 
-/*
-	Function used to update an element
-*/
-void PoolElement::updateElement(char* _address, size_t _size)
+void PoolElement::updateElement(char* _address, const size_t _size)
 {
 	this->address = _address;
 	this->size = _size;
 }
 
 
-/*
-	Setter used to set a value for startAddress
-*/
-void PoolElement::setStartAddress(char* startAddresss)
+void PoolElement::setStartAddress(char* _startAddress)
 {
-	startAddress = startAddresss;
+	startAddress = _startAddress;
 }
