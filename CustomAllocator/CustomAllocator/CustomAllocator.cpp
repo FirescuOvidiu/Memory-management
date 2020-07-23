@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManagement(strategyType::StandardAllocator, 134217728, diagnosticType::Console_Diagnostic);
+MemoryManagement memoryManager(strategyType::BestFit, 134217728, diagnosticType::Console_Diagnostic);
 
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
@@ -20,19 +20,19 @@ void __cdecl CustomAllocator_Delete(void * aBlock, int aBlockUse, char const * a
 
 void * __cdecl CustomAllocator_Malloc(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
 {
-	return memoryManagement.allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
+	return memoryManager.allocMemory(aSize, aBlockUse, aFileName, aLineNumber);
 }
 
 
 void __cdecl CustomAllocator_Free(void * aBlock, int aBlockUse, char const * /*aFileName*/, int /*aLineNumber*/)
 {
-	memoryManagement.freeMemory(aBlock, aBlockUse);
+	memoryManager.freeMemory(aBlock, aBlockUse);
 }
 
 
 void evaluateFragmentationState()
 {
-	memoryManagement.evaluateFragmentation();
+	memoryManager.evaluateFragmentation();
 }
 
 
@@ -40,7 +40,7 @@ void serialization()
 {
 	std::ofstream output("serialization.bin", std::ofstream::out | std::ofstream::binary);
 
-	output << memoryManagement;
+	output << memoryManager;
 
 	output.close();
 }
@@ -50,7 +50,7 @@ void deserialization()
 {
 	std::ifstream input("serialization.bin", std::ifstream::in | std::ifstream::binary);
 
-	input >> memoryManagement;
+	input >> memoryManager;
 
 	input.close();
 	evaluateFragmentationState();

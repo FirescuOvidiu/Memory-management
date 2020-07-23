@@ -10,15 +10,15 @@ MemoryManagement::MemoryManagement(const strategyType allocatorType, const int p
 /*
 	Method used to serialize an object by overloading operator<<
 */
-std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManagement)
+std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManager)
 {
 	// Serialize data members by writing their content in the output file
-	Writer::writeVariable(output, static_cast<int>(memoryManagement.diagType));
-	Writer::writeVariable(output, memoryManagement.poolSize);
-	Writer::writeVariable(output, static_cast<int>(memoryManagement.allocatorType));
+	Writer::writeVariable(output, static_cast<int>(memoryManager.diagType));
+	Writer::writeVariable(output, memoryManager.poolSize);
+	Writer::writeVariable(output, static_cast<int>(memoryManager.allocatorType));
 
 	// Serialize the remaining objects present in the class
-	output << (*memoryManagement.allocator);
+	output << (*memoryManager.allocator);
 
 	return output;
 }
@@ -27,22 +27,22 @@ std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryM
 /*
 	Method used to deserialize an object by overloading operator>>
 */
-std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManagement)
+std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManager)
 {
 	// Release the unique_ptr's 
-	memoryManagement.allocator.release();
-	memoryManagement.diagTools.release();
+	memoryManager.allocator.release();
+	memoryManager.diagTools.release();
 
 	// Deserialize data members by reading their content from the input file
-	memoryManagement.diagType = static_cast<diagnosticType>(Reader::readVariable<int>(input));
-	memoryManagement.poolSize = Reader::readVariable<decltype(memoryManagement.poolSize)>(input);
-	memoryManagement.allocatorType = static_cast<strategyType>(Reader::readVariable<int>(input));
+	memoryManager.diagType = static_cast<diagnosticType>(Reader::readVariable<int>(input));
+	memoryManager.poolSize = Reader::readVariable<decltype(memoryManager.poolSize)>(input);
+	memoryManager.allocatorType = static_cast<strategyType>(Reader::readVariable<int>(input));
 
 	//Initialaze the allocator and diagnostic tools based on the data members read
-	memoryManagement.setAllocatorAndDiagnostic(memoryManagement.allocatorType);
+	memoryManager.setAllocatorAndDiagnostic(memoryManager.allocatorType);
 
 	// Deserialize the remaining objects present in the class
-	input >> (*memoryManagement.allocator);
+	input >> (*memoryManager.allocator);
 
 	return input;
 }

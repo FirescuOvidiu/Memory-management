@@ -9,8 +9,8 @@ class MemoryManagement
 public:
 	MemoryManagement(const strategyType allocatorType = strategyType::StandardAllocator, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic);
 
-	friend std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManagement);
-	friend std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManagement);
+	friend std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManager);
+	friend std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManager);
 
 	void* __cdecl allocMemory(size_t aSize, int aBlockUse, char const* aFileName, int aLineNumber);
 	void __cdecl freeMemory(void* aBlock, int aBlockUse);
