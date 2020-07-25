@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-void Writer::writeList(std::ofstream& output, std::list<PoolElement> list)
+void Writer::writeList(std::ofstream& output, const std::list<PoolElement>& list)
 {
 	Writer::writeVariable(output, list.size());
 
@@ -12,7 +12,7 @@ void Writer::writeList(std::ofstream& output, std::list<PoolElement> list)
 }
 
 
-void Writer::writeSet(std::ofstream& output, std::set<PoolElement> set)
+void Writer::writeSet(std::ofstream& output, const std::set<PoolElement>& set)
 {
 	Writer::writeVariable(output, set.size());
 

@@ -18,13 +18,13 @@ std::list<PoolElement> Reader::readList(std::ifstream& input)
 std::set<PoolElement> Reader::readSet(std::ifstream& input)
 {
 	std::set<PoolElement> set;
-	PoolElement poolElement;
-	size_t size = readVariable<size_t>(input);
+	PoolElement var;
+	const size_t size = readVariable<size_t>(input);
 
 	for (int it = 0; it < (int)size; it++)
 	{
-		input >> poolElement;
-		set.insert(poolElement);
+		input >> var;
+		set.insert(var);
 	}
 
 	return set;
