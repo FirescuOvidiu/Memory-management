@@ -91,7 +91,6 @@ void __cdecl BestFit::freeMemory(void* aBlock, int)
 	// Update Logger
 	log.increaseAllocOrDealloc((int)blockToDeallocate->size);
 
-	// Remove the address from the allocated block
 	mAllocated.erase(blockToDeallocate);
 }
 
@@ -122,28 +121,28 @@ std::pair<int, int> BestFit::getCurrentState() const
 void BestFit::showCurrentState() const
 {
 	std::ofstream output("memoryState.txt", std::ofstream::out);
-	std::list<PoolElement> copyMAvailable = mAvailable, copyMAllocated;
+	std::list<PoolElement> mAvailableCopy = mAvailable, mAllocatedCopy;
 
 	for (const auto& currBlockAllocated : mAllocated)
 	{
-		copyMAllocated.push_back(currBlockAllocated);
+		mAllocatedCopy.push_back(currBlockAllocated);
 	}
 
 	// Merge adjacent blocks of memory
-	std::list<PoolElement>::iterator it = copyMAllocated.begin();
+	std::list<PoolElement>::iterator it = mAllocatedCopy.begin();
 
-	while ((it = std::adjacent_find(it, copyMAllocated.end(), [](const auto& first, const auto& second)
+	while ((it = std::adjacent_find(it, mAllocatedCopy.end(), [](const auto& first, const auto& second)
 		{
 			return (first.address + first.size == second.address);
-		})) != copyMAllocated.end())
+		})) != mAllocatedCopy.end())
 	{
 		std::next(it)->updateElement(it->address, it->size + std::next(it)->size);
-		it = copyMAllocated.erase(it);
+		it = mAllocatedCopy.erase(it);
 	}
 
-	copyMAvailable.sort();
+	mAvailableCopy.sort();
 
-	Writer::writeSortedLists(output, copyMAvailable, copyMAllocated);
+	Writer::writeSortedLists(output, mAvailableCopy, mAllocatedCopy);
 
 	output.close();
 }
