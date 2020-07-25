@@ -79,7 +79,7 @@ void* __cdecl BestFit::allocMemory(size_t aSize, int /*aBlockUse*/, char const* 
 void __cdecl BestFit::freeMemory(void* aBlock, int)
 {
 	// Search the address that the user wants to delete in mAllocated
-	const auto blockToDeallocate = mAllocated.find(PoolElement(static_cast<char*>(aBlock), 0));
+	const auto blockToDeallocate = mAllocated.find(PoolElement(static_cast<char*>(aBlock)));
 
 	if (checkInvalidAddress(aBlock, blockToDeallocate))
 	{
