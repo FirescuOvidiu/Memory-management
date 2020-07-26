@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-// Represents the log levels
+
 typedef enum class Log_Levels
 {
 	Log_Level_Info = 0,
@@ -11,7 +11,6 @@ typedef enum class Log_Levels
 }LogLevel;
 
 
-// Represents the log types
 typedef enum class Log_Types
 {
 	No_Log = 1,
@@ -23,24 +22,21 @@ typedef enum class Log_Types
 /*
 	This class is used to store informations about the T.U. and allocator. 
 	The Logger stores information based on the level of the log:
-		For Log_Level_Info stores information about: the size of the memory pool, numar of allocation and deallocations,
-		memory available at a time, allocations size
-		For Log_Level_warning stores informations about memory leaks
-		For Log_Level_Error stores informations about: cases when the program fails due to bad_alloc and 
-		cases when the program fails due to user trying to deallocate an invalid addresses
+		Log_Level_Info stores information about: the size of the memory pool, number of allocation and deallocations, memory available at a time, allocations size
+		Log_Level_Warning stores informations about memory leaks
+		Log_Level_Error stores informations about: cases when the program fails due to bad_alloc and when user is trying to deallocate an invalid addresses
 
 	At the end of the program all the informations will be written into a file LogFile.log or written on screen
 */
 class Logger
 {
 public:
-	Logger(const size_t poolSize);
+	Logger(const size_t poolSize, const LogType logType);
 
 	void updateWarningLog();
-	void updateErrorLog(void *block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation);
+	void updateErrorLog(void *block, const size_t memoryToAllocate, const size_t biggestContMemory, const std::string& situation);
 
 	void increaseAllocOrDealloc(const int size);
-	void setLogType(const LogType& type);
 
 	~Logger();
 
@@ -51,6 +47,7 @@ private:
 	static std::string getCurrentTime();
 
 private:
+	static int numberLogTypes;
 	std::ofstream allocationsSizeFile;
 	std::ofstream loggerFile;
 	std::vector<bool> logLevels;

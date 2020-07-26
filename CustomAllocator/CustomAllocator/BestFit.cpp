@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-BestFit::BestFit(const size_t poolSize) : Strategy(poolSize), poolSize(poolSize), startAddress(nullptr)
+BestFit::BestFit(const size_t poolSize, const LogType logType) : Strategy(poolSize, logType), poolSize(poolSize), startAddress(nullptr)
 {
 	allocMemoryPool();
 	mAvailable.push_back(PoolElement(startAddress, poolSize));

@@ -2,26 +2,24 @@
 #pragma warning (disable : 4996)
 
 
-Logger::Logger(const size_t poolSize) : numberAllocations(0), numberDeallocations(0), totalMemory((int)poolSize), totalMemoryAvailable((int)poolSize), logType(LogType::File_Log)
+int Logger::numberLogTypes = 3;
+
+
+Logger::Logger(const size_t poolSize, const LogType logType) : numberAllocations(0), numberDeallocations(0), totalMemory((int)poolSize), totalMemoryAvailable((int)poolSize), logType(logType)
 {
+	if (logType == LogType::No_Log)
+	{
+		return;
+	}
+
 	loggerFile.open("LogFile.log", std::ofstream::out);
 	allocationsSizeFile.open("sizeAllocations.txt", std::ofstream::out);
 
-	switch (logType)
-	{
-	case LogType::File_Log:
-		loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	case LogType::Console_Log:
-		std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- START OF APPLICATION ----------------------->" << "\n\n\n\n";
-		break;
-	default:
-		break;
-	}
+	logLevels.resize(numberLogTypes, true);
+	outputMessages.resize(numberLogTypes);
 
-	logLevels.resize(3, true);
-	outputMessages.resize(3);
-
+	outputMessages[(int)LogLevel::Log_Level_Info] += "\n\n";
+	updateLog("<----------------------- START OF APPLICATION ----------------------->\n", LogLevel::Log_Level_Info);
 	updateLog("Size of the memory pool: " + std::to_string(poolSize) + " bytes.", LogLevel::Log_Level_Info);
 }
 
@@ -81,7 +79,7 @@ void Logger::updateWarningLog()
 /*
 	Method used to update the log for the following level: Log_Level_Error
 */
-void Logger::updateErrorLog(void* block, size_t memoryToAllocate, size_t biggestContMemory, const std::string& situation)
+void Logger::updateErrorLog(void* block, const size_t memoryToAllocate, const size_t biggestContMemory, const std::string& situation)
 {
 	if (logType == LogType::No_Log)
 	{
@@ -130,12 +128,6 @@ void Logger::increaseAllocOrDealloc(const int size)
 }
 
 
-void Logger::setLogType(const LogType& type)
-{
-	this->logType = type;
-}
-
-
 /*
 	Returns the current time based on the format YYYY-MM-DD HH:MM:SS
 */
@@ -150,73 +142,62 @@ std::string Logger::getCurrentTime()
 }
 
 
-/*
-	Function used to write the informations into the log file
-*/
 void Logger::writingToFile()
 {
-	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
+	for (const auto& message : outputMessages)
 	{
-		if ((logLevels[currLevel]) && (outputMessages[currLevel] != ""))
+		if (message != "")
 		{
-			loggerFile << outputMessages[currLevel] << "\n\n\n";
+			loggerFile << message << "\n\n\n";
 		}
 	}
-
-	loggerFile << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 }
 
 
-/*
-	Function used to write the informations into the console
-*/
 void Logger::writingToConsole()
 {
-	for (int currLevel = 0; currLevel < (int)outputMessages.size(); currLevel++)
+	for (const auto& message : outputMessages)
 	{
-		if ((logLevels[currLevel]) && (outputMessages[currLevel] != ""))
+		if (message != "")
 		{
-			std::cout << outputMessages[currLevel] << "\n\n\n";
+			std::cout << message << "\n\n\n";
 		}
 	}
-
-	std::cout << Logger::getCurrentTime() << "\t" << "[INFO]" << "\t" << "<----------------------- END OF APPLICATION ----------------------->";
 }
 
 
-/*
-	Destructor used to write the information gathered during the program into the log and closing the file log
-*/
 Logger::~Logger()
 {
-	if (logType != LogType::No_Log)
+	if (logType == LogType::No_Log)
 	{
-		Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations), LogLevel::Log_Level_Info);
-		Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations), LogLevel::Log_Level_Info);
+		return;
+	}
+
+	Logger::updateLog("Number of allocations during application: " + std::to_string(numberAllocations), LogLevel::Log_Level_Info);
+	Logger::updateLog("Number of deallocations during application: " + std::to_string(numberDeallocations) + "\n", LogLevel::Log_Level_Info);
+	Logger::updateLog("<----------------------- END OF APPLICATION ----------------------->", LogLevel::Log_Level_Info);
+
+	switch (logType)
+	{
+	case LogType::File_Log:
+		writingToFile();
+		break;
+
+	case LogType::Console_Log:
+		writingToConsole();
+		break;
+
+	default:
+		break;
+	}
 
 
-		switch (logType)
-		{
-		case LogType::File_Log:
-			writingToFile();
-			break;
-
-		case LogType::Console_Log:
-			writingToConsole();
-			break;
-
-		default:
-			break;
-		}
-
-
-		if (loggerFile.is_open())
-		{
-			loggerFile.close();
-		}
-		if (allocationsSizeFile.is_open())
-		{
-			allocationsSizeFile.close();
-		}
+	if (loggerFile.is_open())
+	{
+		loggerFile.close();
+	}
+	if (allocationsSizeFile.is_open())
+	{
+		allocationsSizeFile.close();
 	}
 }

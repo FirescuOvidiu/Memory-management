@@ -7,7 +7,7 @@
 class BuddySystem : public Strategy
 {
 public:
-	BuddySystem(size_t poolSize);
+	BuddySystem(size_t poolSize, const LogType logType);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;

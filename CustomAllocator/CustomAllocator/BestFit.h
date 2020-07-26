@@ -5,7 +5,7 @@
 class BestFit : public Strategy
 {
 public:
-	BestFit(const size_t poolSize);
+	BestFit(const size_t poolSize, const LogType logType);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;

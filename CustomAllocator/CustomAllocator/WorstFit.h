@@ -8,7 +8,7 @@
 class WorstFit : public Strategy
 {
 public:
-	WorstFit(const size_t poolSize);
+	WorstFit(const size_t poolSize, const LogType logType);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;

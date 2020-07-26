@@ -17,7 +17,7 @@ typedef enum class Strategy_Types
 class Strategy
 {
 public:
-	Strategy(const size_t poolSize = 0) : log(poolSize) {}
+	Strategy(const size_t poolSize = 0, const LogType logType = LogType::No_Log) : log(poolSize, logType) {}
 
 	friend std::ofstream& operator<<(std::ofstream& output, const Strategy& allocator);
 	friend std::ifstream& operator>>(std::ifstream& input, Strategy& allocator);

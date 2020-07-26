@@ -7,7 +7,7 @@
 class MemoryManagement
 {
 public:
-	MemoryManagement(const strategyType allocatorType = strategyType::StandardAllocator, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic);
+	MemoryManagement(const strategyType allocatorType = strategyType::StandardAllocator, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic, const LogType logType = LogType::No_Log);
 
 	friend std::ofstream& operator<<(std::ofstream& output, const MemoryManagement& memoryManager);
 	friend std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManager);
@@ -22,8 +22,9 @@ private:
 
 private:
 	std::unique_ptr<Strategy> allocator;
-	strategyType allocatorType;
 	std::unique_ptr<DiagnosticTools> diagTools;
+	strategyType allocatorType;
 	diagnosticType diagType;
+	LogType logType;
 	int poolSize;
 };

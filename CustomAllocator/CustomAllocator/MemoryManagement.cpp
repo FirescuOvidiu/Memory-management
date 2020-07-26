@@ -1,7 +1,7 @@
 #include "stdafx.h"
 
 
-MemoryManagement::MemoryManagement(const strategyType allocatorType, const int poolSize, const diagnosticType diagType) : allocatorType(allocatorType), poolSize(poolSize), diagType(diagType)
+MemoryManagement::MemoryManagement(const strategyType allocatorType, const int poolSize, const diagnosticType diagType, const LogType logType) : allocatorType(allocatorType), poolSize(poolSize), diagType(diagType), logType(logType)
 {
 	setAllocatorAndDiagnostic(allocatorType);
 }
@@ -37,8 +37,9 @@ std::ifstream& operator>>(std::ifstream& input, MemoryManagement& memoryManager)
 	memoryManager.diagType = static_cast<diagnosticType>(Reader::readVariable<int>(input));
 	memoryManager.poolSize = Reader::readVariable<decltype(memoryManager.poolSize)>(input);
 	memoryManager.allocatorType = static_cast<strategyType>(Reader::readVariable<int>(input));
+	memoryManager.logType = LogType::No_Log;
 
-	//Initialaze the allocator and diagnostic tools based on the data members read
+	// Initialaze the allocator and diagnostic tools based on the data members read
 	memoryManager.setAllocatorAndDiagnostic(memoryManager.allocatorType);
 
 	// Deserialize the remaining objects present in the class
@@ -96,17 +97,17 @@ void MemoryManagement::setAllocatorAndDiagnostic(const strategyType _allocatorTy
 	switch (_allocatorType)
 	{
 	case strategyType::WorstFit:
-		allocator = std::make_unique<WorstFit>(poolSize);
+		allocator = std::make_unique<WorstFit>(poolSize, logType);
 		diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)poolSize, diagType);
 		break;
 
 	case strategyType::BestFit:
-		allocator = std::make_unique<BestFit>(poolSize);
+		allocator = std::make_unique<BestFit>(poolSize, logType);
 		diagTools = std::make_unique<DiagnoseExternalFragmentation>((int)poolSize, diagType);
 		break;
 
 	case strategyType::BuddySystem:
-		allocator = std::make_unique<BuddySystem>(poolSize);
+		allocator = std::make_unique<BuddySystem>(poolSize, logType);
 		diagTools = std::make_unique<DiagnoseInternalFragmentation>((int)poolSize, diagType);
 		break;
 

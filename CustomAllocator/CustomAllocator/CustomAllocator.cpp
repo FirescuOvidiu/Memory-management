@@ -3,7 +3,7 @@
 
 //----------------------------------------------------------------------------
 
-MemoryManagement memoryManager(strategyType::BestFit, 134217728, diagnosticType::Console_Diagnostic);
+MemoryManagement memoryManager(strategyType::BestFit, 134217728, diagnosticType::Console_Diagnostic, LogType::Console_Log);
 
 
 void * __cdecl CustomAllocator_New(size_t aSize, int aBlockUse, char const * aFileName, int aLineNumber)
