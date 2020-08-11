@@ -2,12 +2,12 @@
 
 
 /*
-	Class used to implement a custom allocator that uses the Buddy System algorithm to allocate and deallocate memory
+	Class used to implement a strategy for the allocator that uses the Buddy System algorithm to allocate and deallocate memory
 */
 class BuddySystem final : public Strategy
 {
 public:
-	BuddySystem(size_t poolSize, const LogType logType);
+	BuddySystem(const size_t poolSize, const LogType logType);
 
 	std::ofstream& write(std::ofstream& output) const override;
 	std::ifstream& read(std::ifstream& input) override;
@@ -21,17 +21,19 @@ public:
 	~BuddySystem();
 
 private:
-	bool checkBadAlloc(size_t aSize, int& position);
-	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& it);
+	bool checkBadAlloc(const size_t aSize, int position);
+	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator blockToDeallocate);
 	void checkMemoryLeaks();
 
-	PoolElement getAvailableBlock(size_t aSize, int position);
-	void insertIntoAvailableMemory(PoolElement& deallocatedMemory);
-	void findAdjacentBlock(PoolElement& buddy, const PoolElement& deallocatedMemory) const;
+	void allocMemoryPool();
+	void insertIntoAvailableMemory(PoolElement blockDeallocated);
+	void mergeAdjacentBlocks(std::list<PoolElement>& blocks) const;
+	PoolElement getAvailableBlock(const size_t aSize, int position);
+	std::set<PoolElement>::iterator findAdjacentBlock(const PoolElement& blockDeallocated, const int position) const;
 
 private:
-	char* startAddress;					// Start address of the memory pool
+	char* startAddress;
 	std::vector<std::set<PoolElement>> mAvailable; 	// Stores the memory unallocated sorted ascending by the address
-	std::set<PoolElement> mAllocated;	// Stores the memory allocated sorted by the address
-	std::size_t poolSize;				// The size of the memory pool
+	std::set<PoolElement> mAllocated;			    // Stores the memory allocated sorted by the address
+	std::size_t poolSize;							// The size of the memory pool
 };
