@@ -136,7 +136,7 @@ void WorstFit::showCurrentState() const
 }
 
 
-bool WorstFit::checkBadAlloc(size_t aSize)
+bool WorstFit::checkBadAlloc(const size_t aSize)
 {
 	if (mAvailable.empty() || (aSize > mAvailable.front().size))
 	{

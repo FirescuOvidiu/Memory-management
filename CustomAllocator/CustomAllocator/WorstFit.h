@@ -22,7 +22,7 @@ public:
 	~WorstFit();
 
 private:
-	bool checkBadAlloc(size_t aSize);
+	bool checkBadAlloc(const size_t aSize);
 	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator blockToDeallocate);
 	void checkMemoryLeaks();
 
