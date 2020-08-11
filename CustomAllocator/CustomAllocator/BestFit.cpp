@@ -131,10 +131,10 @@ void BestFit::showCurrentState() const
 	// Merge adjacent blocks of memory
 	std::list<PoolElement>::iterator it = mAllocatedCopy.begin();
 
-	while ((it = std::adjacent_find(it, mAllocatedCopy.end(), [](const auto& first, const auto& second)
+	while ((it = std::adjacent_find(it, std::end(mAllocatedCopy), [](const auto& first, const auto& second)
 		{
 			return (first.address + first.size == second.address);
-		})) != mAllocatedCopy.end())
+		})) != std::end(mAllocatedCopy))
 	{
 		std::next(it)->updateElement(it->address, it->size + std::next(it)->size);
 		it = mAllocatedCopy.erase(it);
