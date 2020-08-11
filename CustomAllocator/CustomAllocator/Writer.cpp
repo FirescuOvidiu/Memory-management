@@ -3,7 +3,7 @@
 
 void Writer::writeList(std::ofstream& output, const std::list<PoolElement>& list)
 {
-	Writer::writeVariable(output, list.size());
+	writeVariable(output, list.size());
 
 	for (const auto& element : list)
 	{
@@ -14,7 +14,7 @@ void Writer::writeList(std::ofstream& output, const std::list<PoolElement>& list
 
 void Writer::writeSet(std::ofstream& output, const std::set<PoolElement>& set)
 {
-	Writer::writeVariable(output, set.size());
+	writeVariable(output, set.size());
 
 	for (const auto& element : set)
 	{
@@ -62,5 +62,15 @@ void Writer::writeSortedLists(std::ofstream& output, const std::list<PoolElement
 	if (itSecond != std::cend(second))
 	{
 		output << itSecond->size << "\n";
+	}
+}
+
+
+void Writer::writeVectorOfSets(std::ofstream& output, std::vector<std::set<PoolElement>> vectorOfSets)
+{
+	writeVariable(output, vectorOfSets.size());
+	for (const auto& set : vectorOfSets)
+	{
+		writeSet(output, set);
 	}
 }
