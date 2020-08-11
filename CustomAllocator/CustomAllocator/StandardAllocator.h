@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 
-class StandardAllocator: public Strategy
+class StandardAllocator final : public Strategy
 {
 public:
 

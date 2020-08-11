@@ -5,7 +5,7 @@
 /*
 	Class used to implement a strategy for the allocator that uses the Worst Fit algorithm to allocate and deallocate memory
 */
-class WorstFit : public Strategy
+class WorstFit final : public Strategy
 {
 public:
 	WorstFit(const size_t poolSize, const LogType logType);

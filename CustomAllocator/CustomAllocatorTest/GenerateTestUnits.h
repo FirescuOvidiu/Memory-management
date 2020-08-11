@@ -4,7 +4,7 @@ const int numberAllocations = 1000;
 const int fileLength = numberAllocations * 9 + numberAllocations * 5;
 
 
-class GenerateTestUnits
+class GenerateTestUnits final
 {
 public:
 	GenerateTestUnits(std::pair<int, int> ObjectSize, std::pair<int, int> rangeNumberDeallocations) :

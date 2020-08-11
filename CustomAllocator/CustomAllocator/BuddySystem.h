@@ -4,7 +4,7 @@
 /*
 	Class used to implement a custom allocator that uses the Buddy System algorithm to allocate and deallocate memory
 */
-class BuddySystem : public Strategy
+class BuddySystem final : public Strategy
 {
 public:
 	BuddySystem(size_t poolSize, const LogType logType);

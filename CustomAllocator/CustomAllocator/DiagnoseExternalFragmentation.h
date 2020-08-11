@@ -6,7 +6,7 @@
 	It calculates the external fragmentation based on the formula:
 	Fragmentation = 1 - (biggest free continuous memory)/(total free memory)
 */
-class DiagnoseExternalFragmentation : public DiagnosticTools
+class DiagnoseExternalFragmentation final : public DiagnosticTools
 {
 public:
 	DiagnoseExternalFragmentation(const int totalMemory = 0, const diagnosticType diagType = diagnosticType::No_Diagnostic) : DiagnosticTools(totalMemory, diagType) {}

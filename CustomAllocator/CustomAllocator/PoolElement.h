@@ -7,7 +7,7 @@
 	- the start address of the memory block
 	- the size of the  memory block
 */
-class PoolElement
+class PoolElement final
 {
 public:
 	PoolElement(char* address = {}, const size_t size = {}) : address(address), size(size) {}

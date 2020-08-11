@@ -4,7 +4,7 @@
 /*
 	Contains an allocator used to manage the allocations and deallocations, diagnostic tools used to evaluate the allocator, and operator<</operator>> for serialization/deserializaton
 */
-class MemoryManagement
+class MemoryManagement final
 {
 public:
 	MemoryManagement(const strategyType allocatorType = strategyType::StandardAllocator, const int poolSize = 1000000, const diagnosticType diagType = diagnosticType::No_Diagnostic, const LogType logType = LogType::No_Log);

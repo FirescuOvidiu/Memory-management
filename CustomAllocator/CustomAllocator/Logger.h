@@ -28,7 +28,7 @@ typedef enum class Log_Types
 
 	At the end of the program all the informations will be written into a file LogFile.log or written on screen
 */
-class Logger
+class Logger final
 {
 public:
 	Logger(const size_t poolSize, const LogType logType);

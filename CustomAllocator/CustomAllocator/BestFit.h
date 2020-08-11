@@ -2,7 +2,7 @@
 #include "stdafx.h"
 
 
-class BestFit : public Strategy
+class BestFit final : public Strategy
 {
 public:
 	BestFit(const size_t poolSize, const LogType logType);
