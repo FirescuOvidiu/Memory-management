@@ -96,12 +96,7 @@ std::pair<int, int> WorstFit::getCurrentState() const
 		{
 			return currSize - (int)element.size;
 		});
-	int biggestContMemory = 0;
-
-	if (!mAvailable.empty())
-	{
-		biggestContMemory = (int)mAvailable.front().size;
-	}
+	int biggestContMemory = mAvailable.empty() ? 0 : (int)mAvailable.front().size;
 
 	return std::make_pair(biggestContMemory, memoryAvailable);
 }
