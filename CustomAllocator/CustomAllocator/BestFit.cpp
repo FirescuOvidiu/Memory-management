@@ -162,7 +162,7 @@ BestFit::~BestFit()
 
 
 
-bool BestFit::checkBadAlloc(const size_t aSize, const std::list<PoolElement>::iterator& blockAvailable)
+bool BestFit::checkBadAlloc(const size_t aSize, const std::list<PoolElement>::iterator blockAvailable)
 {
 	if (blockAvailable == std::end(mAvailable))
 	{
@@ -181,7 +181,7 @@ bool BestFit::checkBadAlloc(const size_t aSize, const std::list<PoolElement>::it
 }
 
 
-bool BestFit::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& blockToDeallocate)
+bool BestFit::checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator blockToDeallocate)
 {
 	if (blockToDeallocate == std::end(mAllocated))
 	{
@@ -204,7 +204,7 @@ void BestFit::checkMemoryLeaks()
 }
 
 
-std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> BestFit::findAdjacentBlocks(const std::set<PoolElement>::iterator& blockDeallocated)
+std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> BestFit::findAdjacentBlocks(const std::set<PoolElement>::iterator blockDeallocated)
 {
 	auto leftBlock = std::end(mAvailable), rightBlock = std::end(mAvailable);
 
@@ -257,7 +257,7 @@ void BestFit::allocMemoryPool()
 /*
 	Insert the block of memory that was removed from the allocated set (mAllocated) into the unallocated list (mAvailable)
 */
-void BestFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator& blockDeallocated)
+void BestFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator blockDeallocated)
 {
 	auto [leftBlock, rightBlock] = findAdjacentBlocks(blockDeallocated);
 

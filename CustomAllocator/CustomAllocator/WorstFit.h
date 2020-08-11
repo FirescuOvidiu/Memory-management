@@ -23,13 +23,13 @@ public:
 
 private:
 	bool checkBadAlloc(size_t aSize);
-	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& blockToDeallocate);
+	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator blockToDeallocate);
 	void checkMemoryLeaks();
 
 	void allocMemoryPool();
 	void maintainListSorted(std::list<PoolElement>::iterator element);
-	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator& blockDeallocated);
-	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator& blockDeallocated);
+	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator blockDeallocated);
+	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator blockDeallocated);
 
 private:
 	char* startAddress;

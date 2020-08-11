@@ -19,14 +19,14 @@ public:
 	~BestFit();
 
 private:
-	bool checkBadAlloc(const size_t aSize, const std::list<PoolElement>::iterator& blockAvailable);
-	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator& blockToDeallocate);
+	bool checkBadAlloc(const size_t aSize, const std::list<PoolElement>::iterator blockAvailable);
+	bool checkInvalidAddress(void* aBlock, const std::set<PoolElement>::iterator blockToDeallocate);
 	void checkMemoryLeaks();
 
-	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findAdjacentBlocks(const std::set<PoolElement>::iterator& blockDeallocated);
+	std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> findAdjacentBlocks(const std::set<PoolElement>::iterator blockDeallocated);
 	std::list<PoolElement>::iterator findBestBlock(const size_t aSize);
 	void allocMemoryPool();
-	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator& blockDeallocated);
+	void insertIntoAvailableMemory(const std::set<PoolElement>::iterator blockDeallocated);
 
 private:
 	char* startAddress;					// Start address of the memory pool

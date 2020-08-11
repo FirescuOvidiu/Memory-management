@@ -155,7 +155,7 @@ bool WorstFit::checkBadAlloc(size_t aSize)
 }
 
 
-bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator& blockToDeallocate)
+bool WorstFit::checkInvalidAddress(void* aBlock,const std::set<PoolElement>::iterator blockToDeallocate)
 {
 	if (blockToDeallocate == std::end(mAllocated))
 	{
@@ -222,7 +222,7 @@ void WorstFit::maintainListSorted(std::list<PoolElement>::iterator element)
 /*
 	Insert the block of memory that was removed from the allocated set (mAllocated) into the unallocated list (mAvailable)
 */
-void WorstFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator& blockDeallocated)
+void WorstFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator blockDeallocated)
 {
 	auto [newPosition, leftBlock, rightBlock] = findPosAndAdjacentBlocks(blockDeallocated);
 
@@ -263,7 +263,7 @@ void WorstFit::insertIntoAvailableMemory(const std::set<PoolElement>::iterator& 
 	Also inside the method we are looking for a left and right block to merge it with the block deallocated
 */
 std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, std::list<PoolElement>::iterator> 
-	WorstFit::findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator& blockDeallocated)
+	WorstFit::findPosAndAdjacentBlocks(const std::set<PoolElement>::iterator blockDeallocated)
 {
 	auto newPosition = std::begin(mAvailable), leftBlock = std::end(mAvailable), rightBlock = std::end(mAvailable);
 
@@ -285,7 +285,7 @@ std::tuple<std::list<PoolElement>::iterator, std::list<PoolElement>::iterator, s
 		}
 	}
 
-	return std::make_tuple(newPosition,leftBlock,rightBlock);
+	return std::make_tuple(newPosition, leftBlock, rightBlock);
 }
 
 
