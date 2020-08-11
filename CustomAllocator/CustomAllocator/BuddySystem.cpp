@@ -157,7 +157,6 @@ bool BuddySystem::checkBadAlloc(const size_t aSize, int position)
 	{
 		// Find the biggest continuous memory available
 		position = (int)mAvailable.size() - 1;
-
 		while ((position >= 0) && (mAvailable[position].empty()))
 		{
 			position--;
@@ -256,7 +255,7 @@ void BuddySystem::mergeAdjacentBlocks(std::list<PoolElement>& blocks) const
 */
 PoolElement BuddySystem::getAvailableBlock(const size_t aSize, int position)
 {
-	PoolElement firstNewElement, secondNewElement, currBlock;
+	PoolElement firstBlock, secondBlock, currBlock;
 
 	// Get the open block from the memory available
 	currBlock = *std::begin(mAvailable[position]);
@@ -268,13 +267,13 @@ PoolElement BuddySystem::getAvailableBlock(const size_t aSize, int position)
 	while (pow(2, position) >= aSize)
 	{
 		// Split the current open block into two blocks
-		firstNewElement.updateElement(currBlock.address, currBlock.size / 2);
-		secondNewElement.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
+		firstBlock.updateElement(currBlock.address, currBlock.size / 2);
+		secondBlock.updateElement(currBlock.address + currBlock.size / 2, currBlock.size / 2);
 
 		// The first half becomes the current block
-		currBlock = firstNewElement;
+		currBlock = firstBlock;
 		// The second half is inserted into the vector used to keep track of the available memory
-		mAvailable[position].insert(secondNewElement);
+		mAvailable[position].insert(secondBlock);
 		position--;
 	}
 
