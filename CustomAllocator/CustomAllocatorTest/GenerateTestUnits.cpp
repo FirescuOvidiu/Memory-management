@@ -88,7 +88,7 @@ void GenerateTestUnits::loadTU()
 
 	readGeneratedTest();
 
-	while (offset < end)
+	while (offset < fileLength)
 	{
 		instruction = *reinterpret_cast<char*>(buffer.data() + offset);
 		offset += 1;
@@ -107,6 +107,11 @@ void GenerateTestUnits::loadTU()
 		}
 
 		offset += 4;
+		if (offset == end)
+		{
+			evaluateFragmentationState();
+			serialization();
+		}
 	}
 }
 
