@@ -1,14 +1,12 @@
 #pragma once
 
 
-class DeallocationObject
+typedef struct DeallocationObject
 {
-public:
 	void write(std::ofstream& outputTU) const;
 	void read(std::ifstream& inputTU);
-	void get(char buffer[], const int offset);
+	void get(std::array<char, fileLength>& buffer, const int offset);
 
-public:
 	static const char notation;
 	int id;
-};
+}DeallocationObject;

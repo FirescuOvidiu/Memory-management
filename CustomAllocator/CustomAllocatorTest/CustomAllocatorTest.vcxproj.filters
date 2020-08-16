@@ -10,6 +10,9 @@
     <Filter Include="CustomAllocatorTests">
       <UniqueIdentifier>{b72ec421-a728-4d73-b279-4d11798fc177}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Generate Test Units">
+      <UniqueIdentifier>{e221d9f7-5070-4943-91cd-308151669835}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="targetver.h">
@@ -34,13 +37,13 @@
       <Filter>CustomAllocatorTests</Filter>
     </ClInclude>
     <ClInclude Include="GenerateTestUnits.h">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClInclude>
     <ClInclude Include="AllocationObject.h">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClInclude>
     <ClInclude Include="DeallocationObject.h">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -62,15 +65,15 @@
     <ClCompile Include="CustomAllocatorTestD.cpp">
       <Filter>CustomAllocatorTests</Filter>
     </ClCompile>
+    <ClCompile Include="CustomAllocatorTest.cpp" />
     <ClCompile Include="GenerateTestUnits.cpp">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClCompile>
     <ClCompile Include="AllocationObject.cpp">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClCompile>
     <ClCompile Include="DeallocationObject.cpp">
-      <Filter>CustomAllocatorTests</Filter>
+      <Filter>Generate Test Units</Filter>
     </ClCompile>
-    <ClCompile Include="CustomAllocatorTest.cpp" />
   </ItemGroup>
 </Project>

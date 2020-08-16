@@ -17,7 +17,7 @@ void DeallocationObject::read(std::ifstream& inputTU)
 }
 
 
-void DeallocationObject::get(char buffer[], const int offset)
+void DeallocationObject::get(std::array<char, fileLength>& buffer, const int offset)
 {
-	id = *reinterpret_cast<int*>(buffer + offset);
+	id = *reinterpret_cast<int*>(buffer.data() + offset);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-const int numberAllocations = 1000;
+const int numberAllocations = 100000;
 const int fileLength = numberAllocations * 9 + numberAllocations * 5;
 
 
@@ -17,14 +17,13 @@ public:
 private:
 	void deallocateRandomObjects(const int countAllocations, std::set<int>& storeObjectId);
 	void readGeneratedTest();
-	void initializeObjects(char* objects[]);
 
 private:
 	static const int numberObjectsAllocated;
 
 	std::ofstream outputTU;
 	std::ifstream inputTU;
-	char buffer[fileLength];
+	std::array<char, fileLength> buffer;
 	std::pair<int, int> rangeObjectSize;
 	std::pair<int, int> rangeNumberDeallocations;
 };

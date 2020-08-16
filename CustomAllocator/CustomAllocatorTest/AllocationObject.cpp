@@ -19,9 +19,9 @@ void AllocationObject::read(std::ifstream& inputTU)
 }
 
 
-void AllocationObject::get(char buffer[], int& offset)
+void AllocationObject::get(std::array<char, fileLength>& buffer, int& offset)
 {
-	id = *reinterpret_cast<int*>(buffer + offset);
+	id = *reinterpret_cast<int*>(buffer.data() + offset);
 	offset += 4;
-	size = *reinterpret_cast<int*>(buffer + offset);
+	size = *reinterpret_cast<int*>(buffer.data() + offset);
 }
